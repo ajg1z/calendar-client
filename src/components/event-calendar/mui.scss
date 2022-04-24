@@ -1,0 +1,25 @@
+.arrow {
+    font-size:45px;
+    transition: all 0.3s ease 0s;
+    color:black;
+    &-next{
+        :hover{
+            ::after{
+                content:'Next month'
+            }
+        }
+
+    }
+    &-prev{
+        :hover{
+            ::after{
+                content:'Prev month'
+            }
+        }
+        transform: rotate(180deg);
+    }
+}
+
+.sc-evZas{
+    color:black;
+}
