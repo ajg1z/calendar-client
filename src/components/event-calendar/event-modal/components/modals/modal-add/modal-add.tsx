@@ -16,7 +16,9 @@ export const ModalAdd:FC<IModalProps> = ({dispatch}) => {
   }
 
   const actionModalAdd=()=>{
-    dispatch(EventsActionCreator.AddEvent({day:selected!.day,month:selected!.month,title,description,id:nanoid(5),typeEvent:'myEvent',year:selected!.year}))
+    dispatch(EventsActionCreator.
+      AddEvent({month:selected!.month,year:selected!.year,event:
+        {day:selected!.day,id:nanoid(5),month:selected!.month,year:selected!.year,typeEvent:'myEvent',description,title}}))
     closeModalAdd();
   }
   return (

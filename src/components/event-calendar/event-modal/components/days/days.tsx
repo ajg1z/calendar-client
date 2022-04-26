@@ -14,7 +14,6 @@ export const Days:React.FC<IDaysProps> = ({days,month,year,displayMenu}) => {
         {days.map(day=>{
              const displayEvents:IEvents[]=[];
              const allEventsDay:IEvent[]=[];
-
            let appropriateYear=events.find(event=>event.year===year)
            if(!appropriateYear) return;
            let appropriateMonth=appropriateYear.month.find(day=>day.month===month)
@@ -32,6 +31,7 @@ export const Days:React.FC<IDaysProps> = ({days,month,year,displayMenu}) => {
           return <Day 
           onContextMenu={e=>displayMenu(e,{day,month,year,events:allEventsDay})}
           current={currentYear===year && month===currentMonth && currentDay===day}>
+            {day}
             <EventsLabel>
                {displayEvents.map(el=>{
                  return   <EventLabel 

@@ -21,10 +21,15 @@ import { ModalInfo } from './event-modal/components/modals/modal-info/modal-info
 import { ModalDelete } from './event-modal/components/modals/modal-delete/modal-delete';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import './mui.scss';
+import { Days } from './event-modal/components/days/days';
+import { InputLogin } from '../input-login.tsx/input-login';
 
 const MENU_ID = 'calendar'
 
 export const EventCalendar:FC<IEventProps> = () => {
+    const [value,setValue]=React.useState('');
+    const [error,setError]=React.useState(false);
+
     const dispatch=useDispatch();
     const {modalAdd,modalDelete,modalEdit,modalInfo,modalShare}=useTypesSelector(state=>state.modal)
     const {
@@ -63,29 +68,29 @@ export const EventCalendar:FC<IEventProps> = () => {
         }
     }
 
-    const prevDaysMonth=React.useMemo(()=>{
-        const countDaysPrevMonth=oneDayMonthOnWeek===0?6:oneDayMonthOnWeek-1;
-        const prevMontLastDays=new Date(year,month,0).getDate();
+    // const prevDaysMonth=React.useMemo(()=>{
+    //     const countDaysPrevMonth=oneDayMonthOnWeek===0?6:oneDayMonthOnWeek-1;
+    //     const prevMontLastDays=new Date(year,month,0).getDate();
 
-        return new Array(countDaysPrevMonth).fill(1).map((day,index)=>{
-            return <WeekDay 
-            key={day+index} 
-            current={currentDay===(prevMontLastDays-countDaysPrevMonth+index)
-             && year===currentYear && month===currentMonth}>
-            {prevMontLastDays-countDaysPrevMonth+index}</WeekDay>
-        })
-    },[year,month]);    
+    //     return new Array(countDaysPrevMonth).fill(1).map((day,index)=>{
+    //         return <WeekDay 
+    //         key={day+index} 
+    //         current={currentDay===(prevMontLastDays-countDaysPrevMonth+index)
+    //          && year===currentYear && month===currentMonth}>
+    //         {prevMontLastDays-countDaysPrevMonth+index}</WeekDay>
+    //     })
+    // },[year,month]);    
 
-    const nextDaysMonth=React.useMemo(()=>{
-        return new Array(7-lastDayMonthOnWeek).
-        fill(1).map((day,index)=>{
-            return <WeekDay
-            key={day+index}
-             current={currentDay===index+1 && year===currentYear && month===currentMonth}>
-                 {index+1}
-             </WeekDay>
-        })
-    },[year,month])
+    // const nextDaysMonth=React.useMemo(()=>{
+    //     return new Array(7-lastDayMonthOnWeek).
+    //     fill(1).map((day,index)=>{
+    //         return <WeekDay
+    //         key={day+index}
+    //          current={currentDay===index+1 && year===currentYear && month===currentMonth}>
+    //              {index+1}
+    //          </WeekDay>
+    //     })
+    // },[year,month])
 
     const days=React.useMemo(()=>{
         const countDaysPrevMonth=oneDayMonthOnWeek===0?6:oneDayMonthOnWeek-1;
@@ -99,33 +104,34 @@ export const EventCalendar:FC<IEventProps> = () => {
         const current=new Array(new Date(year,month+1,0).getDate()).fill(1).map((el,index)=>{
             return index+1
         })
-
-        return new Array(new Date(year,month+1,0).getDate()).fill(1).map((el,i)=>{
-            const displayEvents:IEvents[]=[];
-            const  eventsLabels:IEvent[]=[];
-            events.forEach(el=>{
-                if(el.year===year && el.month===month && el.day===i+1){
-                    if(el.typeEvent==='myEvent' || 'holiday') { 
-                        EventSome(displayEvents,el.typeEvent,el);
-                    }else{
-                        displayEvents.push(el);
-                    }   
-                    eventsLabels.push(el);
-                }
-            })
-            return <WeekDay
-              current={currentDay===i+1 && year===currentYear && month===currentMonth}
-              onContextMenu={(e)=>displayMenu(e,{day:i+1,month,year,events:eventsLabels})} key={i}>{i+1}
-                  <EventsLabel>
-                {displayEvents.map(el=>{
-                    return  <EventLabel 
-                    key={el.id}
-                    count={el.count ? el.count:1}
-                    typeEvent={el.typeEvent}/>                    
-                })}
-                 </EventsLabel> 
-            </WeekDay>
-        })
+        
+      return [...prev,...current,...next]
+        // return new Array(new Date(year,month+1,0).getDate()).fill(1).map((el,i)=>{
+        //     const displayEvents:IEvents[]=[];
+        //     const  eventsLabels:IEvent[]=[];
+        //     events.forEach(el=>{
+        //         if(el.year===year && el.month===month && el.day===i+1){
+        //             if(el.typeEvent==='myEvent' || 'holiday') { 
+        //                 EventSome(displayEvents,el.typeEvent,el);
+        //             }else{
+        //                 displayEvents.push(el);
+        //             }   
+        //             eventsLabels.push(el);
+        //         }
+        //     })
+        //     return <WeekDay
+        //       current={currentDay===i+1 && year===currentYear && month===currentMonth}
+        //       onContextMenu={(e)=>displayMenu(e,{day:i+1,month,year,events:eventsLabels})} key={i}>{i+1}
+        //           <EventsLabel>
+        //         {displayEvents.map(el=>{
+        //             return  <EventLabel 
+        //             key={el.id}
+        //             count={el.count ? el.count:1}
+        //             typeEvent={el.typeEvent}/>                    
+        //         })}
+        //          </EventsLabel> 
+        //     </WeekDay>
+        // })
      },[year,month,events])
 
   function displayMenu(e: TriggerEvent,value:ISelectedDay){
@@ -157,6 +163,7 @@ export const EventCalendar:FC<IEventProps> = () => {
               dispatch={dispatch}
         />}
         <Top>
+            <InputLogin error={error} setError={setError} setValue={setValue} value={value} />
             <Select
             height='40px'
             width='100px'
@@ -178,9 +185,7 @@ export const EventCalendar:FC<IEventProps> = () => {
             ))}
         </WeekDays>
         <Body>
-            {prevDaysMonth}
-            {days}
-            {nextDaysMonth}
+         <Days days={days} displayMenu={displayMenu} month={month} year={year}/>
         </Body>
     </Container>
     </>
