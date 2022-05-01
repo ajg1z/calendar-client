@@ -1,13 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import {createGlobalStyle} from 'styled-components'
-import { scrollbar } from './styled.common';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import { createGlobalStyle } from "styled-components";
+import { scrollbar } from "./styled.common";
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+	document.getElementById("root") as HTMLElement
 );
-const GlobalStyle=createGlobalStyle`
+const GlobalStyle = createGlobalStyle`
 * {
   box-sizing: border-box;
   margin:0px 0px 0px 0px;
@@ -32,14 +32,15 @@ body{
         background-color: black;
     }
     ::-webkit-scrollbar{
+      
         cursor: pointer;
         width:5px;
     }
 }
-`
+`;
 root.render(
-      <>
-    <GlobalStyle/>
-      <App />
-      </>
+	<>
+		<GlobalStyle />
+		<App />
+	</>
 );

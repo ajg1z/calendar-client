@@ -1,9 +1,11 @@
-import { IEvent } from './../../models/event';
+import { IEvent } from "./../../models/event";
 export interface IEventProps {
-    // events: IEvent[]
+	// events: IEvent[]
 }
 
 export interface IEvents extends IEvent {
-    count?: number;
+	count?: number;
 }
 
+export type typeCalendar = "standart" | "day" | "week";
+export type direction = "prev" | "next";

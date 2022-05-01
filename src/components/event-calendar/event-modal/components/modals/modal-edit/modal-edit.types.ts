@@ -1,3 +1,1 @@
-export interface IModalEdit {
-    
-}
+export interface IModalEdit {}

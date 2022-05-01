@@ -1,8 +1,6 @@
-export interface Props {
-
-}
+export interface Props {}
 
 export interface IField {
-    email: string;
-    password: string
+  email: string;
+  password: string;
 }

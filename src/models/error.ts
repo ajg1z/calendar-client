@@ -1,5 +1,5 @@
 export interface IError {
-    id: string,
-    callstack: string;
-    message: string;
+  id: string;
+  callstack: string;
+  message: string;
 }

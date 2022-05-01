@@ -1,193 +1,403 @@
-import { Calendar } from 'antd'
-import React, { FC } from 'react'
-import { Months, Years } from '../../const/calendar';
-import Select from '../select/select'
-import {WeekDays as weekDays } from '../../const/calendar'
-import { Body, Container, Top, WeekDay, WeekDays,EventsLabel, Switch,SwitchText } from './event-calendar.styled'
-import {IEventProps, IEvents} from './event-calendar.types';
-import {Item, Menu, TriggerEvent, useContextMenu} from 'react-contexify'
-import {ContextDay } from './calendar-context-menu/caleendat-context-menu';
-import { EventLabel } from './event-label/event-label';
-import { EventSome } from './utils/event';
-import { IEvent } from '../../models/event';
-import { useDispatch } from 'react-redux';
-import { useTypesSelector } from '../../hooks/useTypedSelector';
-import { EventModal } from './event-modal/event-modal';
-import { ModalAdd } from './event-modal/components/modals/modal-add/modal-add';
-import { EventsActionCreator } from '../../store/reducers/events/action-creators';
-import { ModalShare } from './event-modal/components/modals/modal-share/modal-share';
-import { ISelectedDay } from '../../store/reducers/events/types';
-import { ModalInfo } from './event-modal/components/modals/modal-info/modal-info';
-import { ModalDelete } from './event-modal/components/modals/modal-delete/modal-delete';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import './mui.scss';
-import { Days } from './event-modal/components/days/days';
-import { InputLogin } from '../input-login.tsx/input-login';
+import { Calendar } from "antd";
+import React, { FC } from "react";
+import { Months, weekHours, Years, hours } from "../../const/calendar";
+import Select from "../select/select";
+import { WeekDays as weekDays } from "../../const/calendar";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import {
+	Body,
+	Container,
+	Top,
+	WeekDay,
+	WeekDays,
+	EventsLabel,
+	Switch,
+	SwitchText,
+	Active,
+	Left,
+	SwitchType,
+	Label,
+	Hour,
+	Cell,
+	DayCell,
+	Line,
+} from "./event-calendar.styled";
+import {
+	IEventProps,
+	IEvents,
+	typeCalendar,
+	direction,
+} from "./event-calendar.types";
+import { Item, Menu, TriggerEvent, useContextMenu } from "react-contexify";
+import { ContextDay } from "./calendar-context-menu/caleendat-context-menu";
+import { useDispatch } from "react-redux";
+import { useTypesSelector } from "../../hooks/useTypedSelector";
+import { EventModal } from "./event-modal/event-modal";
+import { ModalAdd } from "./event-modal/components/modals/modal-add/modal-add";
+import { EventsActionCreator } from "../../store/reducers/events/action-creators";
+import { ModalShare } from "./event-modal/components/modals/modal-share/modal-share";
+import { ISelectedDay } from "../../store/reducers/events/types";
+import { ModalInfo } from "./event-modal/components/modals/modal-info/modal-info";
+import { ModalDelete } from "./event-modal/components/modals/modal-delete/modal-delete";
+import "./mui.scss";
+import { Days } from "./days/days";
+import { IDays } from "./days/days.types";
+import { Time } from "./event-modal/components/time/time";
+import { Week } from "./week/week";
+import { Day } from "./days/days.styled";
+import { IEvent } from "../../models/event";
+import { modalActionCreator } from "../../store/reducers/modal/action-creators";
+import { ConvertTime } from "./utils/time";
 
-const MENU_ID = 'calendar'
+const MENU_ID = "calendar";
 
-export const EventCalendar:FC<IEventProps> = () => {
-    const [value,setValue]=React.useState('');
-    const [error,setError]=React.useState(false);
+export const EventCalendar: FC<IEventProps> = () => {
+	const [typeCalendar, setTypeCalendar] =
+		React.useState<typeCalendar>("standart");
 
-    const dispatch=useDispatch();
-    const {modalAdd,modalDelete,modalEdit,modalInfo,modalShare}=useTypesSelector(state=>state.modal)
-    const {
-        currentDay,
-        currentMonth
-        ,currentYear
-        ,selected,
-        events,
-    }
-    =useTypesSelector(state=>state.event);
-    
-    const {show}=useContextMenu({
-        id:MENU_ID
-    })
-  
-    const [year,setYear]=React.useState(currentYear)
-    const [month,setMonth]=React.useState(currentMonth);
-    
-    const oneDayMonthOnWeek=new Date(year,month,1).getDay();
-    const lastDayMonthOnWeek=new Date(year,month+1,0).getDay();
+	const dispatch = useDispatch();
+	const { modalAdd, modalDelete, modalEdit, modalInfo, modalShare } =
+		useTypesSelector((state) => state.modal);
+	const { currentMonth, currentYear, today } = useTypesSelector(
+		(state) => state.date
+	);
+	const { selected, events } = useTypesSelector((state) => state.event);
+	const [day, setDay] = React.useState(today);
+	const { show } = useContextMenu({
+		id: MENU_ID,
+	});
 
-    const switchNextMonth=()=>{
-        if(month===11){
-            setYear(year+1)
-            setMonth(0)
-        }else{
-            setMonth(month+1)
-        }
-    }
-    const switchPrevMonth=()=>{
-        if(month===0){
-            setYear(year-1)
-            setMonth(11)
-        }else{
-            setMonth(month-1)
-        }
-    }
+	const [year, setYear] = React.useState(currentYear);
+	const [month, setMonth] = React.useState(currentMonth);
+	const [daysOfWeek, setDaysOfWeek] = React.useState<number[]>([]);
 
-    // const prevDaysMonth=React.useMemo(()=>{
-    //     const countDaysPrevMonth=oneDayMonthOnWeek===0?6:oneDayMonthOnWeek-1;
-    //     const prevMontLastDays=new Date(year,month,0).getDate();
+	React.useEffect(() => {
+		const currentDayOfWeek =
+			new Date().getDay() === 0 ? 6 : new Date().getDay() - 1;
+		const todayOfWeek =
+			new Date(year, month, today).getDay() === 0
+				? 7
+				: new Date(year, month, today).getDay();
 
-    //     return new Array(countDaysPrevMonth).fill(1).map((day,index)=>{
-    //         return <WeekDay 
-    //         key={day+index} 
-    //         current={currentDay===(prevMontLastDays-countDaysPrevMonth+index)
-    //          && year===currentYear && month===currentMonth}>
-    //         {prevMontLastDays-countDaysPrevMonth+index}</WeekDay>
-    //     })
-    // },[year,month]);    
+		const firstDayOfWeek = new Date(year, month, today - currentDayOfWeek);
 
-    // const nextDaysMonth=React.useMemo(()=>{
-    //     return new Array(7-lastDayMonthOnWeek).
-    //     fill(1).map((day,index)=>{
-    //         return <WeekDay
-    //         key={day+index}
-    //          current={currentDay===index+1 && year===currentYear && month===currentMonth}>
-    //              {index+1}
-    //          </WeekDay>
-    //     })
-    // },[year,month])
+		const arrDays = [];
+		for (
+			let day = firstDayOfWeek.getDate();
+			day < firstDayOfWeek.getDate() + 7;
+			day++
+		) {
+			arrDays.push(new Date(year, firstDayOfWeek.getMonth(), day).getDate());
+		}
+		setDaysOfWeek(arrDays);
+	}, []);
 
-    const days=React.useMemo(()=>{
-        const countDaysPrevMonth=oneDayMonthOnWeek===0?6:oneDayMonthOnWeek-1;
-        const prevMontLastDays=new Date(year,month,0).getDate();
-        const prev=new Array(countDaysPrevMonth).fill(1).map((day,index)=>{
-            return prevMontLastDays-countDaysPrevMonth+index
-        })
-        const next=new Array(7-lastDayMonthOnWeek).fill(1).map((day,index)=>{
-            return index+1
-        })
-        const current=new Array(new Date(year,month+1,0).getDate()).fill(1).map((el,index)=>{
-            return index+1
-        })
-        
-      return [...prev,...current,...next]
-        // return new Array(new Date(year,month+1,0).getDate()).fill(1).map((el,i)=>{
-        //     const displayEvents:IEvents[]=[];
-        //     const  eventsLabels:IEvent[]=[];
-        //     events.forEach(el=>{
-        //         if(el.year===year && el.month===month && el.day===i+1){
-        //             if(el.typeEvent==='myEvent' || 'holiday') { 
-        //                 EventSome(displayEvents,el.typeEvent,el);
-        //             }else{
-        //                 displayEvents.push(el);
-        //             }   
-        //             eventsLabels.push(el);
-        //         }
-        //     })
-        //     return <WeekDay
-        //       current={currentDay===i+1 && year===currentYear && month===currentMonth}
-        //       onContextMenu={(e)=>displayMenu(e,{day:i+1,month,year,events:eventsLabels})} key={i}>{i+1}
-        //           <EventsLabel>
-        //         {displayEvents.map(el=>{
-        //             return  <EventLabel 
-        //             key={el.id}
-        //             count={el.count ? el.count:1}
-        //             typeEvent={el.typeEvent}/>                    
-        //         })}
-        //          </EventsLabel> 
-        //     </WeekDay>
-        // })
-     },[year,month,events])
+	const oneDayMonthOnWeekPrev = new Date(year, month, 1).getDay();
+	const lastDayMonthOnWeek = new Date(year, month + 1, 0).getDay();
 
-  function displayMenu(e: TriggerEvent,value:ISelectedDay){
-      dispatch(EventsActionCreator.SetSelected(value))
-      e.preventDefault();
-    show(e);
-  }
+	const handleChangeWeek = (type: direction) => {
+		const lastOrFirstDay = new Date(
+			year,
+			month,
+			type === "next"
+				? daysOfWeek[daysOfWeek.length - 1] + 1
+				: daysOfWeek[0] - 1
+		).getDate();
+		const newWeek = [];
+		if (type === "next") {
+			for (let day = lastOrFirstDay; day < lastOrFirstDay + 7; day++) {
+				newWeek.push(new Date(year, month, day).getDate());
+			}
+		} else {
+			for (let day = 0; day < 7; day++) {
+				const date = new Date(year, month, lastOrFirstDay - day).getDate();
+				newWeek.push(new Date(year, month, date).getDate());
+			}
+			newWeek.reverse();
+		}
+		const checkTime = new Date(
+			year,
+			month,
+			type === "next" ? daysOfWeek[3] + 7 : daysOfWeek[3] - 7
+		);
+		if (month !== checkTime.getMonth()) {
+			setMonth(checkTime.getMonth());
+		}
+		if (year !== checkTime.getFullYear()) {
+			setYear(checkTime.getFullYear());
+		}
+		setDaysOfWeek(newWeek);
+		return newWeek;
+	};
 
-  return (
-      <>
-    <Container>
-        <Switch  onClick={switchPrevMonth} left='50px' top='50%'><ArrowForwardIosIcon className='arrow arrow-prev'/>
-        <SwitchText >Prev-month</SwitchText> </Switch>
-        <Switch  onClick={switchNextMonth} right='50px' top='50%'><ArrowForwardIosIcon  className='arrow arrow-next' />
-        <SwitchText>Next-month</SwitchText>
-        </Switch>
-        <ContextDay selected={selected} id={MENU_ID}/>
-        {modalDelete && <ModalDelete 
-        selected={selected}
-        dispatch={dispatch}
-        />}
-        {modalInfo && <ModalInfo
-            dispatch={dispatch}
-        />}
-        {modalAdd && <ModalAdd 
-         dispatch={dispatch}
-        />}
-        {modalShare && <ModalShare
-              dispatch={dispatch}
-        />}
-        <Top>
-            <InputLogin error={error} setError={setError} setValue={setValue} value={value} />
-            <Select
-            height='40px'
-            width='100px'
-            value={year}
-             setValue={setYear}
-             defaultLabel={year} 
-             arrOptions={Years()}/>
-              <Select
-              width='150px'
-              height='40px'
-              value={month}
-             setValue={setMonth}
-             defaultLabel={Months[month].label} 
-             arrOptions={Months}/>
-        </Top>
-        <WeekDays>
-            {weekDays.map(i=>(
-                <WeekDay current={false} key={i}>{i}</WeekDay>
-            ))}
-        </WeekDays>
-        <Body>
-         <Days days={days} displayMenu={displayMenu} month={month} year={year}/>
-        </Body>
-    </Container>
-    </>
-  )
-}
+	const handleChangeDay = (type: direction) => {
+		let week: number[] = daysOfWeek;
+		let index: null | number = null;
+		if (type === "next") {
+			if (day === daysOfWeek[daysOfWeek.length - 1]) {
+				week = handleChangeWeek("next");
+				index = 0;
+			}
+			index = index !== null ? index : week.indexOf(day) + 1;
+			setDay(week[index]);
+		} else {
+			if (day === daysOfWeek[0]) {
+				week = handleChangeWeek("prev");
+				index = 6;
+			}
+			index = index !== null ? index : week.indexOf(day) - 1;
+			setDay(week[index]);
+		}
+	};
+
+	const switchNextMonth = () => {
+		if (typeCalendar === "week") {
+			handleChangeWeek("next");
+		} else if (typeCalendar === "day") {
+			handleChangeDay("next");
+		} else {
+			if (month === 11) {
+				setYear(year + 1);
+				setMonth(0);
+			} else {
+				setMonth(month + 1);
+			}
+		}
+	};
+	const switchPrevMonth = () => {
+		if (typeCalendar === "week") {
+			handleChangeWeek("prev");
+		} else if (typeCalendar === "day") {
+			handleChangeDay("prev");
+		} else {
+			if (month === 0) {
+				setYear(year - 1);
+				setMonth(11);
+			} else {
+				setMonth(month - 1);
+			}
+		}
+	};
+	const days = React.useMemo(() => {
+		const countDaysPrevMonth =
+			oneDayMonthOnWeekPrev === 0 ? 6 : oneDayMonthOnWeekPrev - 1;
+		const prevMontLastDays = new Date(year, month, 0).getDate();
+		const prev = new Array(countDaysPrevMonth).fill(1).map((day, index) => {
+			return {
+				day: prevMontLastDays - countDaysPrevMonth + (index + 1),
+				month: "prev",
+			};
+		});
+
+		const next = new Array(7 - lastDayMonthOnWeek).fill(1).map((day, index) => {
+			return { day: index + 1, month: "next" };
+		});
+		const current = new Array(new Date(year, month + 1, 0).getDate())
+			.fill(1)
+			.map((el, index) => {
+				return { day: index + 1, month: "current" };
+			});
+		return [...prev, ...current, ...next];
+	}, [year, month, events]);
+
+	const defineNameSwitch = (dir: direction) => {
+		const direction = dir === "next" ? "Next" : "Prev";
+		if (typeCalendar === "standart") return `${direction} month`;
+		if (typeCalendar === "day") return `${direction} day`;
+		if (typeCalendar === "week") return `${direction} week`;
+	};
+
+	const handleChangeTypeCalendar = (type: typeCalendar) => {
+		// debugger;
+		if (type === "standart") {
+			setMonth(currentMonth);
+			setYear(currentYear);
+			setTypeCalendar("standart");
+			return;
+		} else if (type === "week") {
+			setTypeCalendar("week");
+		} else {
+			setTypeCalendar("day");
+		}
+		const middleMonth =
+			new Date(year, month, day).getDay() === 0
+				? new Date(year, month, day - 1).getMonth()
+				: new Date(year, month, day).getDay() < 4
+				? new Date(
+						year,
+						month,
+						day - (4 - new Date(year, month, day).getDay())
+				  ).getMonth()
+				: new Date(
+						year,
+						month,
+						day - (new Date(year, month, day).getDay() - 4)
+				  ).getMonth();
+		setMonth(middleMonth);
+		setYear(currentYear);
+	};
+
+	function displayMenu(e: TriggerEvent, value: ISelectedDay) {
+		dispatch(EventsActionCreator.SetSelected(value));
+		e.preventDefault();
+		show(e);
+	}
+
+	const selectDayInWeekType = (time: string, d: number | null) => {
+		dispatch(
+			EventsActionCreator.SetSelected({
+				day:d?d:day,
+				year,
+				month,
+				events: [] as IEvent[],
+				time: time,
+			})
+		);
+		dispatch(modalActionCreator.SetModalAdd(true));
+	};
+
+	const arrYears = React.useMemo(() => {
+		let arrYears = [];
+		for (let i = 1970; i <= year; i++) {
+			arrYears.push({ label: i.toString(), value: i });
+		}
+		return arrYears;
+	}, [year]);
+	return (
+		<>
+			<Container>
+				<Switch onClick={switchPrevMonth} left="30px" top="20%">
+					<ArrowForwardIosIcon className="arrow arrow-prev" />
+					<SwitchText>{defineNameSwitch("prev")}</SwitchText>{" "}
+				</Switch>
+				<Switch onClick={switchNextMonth} right="30px" top="20%">
+					<ArrowForwardIosIcon className="arrow arrow-next" />
+					<SwitchText>{defineNameSwitch("next")}</SwitchText>
+				</Switch>
+				<ContextDay selected={selected} id={MENU_ID} />
+				{modalDelete && <ModalDelete selected={selected} dispatch={dispatch} />}
+				{modalInfo && <ModalInfo dispatch={dispatch} />}
+				{modalAdd && <ModalAdd dispatch={dispatch} />}
+				{modalShare && <ModalShare dispatch={dispatch} />}
+				<Top>
+					<Left>
+						<Time />
+					</Left>
+					<Active>
+						<SwitchType
+							onClick={() => handleChangeTypeCalendar("week")}
+							active={typeCalendar === "week"}
+						>
+							Week-type
+						</SwitchType>
+						<SwitchType
+							onClick={() => handleChangeTypeCalendar("day")}
+							active={typeCalendar === "day"}
+						>
+							Day-type
+						</SwitchType>
+						<SwitchType
+							onClick={() => handleChangeTypeCalendar("standart")}
+							active={typeCalendar === "standart"}
+						>
+							Month-type
+						</SwitchType>
+						{typeCalendar !== "standart" ? (
+							<>
+								<Label>{year}</Label>
+								<Label>{Months[month].label}</Label>
+							</>
+						) : (
+							<>
+								<Select
+									height="40px"
+									width="100px"
+									value={year}
+									setValue={setYear}
+									defaultLabel={year}
+									arrOptions={arrYears}
+								/>
+								<Select
+									width="150px"
+									height="40px"
+									value={month}
+									setValue={setMonth}
+									defaultLabel={Months[month].label}
+									arrOptions={Months}
+								/>
+							</>
+						)}
+					</Active>
+				</Top>
+				<WeekDays>
+					{weekDays.map((i) => (
+						<WeekDay current={false} key={i}>
+							{i}
+						</WeekDay>
+					))}
+				</WeekDays>
+				<Body typeWeek={typeCalendar === "standart"}>
+					<>
+						{typeCalendar === "standart" ? (
+							<Days
+								days={days}
+								displayMenu={displayMenu}
+								month={month}
+								year={year}
+							/>
+						) : (
+							<Week
+								month={month}
+								year={year}
+								typeCalendar={typeCalendar}
+								day={day}
+								days={daysOfWeek}
+							/>
+						)}
+						{typeCalendar === "week" && (
+							<>
+								{weekHours.map((el) => {
+									return (
+										<Line key={el.hour}>
+											<Hour>{ConvertTime(el.hour)}</Hour>
+											{el.days.map((day, index) => {
+												return (
+													<Cell
+														onClick={() =>
+															selectDayInWeekType(
+																`${ConvertTime(el.hour)}:00`,
+																daysOfWeek[index]
+															)
+														}
+														current={false}
+													>
+														{day}
+													</Cell>
+												);
+											})}
+										</Line>
+									);
+								})}
+							</>
+						)}
+						{typeCalendar === "day" &&
+							hours.map((el) => {
+								return (
+									<Line key={el}>
+										<Hour>{ConvertTime(el)}</Hour>
+										<DayCell
+											onClick={() =>
+												selectDayInWeekType(`${ConvertTime(el)}:00`, null)
+											}
+										>
+											+
+										</DayCell>
+									</Line>
+								);
+							})}
+					</>
+				</Body>
+			</Container>
+		</>
+	);
+};
