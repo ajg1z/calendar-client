@@ -5,7 +5,7 @@ import { EventLabel } from "../event-label/event-label";
 import { IEvent } from "../../../models/event";
 import { IEvents } from "../event-calendar.types";
 import { useTypesSelector } from "../../../hooks/useTypedSelector";
-import { EventSome } from "../utils/event";
+import { DefineEvents, EventSome } from "../utils/event";
 import { weekendDays } from "../../../const/calendar";
 import { nanoid } from "nanoid";
 export const Days: React.FC<IDaysProps> = ({
@@ -18,56 +18,65 @@ export const Days: React.FC<IDaysProps> = ({
 		(state) => state.date
 	);
 	const { events } = useTypesSelector((state) => state.event);
+
 	return (
 		<Container>
 			{days.map((day, i) => {
-				const displayEvents: IEvents[] = [];
-				const allEventsDay: IEvent[] = [];
-				let appropriateYear = events.find((event) => event.year === year);
-				if (weekendDays.includes(i + 1)) {
-					displayEvents.push({
-						day: day.day,
-						description: "weekend",
-						id: nanoid(5),
-						month:
-							day.month === "prev"
-								? month - 1
-								: day.month === "next"
-								? month + 1
-								: month,
-						title: "weekend",
-						typeEvent: "weekend",
-						year,
-						time: "00:00",
-					});
-				}
-				if (appropriateYear) {
-					let appropriateMonth = appropriateYear.month.find(
-						(d) =>
-							d.month ===
-							(day.month === "prev"
-								? month - 1
-								: day.month === "next"
-								? month + 1
-								: month)
-					);
-					if (appropriateMonth) {
-						appropriateMonth.events.forEach((event) => {
-							if (event.day === day.day) {
-								if (
-									event.typeEvent === "holiday" ||
-									event.typeEvent === "myEvent"
-								) {
-									EventSome(displayEvents, event.typeEvent, event);
-								} else {
-									displayEvents.push(event);
-								}
-								allEventsDay.push(event);
-							}
-						});
-					}
-				}
+				
+				const [displayEvents, allEventsDay] = DefineEvents(
+					{ day: day.day, month: day.month },
+					month,
+					year,
+					i,
+					events
+				);
+				// const displayEvents: IEvents[] = [];
+				// const allEventsDay: IEvent[] = [];
+				// let appropriateYear = events.find((event) => event.year === year);
 
+				// if (weekendDays.includes(i + 1)) {
+				// 	displayEvents.push({
+				// 		day: day.day,
+				// 		description: "weekend",
+				// 		id: nanoid(5),
+				// 		month:
+				// 			day.month === "prev"
+				// 				? month - 1
+				// 				: day.month === "next"
+				// 				? month + 1
+				// 				: month,
+				// 		title: "weekend",
+				// 		typeEvent: "weekend",
+				// 		year,
+				// 		time: "00:00",
+				// 	});
+				// }
+				// if (appropriateYear) {
+				// 	let appropriateMonth = appropriateYear.month.find(
+				// 		(d) =>
+				// 			d.month ===
+				// 			(day.month === "prev"
+				// 				? month - 1
+				// 				: day.month === "next"
+				// 				? month + 1
+				// 				: month)
+				// 	);
+				// 	if (appropriateMonth) {
+				// 		appropriateMonth.events.forEach((event) => {
+				// 			if (event.day === day.day) {
+				// 				if (
+				// 					event.typeEvent === "holiday" ||
+				// 					event.typeEvent === "myEvent"
+				// 				) {
+				// 					EventSome(displayEvents, event.typeEvent, event);
+				// 				} else {
+				// 					displayEvents.push(event);
+				// 				}
+				// 				allEventsDay.push(event);
+				// 			}
+				// 		});
+				// 	}
+				// }
 				return (
 					<Day
 						onContextMenu={(e) =>

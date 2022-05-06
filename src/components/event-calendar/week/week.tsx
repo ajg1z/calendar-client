@@ -4,6 +4,8 @@ import { Day } from "../days/days.styled";
 import { Container, Img } from "./week.styled";
 import { WeekProps } from "./week.types";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import { TriggerEvent } from "react-contexify";
+import { DefineEvents, defineMonth } from "../utils/event";
 
 export const Week: React.FC<WeekProps> = ({
 	day,
@@ -11,12 +13,13 @@ export const Week: React.FC<WeekProps> = ({
 	typeCalendar,
 	month,
 	year,
+	displayMenu,
 }) => {
 	const { today, currentYear, currentMonth } = useTypesSelector(
 		(state) => state.date
 	);
+	const { events } = useTypesSelector((state) => state.event);
 	const defineCurrentDay = (d: number) => {
-    // debugger
 		if (typeCalendar === "day") {
 			if (d === day) return true;
 		} else {
@@ -25,14 +28,37 @@ export const Week: React.FC<WeekProps> = ({
 		}
 		return false;
 	};
+
+	const handleSelectDay = (d: number, e: TriggerEvent, i: number) => {
+		e.preventDefault();
+
+		const [displayEvents, allEventsDay] = DefineEvents(
+			{ day: d, month: "current" },
+			month,
+			year,
+			i,
+			events
+		);
+		displayMenu(e, {
+			day: d,
+			events: allEventsDay,
+			month: defineMonth(d, year, month, days),
+			year,
+			time: "",
+		});
+	};
 	return (
 		<Container>
 			<Img>
 				<AccessTimeIcon />
 			</Img>
-			{days.map((d) => {
+			{days.map((d, i) => {
 				return (
-					<Day key={d} current={defineCurrentDay(d)}>
+					<Day
+						onContextMenu={(e) => handleSelectDay(d, e, i)}
+						key={d}
+						current={defineCurrentDay(d)}
+					>
 						{d}
 					</Day>
 				);

@@ -48,6 +48,7 @@ import { Day } from "./days/days.styled";
 import { IEvent } from "../../models/event";
 import { modalActionCreator } from "../../store/reducers/modal/action-creators";
 import { ConvertTime } from "./utils/time";
+import { defineMonth, defineYear } from "./utils/event";
 
 const MENU_ID = "calendar";
 
@@ -71,7 +72,7 @@ export const EventCalendar: FC<IEventProps> = () => {
 	const [month, setMonth] = React.useState(currentMonth);
 	const [daysOfWeek, setDaysOfWeek] = React.useState<number[]>([]);
 
-	React.useEffect(() => {
+	const setInitialState = () => {
 		const currentDayOfWeek =
 			new Date().getDay() === 0 ? 6 : new Date().getDay() - 1;
 		const todayOfWeek =
@@ -90,6 +91,9 @@ export const EventCalendar: FC<IEventProps> = () => {
 			arrDays.push(new Date(year, firstDayOfWeek.getMonth(), day).getDate());
 		}
 		setDaysOfWeek(arrDays);
+	};
+	React.useEffect(() => {
+		setInitialState();
 	}, []);
 
 	const oneDayMonthOnWeekPrev = new Date(year, month, 1).getDay();
@@ -110,8 +114,8 @@ export const EventCalendar: FC<IEventProps> = () => {
 			}
 		} else {
 			for (let day = 0; day < 7; day++) {
-				const date = new Date(year, month, lastOrFirstDay - day).getDate();
-				newWeek.push(new Date(year, month, date).getDate());
+				// const date = new Date(year, month, ).getDate();
+				newWeek.push(new Date(year, month, lastOrFirstDay - day).getDate());
 			}
 			newWeek.reverse();
 		}
@@ -164,6 +168,7 @@ export const EventCalendar: FC<IEventProps> = () => {
 			}
 		}
 	};
+
 	const switchPrevMonth = () => {
 		if (typeCalendar === "week") {
 			handleChangeWeek("prev");
@@ -178,6 +183,7 @@ export const EventCalendar: FC<IEventProps> = () => {
 			}
 		}
 	};
+
 	const days = React.useMemo(() => {
 		const countDaysPrevMonth =
 			oneDayMonthOnWeekPrev === 0 ? 6 : oneDayMonthOnWeekPrev - 1;
@@ -192,6 +198,7 @@ export const EventCalendar: FC<IEventProps> = () => {
 		const next = new Array(7 - lastDayMonthOnWeek).fill(1).map((day, index) => {
 			return { day: index + 1, month: "next" };
 		});
+
 		const current = new Array(new Date(year, month + 1, 0).getDate())
 			.fill(1)
 			.map((el, index) => {
@@ -207,34 +214,41 @@ export const EventCalendar: FC<IEventProps> = () => {
 		if (typeCalendar === "week") return `${direction} week`;
 	};
 
+	const setCurrentTime = () => {
+		setMonth(currentMonth);
+		setYear(currentYear);
+	};
+
 	const handleChangeTypeCalendar = (type: typeCalendar) => {
-		// debugger;
 		if (type === "standart") {
-			setMonth(currentMonth);
-			setYear(currentYear);
+			setCurrentTime();
 			setTypeCalendar("standart");
 			return;
 		} else if (type === "week") {
 			setTypeCalendar("week");
+			setCurrentTime();
+			setInitialState();
 		} else {
 			setTypeCalendar("day");
+			setCurrentTime();
+			setDay(today);
 		}
-		const middleMonth =
-			new Date(year, month, day).getDay() === 0
-				? new Date(year, month, day - 1).getMonth()
-				: new Date(year, month, day).getDay() < 4
-				? new Date(
-						year,
-						month,
-						day - (4 - new Date(year, month, day).getDay())
-				  ).getMonth()
-				: new Date(
-						year,
-						month,
-						day - (new Date(year, month, day).getDay() - 4)
-				  ).getMonth();
-		setMonth(middleMonth);
-		setYear(currentYear);
+		// const middleMonth =
+		// 	new Date(year, month, day).getDay() === 0
+		// 		? new Date(year, month, day - 1).getMonth()
+		// 		: new Date(year, month, day).getDay() < 4
+		// 		? new Date(
+		// 				year,
+		// 				month,
+		// 				day - (4 - new Date(year, month, day).getDay())
+		// 		  ).getMonth()
+		// 		: new Date(
+		// 				year,
+		// 				month,
+		// 				day - (new Date(year, month, day).getDay() - 4)
+		// 		  ).getMonth();
+		// setMonth(middleMonth);
+		// setYear(currentYear);
 	};
 
 	function displayMenu(e: TriggerEvent, value: ISelectedDay) {
@@ -246,9 +260,9 @@ export const EventCalendar: FC<IEventProps> = () => {
 	const selectDayInWeekType = (time: string, d: number | null) => {
 		dispatch(
 			EventsActionCreator.SetSelected({
-				day:d?d:day,
-				year,
-				month,
+				day: d || day,
+				year: defineYear(year, month, daysOfWeek, d || day),
+				month: defineMonth(d || day, year, month, daysOfWeek),
 				events: [] as IEvent[],
 				time: time,
 			})
@@ -347,6 +361,7 @@ export const EventCalendar: FC<IEventProps> = () => {
 							/>
 						) : (
 							<Week
+								displayMenu={displayMenu}
 								month={month}
 								year={year}
 								typeCalendar={typeCalendar}
