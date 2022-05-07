@@ -4,7 +4,8 @@ import { IYear, IEvent } from "../../../models/event";
 export interface EventsState {
 	isLoading: boolean;
 	events: IYear[];
-	selected: ISelectedDay | null;
+	selectedDay: ISelectedDay | null;
+	selectedEvent: IEvent | null;
 	errors: IError;
 }
 
@@ -22,11 +23,12 @@ export enum EventActionEnum {
 	EDIT_EVENT = "EDIT_EVENT",
 	SET_LOADING = "SET_LOADING",
 	SET_ERROR = "SET_ERROR",
-	SET_SELECTED = "SET_SELECTED",
+	SET_SELECT_DAY = "SET_SELECT_DAY",
+	SET_SELECT_EVENT = "SET_SELECT_EVENT",
 }
 
 export interface SelectedDay {
-	type: EventActionEnum.SET_SELECTED;
+	type: EventActionEnum.SET_SELECT_DAY;
 	payload: ISelectedDay;
 }
 
@@ -36,8 +38,14 @@ export interface Event {
 	event: IEvent;
 }
 
+export interface SelectedEvent {
+	type: EventActionEnum.SET_SELECT_EVENT;
+	payload: IEvent;
+}
+
+
 export interface IRemoveEvent {
-	id: string[];
+	id: string[] | string;
 	year: number;
 	month: number;
 }
@@ -51,6 +59,7 @@ export interface RemoveEvent {
 	type: EventActionEnum.REMOVE_EVENT;
 	payload: IRemoveEvent;
 }
+
 export interface EditEvent {
 	type: EventActionEnum.EDIT_EVENT;
 	payload: IEvent;
@@ -72,4 +81,5 @@ export type EventAction =
 	| EditEvent
 	| SetError
 	| SetLoading
-	| SelectedDay;
+	| SelectedDay
+	| SelectedEvent;

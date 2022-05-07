@@ -8,13 +8,13 @@ import { store } from "./store/index";
 
 function App() {
 	return (
-		<Layout>
-			<BrowserRouter>
+		<BrowserRouter>
+			<Layout>
 				<Provider store={store}>
 					<AppRouter />
 				</Provider>
-			</BrowserRouter>
-		</Layout>
+			</Layout>
+		</BrowserRouter>
 	);
 }
 

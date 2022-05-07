@@ -35,7 +35,7 @@ export const ModalDelete: React.FC<IModalDeleteProps> = ({
       })
     );
     dispatch(
-      EventsActionCreator.SetSelected({
+      EventsActionCreator.SetSelectDay({
         ...selected,
         events: selected!.events.filter((event) => {
           let valid = true;

@@ -18,6 +18,10 @@ const GlobalStyle = createGlobalStyle`
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   font-weight: 400;
 }
+p{
+  padding:0px 0px 0px 0px ;
+  margin:0px 0px 0px 0px;
+}
 
 a{
   text-decoration: none;

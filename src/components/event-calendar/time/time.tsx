@@ -1,5 +1,5 @@
 import React from "react";
-import { ConvertTime } from "../../../utils/time";
+import { ConvertTime } from "../utils/time";
 import { Container, Label, LabelTime, SwitchUTC } from "./time.styled";
 
 export const Time = () => {

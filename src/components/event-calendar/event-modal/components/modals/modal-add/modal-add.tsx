@@ -12,12 +12,12 @@ import { modalActionCreator } from "../../../../../../store/reducers/modal/actio
 import { EventsActionCreator } from "../../../../../../store/reducers/events/action-creators";
 import { useTypesSelector } from "../../../../../../hooks/useTypedSelector";
 import { nanoid } from "nanoid";
-import { InputMaskTime } from "../../../../../input-mask-time/InputTime";
+import { InputMaskTime } from "../../../../../input-mask-time/input-time";
 import { ConvertTime } from "../../../../utils/time";
 export const ModalAdd: FC<IModalProps> = ({ dispatch }) => {
 	const [title, setTitle] = React.useState("");
 	const [description, setDescription] = React.useState("");
-	const { selected } = useTypesSelector((state) => state.event);
+	const { selectedDay:selected } = useTypesSelector((state) => state.event);
 	const [time, setTime] = React.useState(selected!.time || "");
 
 	const closeModalAdd = () => {
@@ -67,7 +67,7 @@ export const ModalAdd: FC<IModalProps> = ({ dispatch }) => {
 				</LineInput>
 				<LineInput>
 					<Label>Время события</Label>
-					<InputMaskTime value={time} setValue={setTime} />
+					<InputMaskTime  value={time} setValue={setTime} />
 				</LineInput>
 				<LineInput>
 					<Label>Описание событие</Label>

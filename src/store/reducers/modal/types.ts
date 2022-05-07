@@ -4,7 +4,7 @@ export interface ModalState {
   modalAdd: boolean;
   modalShare: boolean;
   modalInfo: boolean;
-  modalDeleteConfirm: boolean;
+  modalConfirm: boolean;
 }
 
 export enum ModalActionEnum {
@@ -13,7 +13,7 @@ export enum ModalActionEnum {
   SET_MODAL_ADD = "SET_MODAL_ADD",
   SET_MODAL_SHARE = "SET_MODAL_SHARE",
   SET_MODAL_INFO = "SET_MODAL_INFO",
-  SET_MODAL_DELETE_CONFIRM = "SET_MODAL_DELETE_CONFIRM",
+  SET_MODAL_CONFIRM = "SET_MODAL_CONFIRM",
 }
 export interface SetModalDelete {
   type: ModalActionEnum.SET_MODAL_DELETE;
@@ -27,8 +27,8 @@ export interface SetModalInfo {
   type: ModalActionEnum.SET_MODAL_INFO;
   payload: boolean;
 }
-export interface SetModalDeleteConfirm {
-  type: ModalActionEnum.SET_MODAL_DELETE_CONFIRM;
+export interface SetModalConfirm {
+  type: ModalActionEnum.SET_MODAL_CONFIRM;
   payload: boolean;
 }
 export interface SetModalAdd {
@@ -43,7 +43,7 @@ export interface SetModalEdit {
 export type ModalActions =
   | SetModalAdd
   | SetModalDelete
-  | SetModalDeleteConfirm
+  | SetModalConfirm
   | SetModalEdit
   | SetModalShare
   | SetModalInfo;

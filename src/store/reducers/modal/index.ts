@@ -5,7 +5,7 @@ const initialState: ModalState = {
   modalEdit: false,
   modalInfo: false,
   modalShare: false,
-  modalDeleteConfirm: false,
+  modalConfirm: false,
 };
 
 export default function modalReducer(
@@ -23,10 +23,10 @@ export default function modalReducer(
         ...state,
         modalDelete: action.payload,
       };
-    case ModalActionEnum.SET_MODAL_DELETE_CONFIRM:
+    case ModalActionEnum.SET_MODAL_CONFIRM:
       return {
         ...state,
-        modalDeleteConfirm: action.payload,
+        modalConfirm: action.payload,
       };
     case ModalActionEnum.SET_MODAL_EDIT:
       return {

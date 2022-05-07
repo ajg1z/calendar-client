@@ -42,7 +42,7 @@ import { ModalDelete } from "./event-modal/components/modals/modal-delete/modal-
 import "./mui.scss";
 import { Days } from "./days/days";
 import { IDays } from "./days/days.types";
-import { Time } from "./event-modal/components/time/time";
+import { Time } from "./time/time";
 import { Week } from "./week/week";
 import { Day } from "./days/days.styled";
 import { IEvent } from "../../models/event";
@@ -62,7 +62,7 @@ export const EventCalendar: FC<IEventProps> = () => {
 	const { currentMonth, currentYear, today } = useTypesSelector(
 		(state) => state.date
 	);
-	const { selected, events } = useTypesSelector((state) => state.event);
+	const { selectedDay, events } = useTypesSelector((state) => state.event);
 	const [day, setDay] = React.useState(today);
 	const { show } = useContextMenu({
 		id: MENU_ID,
@@ -252,14 +252,14 @@ export const EventCalendar: FC<IEventProps> = () => {
 	};
 
 	function displayMenu(e: TriggerEvent, value: ISelectedDay) {
-		dispatch(EventsActionCreator.SetSelected(value));
+		dispatch(EventsActionCreator.SetSelectDay(value));
 		e.preventDefault();
 		show(e);
 	}
 
 	const selectDayInWeekType = (time: string, d: number | null) => {
 		dispatch(
-			EventsActionCreator.SetSelected({
+			EventsActionCreator.SetSelectDay({
 				day: d || day,
 				year: defineYear(year, month, daysOfWeek, d || day),
 				month: defineMonth(d || day, year, month, daysOfWeek),
@@ -288,8 +288,8 @@ export const EventCalendar: FC<IEventProps> = () => {
 					<ArrowForwardIosIcon className="arrow arrow-next" />
 					<SwitchText>{defineNameSwitch("next")}</SwitchText>
 				</Switch>
-				<ContextDay selected={selected} id={MENU_ID} />
-				{modalDelete && <ModalDelete selected={selected} dispatch={dispatch} />}
+				<ContextDay selected={selectedDay} id={MENU_ID} />
+				{modalDelete && <ModalDelete selected={selectedDay} dispatch={dispatch} />}
 				{modalInfo && <ModalInfo dispatch={dispatch} />}
 				{modalAdd && <ModalAdd dispatch={dispatch} />}
 				{modalShare && <ModalShare dispatch={dispatch} />}

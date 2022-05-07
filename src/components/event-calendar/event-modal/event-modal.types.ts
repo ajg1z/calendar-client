@@ -1,19 +1,20 @@
 import { ReactChild, ReactNode } from "react";
 
 export interface IEventModalProps {
-  footer?: boolean;
-  title: string;
-  close: () => void;
-  leftBttn: string;
-  rightBttn: string;
-  children: ReactNode;
-  width: number;
-  height: number;
-  disabled?: boolean;
-  action: () => void;
+	footer?: boolean;
+	title: string;
+	close: () => void;
+	leftBttn: string;
+	rightBttn: string;
+	children: ReactNode;
+	width: number | string;
+	height: number | string;
+	disabled?: boolean;
+	action: () => void;
+	customFooter?: any;
 }
 
 export interface IContainerProps {
-  width: number;
-  height: number;
+	width: number | string;
+	height: number | string;
 }

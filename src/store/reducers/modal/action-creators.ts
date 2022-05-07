@@ -20,8 +20,8 @@ export const modalActionCreator = {
     type: ModalActionEnum.SET_MODAL_INFO,
     payload: value,
   }),
-  SetModalDeleteConfirm: (value: boolean) => ({
-    type: ModalActionEnum.SET_MODAL_DELETE_CONFIRM,
+  SetModalConfirm: (value: boolean) => ({
+    type: ModalActionEnum.SET_MODAL_CONFIRM,
     payload: value,
   }),
 };

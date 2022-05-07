@@ -1,4 +1,4 @@
-import { Props } from "./../event/event.types";
+import { Props } from "../calendar/calendar.types";
 import styled from "styled-components";
 
 export const Container = styled.div`
