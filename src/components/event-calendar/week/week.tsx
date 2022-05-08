@@ -5,7 +5,7 @@ import { Container, Img } from "./week.styled";
 import { WeekProps } from "./week.types";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { TriggerEvent } from "react-contexify";
-import { DefineEvents, defineMonth } from "../utils/event";
+import { DefineEvents, defineMonth } from "../../../utils/event";
 
 export const Week: React.FC<WeekProps> = ({
 	day,

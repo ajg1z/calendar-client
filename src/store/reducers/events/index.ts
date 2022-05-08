@@ -3,7 +3,28 @@ import { IError } from "./../../../models/error";
 import { EventsState, EventActionEnum, EventAction } from "./types";
 
 const initialState: EventsState = {
-	events: [],
+	events: [
+		{
+			year: 2022,
+			month: [
+				{
+					month: 8,
+					events: [
+						{
+							day: 23,
+							description: "blabal",
+							id: "dsggs",
+							month: 8,
+							time: "22:00",
+							title: "this fucking",
+							typeEvent: "myEvent",
+							year: 2022,
+						},
+					],
+				},
+			],
+		},
+	],
 	isLoading: false,
 	selectedDay: null,
 	selectedEvent: null,
@@ -77,23 +98,69 @@ export default function eventsReducer(
 		}
 
 		case EventActionEnum.EDIT_EVENT:
-			const edited = state.events.map((el) => {
-				if (el.year === action.payload.year) {
-					el.month.forEach((m) => {
-						if (m.month === action.payload.month) {
-							m.events.forEach((event) => {
-								if (event.id === action.payload.id) {
-									event = action.payload;
+			let edited: IYear[];
+			if (state.selectedEvent!.year === action.payload.year) {
+				if (state.selectedEvent!.month === action.payload.month) {
+					edited = state.events.map((el) => {
+						if (el.year === action.payload.year) {
+							el.month = el.month.map((m) => {
+								if (m.month === action.payload.month) {
+									m.events = m.events.map((event) => {
+										if (event.id === action.payload.id) {
+											event = action.payload;
+										}
+										return event;
+									});
 								}
+								return m;
 							});
 						}
+						return el;
+					});
+				} else {
+					edited = state.events.map((el) => {
+						if (el.year === action.payload.year) {
+							el.month.push({
+								month: action.payload.month,
+								events: [action.payload],
+							});
+						}
+						if (el.year === state.selectedEvent!.year) {
+							el.month = el.month.map((m) => {
+								if (m.month === state.selectedEvent!.month) {
+									m.events = m.events.filter((event) => {
+										if (event.id === state.selectedEvent!.id) return false;
+									});
+								}
+								return m;
+							});
+						}
+						return el;
 					});
 				}
-				return el;
-			});
+			} else {
+				edited = state.events.map((el) => {
+					if (el.year === state.selectedEvent!.year) {
+						el.month = el.month.map((m) => {
+							if (m.month === state.selectedEvent!.month) {
+								m.events = m.events.filter((event) => {
+									if (event.id === state.selectedEvent!.id) return false;
+									return true;
+								});
+							}
+							return m
+						});
+					}
+					return el
+				});
+				edited.push({
+					year: action.payload.year || 0,
+					month: [{ month: action.payload.month, events: [action.payload] }],
+				});
+			}
 			return {
 				...state,
-				events: edited,
+				events: edited as IYear[],
 			};
 
 		case EventActionEnum.SET_ERROR:

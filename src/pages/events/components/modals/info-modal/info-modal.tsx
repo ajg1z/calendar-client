@@ -20,7 +20,9 @@ import { InfoModalProps, InputsModes } from "./info-modal.types";
 import { EventsActionCreator } from "../../../../../store/reducers/events/action-creators";
 import { useTypesSelector } from "../../../../../hooks/useTypedSelector";
 import { ConfirmModal } from "../../../../../components/event-calendar/event-modal/components/modals/modal-confirm/modal-confirm";
-import { Field } from "./field/field";
+import { FieldString } from "./field-string/field-string";
+import { FieldDate } from "./field-date/field-date";
+import { ConvertTime, сoncatTimeToNumber } from "../../../../../utils/time";
 
 export const InfoModal: React.FC<InfoModalProps> = ({
 	dispatch,
@@ -30,12 +32,16 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 	const [title, setTitle] = React.useState(selectedEvent!.title);
 	const [time, setTime] = React.useState(selectedEvent!.time);
 	const [description, setDescription] = React.useState(
-		selectedEvent?.description
+		selectedEvent!.description
 	);
 	const [month, setMonth] = React.useState();
 	const [day, setDay] = React.useState();
 	const [year, setYear] = React.useState();
-
+	const [date, setDate] = React.useState(
+		`${selectedEvent!.year}-${ConvertTime(selectedEvent!.month)}-${ConvertTime(
+			selectedEvent!.day
+		)}`
+	);
 	const timeRef = React.useRef<HTMLInputElement>(null);
 	const descRef = React.useRef<HTMLTextAreaElement>(null);
 	const [stateModalConfirm, setModalConfirm] = React.useState({
@@ -50,12 +56,39 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 		title: false,
 		description: false,
 		time: false,
+		date: false,
 	});
-
+	console.log(selectedEvent);
 	const handleCloseModal = () => {
 		dispatch(modalActionCreator.SetModalInfo(false));
 	};
+	const handleSave = () => {
+		dispatch(
+			EventsActionCreator.EditEvent({
+				day: сoncatTimeToNumber(date, [8, 9], true) as number,
+				year: сoncatTimeToNumber(date, [0, 1, 2, 3], true) as number,
+				description,
+				month: (сoncatTimeToNumber(date, [5, 6], true) as number) - 1,
+				id: selectedEvent!.id,
+				time,
+				title,
+				typeEvent: selectedEvent!.typeEvent,
+			})
+		);
 
+		dispatch(
+			EventsActionCreator.SetSelectEvent({
+				day: сoncatTimeToNumber(date, [8, 9], true) as number,
+				year: сoncatTimeToNumber(date, [0, 1, 2, 3], true) as number,
+				description,
+				month: (сoncatTimeToNumber(date, [5, 6], true) as number) - 1,
+				id: selectedEvent!.id,
+				time,
+				title,
+				typeEvent: selectedEvent!.typeEvent,
+			})
+		);
+	};
 	return (
 		<EventModal
 			action={() => console.log}
@@ -69,10 +102,14 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 				return (
 					<Buttons>
 						<Button
+							onClick={handleSave}
 							disabled={
 								title === selectedEvent!.title &&
 								time === selectedEvent!.time &&
-								description === selectedEvent?.description
+								description === selectedEvent?.description &&
+								`${selectedEvent!.year}-${ConvertTime(
+									selectedEvent!.month
+								)}-${ConvertTime(selectedEvent!.day)}` === date
 							}
 						>
 							Save
@@ -105,7 +142,7 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 				/>
 			)}
 			<Container>
-				<Field
+				<FieldString
 					editModeInputs={editModeInputs}
 					label={"Title"}
 					setEditModeInputs={setEditModeInputs}
@@ -148,7 +185,13 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 						</Edit>
 					</Text>
 				</FieldStyled>
-
+				<FieldDate
+					setEditModeInputs={setEditModeInputs}
+					editModeInputs={editModeInputs}
+					label={"Date"}
+					setValue={setDate}
+					value={date}
+				/>
 				<FieldStyled>
 					<Label>Description</Label>
 					<Text>

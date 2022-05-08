@@ -6,12 +6,14 @@ export interface FieldProps {
 		title: boolean;
 		description: boolean;
 		time: boolean;
+		date:boolean
 	};
 	setEditModeInputs: React.Dispatch<
 		React.SetStateAction<{
 			title: boolean;
 			description: boolean;
 			time: boolean;
+			date:boolean
 		}>
 	>;
 }

@@ -47,8 +47,8 @@ import { Week } from "./week/week";
 import { Day } from "./days/days.styled";
 import { IEvent } from "../../models/event";
 import { modalActionCreator } from "../../store/reducers/modal/action-creators";
-import { ConvertTime } from "./utils/time";
-import { defineMonth, defineYear } from "./utils/event";
+import { ConvertTime } from "../../utils/time";
+import { defineMonth, defineYear } from "../../utils/event";
 
 const MENU_ID = "calendar";
 

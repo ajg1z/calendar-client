@@ -13,7 +13,7 @@ import { EventsActionCreator } from "../../../../../../store/reducers/events/act
 import { useTypesSelector } from "../../../../../../hooks/useTypedSelector";
 import { nanoid } from "nanoid";
 import { InputMaskTime } from "../../../../../input-mask-time/input-time";
-import { ConvertTime } from "../../../../utils/time";
+import { ConvertTime } from "../../../../../../utils/time";
 export const ModalAdd: FC<IModalProps> = ({ dispatch }) => {
 	const [title, setTitle] = React.useState("");
 	const [description, setDescription] = React.useState("");

@@ -1,4 +1,4 @@
-import { flexCenter, scrollbar } from ".././../../../../../styled.common";
+import { flexCenter, scrollbar } from "../../../../../../styled.common";
 import styled, { StyledComponent } from "styled-components";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";

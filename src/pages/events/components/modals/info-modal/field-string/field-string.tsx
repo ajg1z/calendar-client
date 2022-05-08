@@ -1,5 +1,5 @@
 import React, { RefObject } from "react";
-import { FieldProps } from "./field.types";
+import { FieldProps } from "./field-string.types";
 import {
 	Button,
 	Buttons,
@@ -11,9 +11,9 @@ import {
 	Label,
 	Text,
 	TextInput,
-} from "./field.styled";
+} from "./field-string.styled";
 
-export const Field: React.FC<FieldProps> = ({
+export const FieldString: React.FC<FieldProps> = ({
 	editModeInputs,
 	setEditModeInputs,
 	setValue,

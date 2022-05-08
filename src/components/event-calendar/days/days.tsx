@@ -5,7 +5,7 @@ import { EventLabel } from "../event-label/event-label";
 import { IEvent } from "../../../models/event";
 import { IEvents } from "../event-calendar.types";
 import { useTypesSelector } from "../../../hooks/useTypedSelector";
-import { DefineEvents, EventSome } from "../utils/event";
+import { DefineEvents, EventSome } from "../../../utils/event";
 import { weekendDays } from "../../../const/calendar";
 import { nanoid } from "nanoid";
 export const Days: React.FC<IDaysProps> = ({

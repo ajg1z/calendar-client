@@ -1,5 +1,5 @@
 import React from "react";
-import { ConvertTime } from "../../components/event-calendar/utils/time";
+import { ConvertTime } from "../../utils/time";
 import { useTypesSelector } from "../../hooks/useTypedSelector";
 import { Container } from "../menu/menu.styled";
 import { InfoModal } from "./components/modals/info-modal/info-modal";
@@ -34,7 +34,7 @@ export const Events = () => {
 										>
 											<Label>{event.title}</Label>
 											<Label>
-												{event.year}-{ConvertTime(event.month)}-
+												{event.year}-{ConvertTime(event.month+1)}-
 												{ConvertTime(event.day)}
 											</Label>
 										</Item>

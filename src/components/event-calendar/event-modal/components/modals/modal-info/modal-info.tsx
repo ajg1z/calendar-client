@@ -15,7 +15,7 @@ import {
 	Text,
 	Field,
 } from "./modal-info.styled";
-import { ConvertTime } from "../../../../utils/time";
+import { ConvertTime } from "../../../../../../utils/time";
 import { EventsActionCreator } from "../../../../../../store/reducers/events/action-creators";
 import { modalActionCreator } from "../../../../../../store/reducers/modal/action-creators";
 

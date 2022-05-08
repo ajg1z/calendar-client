@@ -1,10 +1,10 @@
-import { useTypesSelector } from "./../../../hooks/useTypedSelector";
-import { IEvents } from "../event-calendar.types";
-import { IDays } from "../days/days.types";
+import { useTypesSelector } from "../hooks/useTypedSelector";
+import { IEvents } from "../components/event-calendar/event-calendar.types";
+import { IDays } from "../components/event-calendar/days/days.types";
 import { nanoid } from "nanoid";
-import { weekendDays } from "../../../const/calendar";
-import { IEvent, IYear } from "../../../models/event";
-import { EventsState } from "../../../store/reducers/events/types";
+import { weekendDays } from "../const/calendar";
+import { IEvent, IYear } from "../models/event";
+import { EventsState } from "../store/reducers/events/types";
 
 export const EventSome = (
 	arr: IEvents[],
