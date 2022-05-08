@@ -5,7 +5,7 @@ import { InputMaskTime } from "../../../../../components/input-mask-time/input-t
 import {
 	Container,
 	EditButton,
-	Field,
+	Field as FieldStyled,
 	InputEdit,
 	Label,
 	Text,
@@ -20,6 +20,7 @@ import { InfoModalProps, InputsModes } from "./info-modal.types";
 import { EventsActionCreator } from "../../../../../store/reducers/events/action-creators";
 import { useTypesSelector } from "../../../../../hooks/useTypedSelector";
 import { ConfirmModal } from "../../../../../components/event-calendar/event-modal/components/modals/modal-confirm/modal-confirm";
+import { Field } from "./field/field";
 
 export const InfoModal: React.FC<InfoModalProps> = ({
 	dispatch,
@@ -32,10 +33,9 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 		selectedEvent?.description
 	);
 	const [month, setMonth] = React.useState();
-	const [day,setDay]=React.useState();
-	const [year,setYear]=React.useState();
-	
-	const titleRef = React.useRef<HTMLInputElement>(null);
+	const [day, setDay] = React.useState();
+	const [year, setYear] = React.useState();
+
 	const timeRef = React.useRef<HTMLInputElement>(null);
 	const descRef = React.useRef<HTMLTextAreaElement>(null);
 	const [stateModalConfirm, setModalConfirm] = React.useState({
@@ -105,45 +105,14 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 				/>
 			)}
 			<Container>
-				<Field>
-					<Label>Title</Label>
-					<Text>
-						{editModeInputs.title ? (
-							<InputEdit
-								ref={titleRef}
-								onChange={(e) => {
-									setTitle(e.target.value);
-								}}
-								value={title}
-								onBlur={() => {
-									setEditModeInputs({ ...editModeInputs, title: false });
-									if (!title) setTitle("this should be title event");
-								}}
-							/>
-						) : (
-							title
-						)}
-						<Edit>
-							{editModeInputs.title ? (
-								<CheckButton
-									onClick={() => {
-										setEditModeInputs({ ...editModeInputs, title: false });
-									}}
-								/>
-							) : (
-								<EditButton
-									onClick={() => {
-										setEditModeInputs({ ...editModeInputs, title: true });
-										setTimeout(() => {
-											titleRef.current?.focus();
-										}, 0);
-									}}
-								/>
-							)}
-						</Edit>
-					</Text>
-				</Field>
-				<Field>
+				<Field
+					editModeInputs={editModeInputs}
+					label={"Title"}
+					setEditModeInputs={setEditModeInputs}
+					setValue={setTitle}
+					value={title}
+				/>
+				<FieldStyled>
 					<Label>Time</Label>
 					<Text>
 						{editModeInputs.time ? (
@@ -178,8 +147,9 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 							)}
 						</Edit>
 					</Text>
-				</Field>
-				<Field>
+				</FieldStyled>
+
+				<FieldStyled>
 					<Label>Description</Label>
 					<Text>
 						{editModeInputs.description ? (
@@ -222,7 +192,7 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 							)}
 						</Edit>
 					</Text>
-				</Field>
+				</FieldStyled>
 			</Container>
 		</EventModal>
 	);
