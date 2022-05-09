@@ -42,27 +42,33 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 			selectedEvent!.day
 		)}`
 	);
-	const timeRef = React.useRef<HTMLInputElement>(null);
-	const descRef = React.useRef<HTMLTextAreaElement>(null);
-	const [stateModalConfirm, setModalConfirm] = React.useState({
-		title: "Removig event",
-		text: "You definitely want to delete this event?",
-		testAction: "Delete",
-		action: () => {
-			// dispatch(EventsActionCreator.EditEvent({}));
-		},
-	});
-	const [editModeInputs, setEditModeInputs] = React.useState({
-		title: false,
-		description: false,
-		time: false,
-		date: false,
-	});
-	console.log(selectedEvent);
-	const handleCloseModal = () => {
+
+	const closeModal = () => {
+		dispatch(modalActionCreator.SetModalConfirm(false));
 		dispatch(modalActionCreator.SetModalInfo(false));
 	};
-	const handleSave = () => {
+	const timeRef = React.useRef<HTMLInputElement>(null);
+	const descRef = React.useRef<HTMLTextAreaElement>(null);
+	const handleRemoveEvent = () => {
+		setModalConfirm({
+			title: "Removig event",
+			text: "You definitely want to delete this event?",
+			textAction: "Delete",
+			action: () => {
+				dispatch(
+					EventsActionCreator.RemoveEvent({
+						year: selectedEvent!.year || 0,
+						month: selectedEvent!.month,
+						id: selectedEvent!.id,
+					})
+				);
+				closeModal();
+			},
+		});
+		dispatch(modalActionCreator.SetModalConfirm(true));
+	};
+
+	const handleEditEvent = () => {
 		dispatch(
 			EventsActionCreator.EditEvent({
 				day: сoncatTimeToNumber(date, [8, 9], true) as number,
@@ -75,7 +81,6 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 				typeEvent: selectedEvent!.typeEvent,
 			})
 		);
-
 		dispatch(
 			EventsActionCreator.SetSelectEvent({
 				day: сoncatTimeToNumber(date, [8, 9], true) as number,
@@ -88,6 +93,45 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 				typeEvent: selectedEvent!.typeEvent,
 			})
 		);
+		closeModal();
+	};
+	const [stateModalConfirm, setModalConfirm] = React.useState({
+		title: "Removig event",
+		text: "You definitely want to delete this event?",
+		textAction: "Delete",
+		action: handleRemoveEvent,
+	});
+
+	const isChanges = () => {
+		return (
+			title === selectedEvent!.title &&
+			time === selectedEvent!.time &&
+			description === selectedEvent?.description &&
+			`${selectedEvent!.year}-${ConvertTime(
+				selectedEvent!.month
+			)}-${ConvertTime(selectedEvent!.day)}` === date
+		);
+	};
+
+	const [editModeInputs, setEditModeInputs] = React.useState({
+		title: false,
+		description: false,
+		time: false,
+		date: false,
+	});
+	
+	const handleCloseModal = () => {
+		if (!isChanges()) {
+			dispatch(modalActionCreator.SetModalConfirm(true));
+			setModalConfirm({
+				title: "Save changes",
+				text: "All your changes will be lost",
+				textAction: "Close anyway",
+				action: closeModal,
+			});
+			return;
+		}
+		dispatch(modalActionCreator.SetModalInfo(false));
 	};
 	return (
 		<EventModal
@@ -101,32 +145,10 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 			customFooter={() => {
 				return (
 					<Buttons>
-						<Button
-							onClick={handleSave}
-							disabled={
-								title === selectedEvent!.title &&
-								time === selectedEvent!.time &&
-								description === selectedEvent?.description &&
-								`${selectedEvent!.year}-${ConvertTime(
-									selectedEvent!.month
-								)}-${ConvertTime(selectedEvent!.day)}` === date
-							}
-						>
+						<Button onClick={handleEditEvent} disabled={isChanges()}>
 							Save
 						</Button>
-						<Button
-							onClick={() => {
-								dispatch(
-									EventsActionCreator.RemoveEvent({
-										id: selectedEvent!.id,
-										month: selectedEvent!.month,
-										year: selectedEvent!.year || 0,
-									})
-								);
-							}}
-						>
-							Delete
-						</Button>
+						<Button onClick={handleRemoveEvent}>Delete</Button>
 						<Button onClick={handleCloseModal}>Close</Button>
 					</Buttons>
 				);
@@ -134,10 +156,10 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 		>
 			{modalConfirm && (
 				<ConfirmModal
-					title=""
-					textAction={"delete"}
-					text="k"
-					action={7}
+					title={stateModalConfirm.title}
+					textAction={stateModalConfirm.textAction}
+					text={stateModalConfirm.text}
+					action={stateModalConfirm.action}
 					dispatch={dispatch}
 				/>
 			)}

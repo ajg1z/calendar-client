@@ -22,14 +22,12 @@ export const ConfirmModal: FC<IModalConfirmProps> = ({
 		<EventModal
 			action={action}
 			close={closeModalDelete}
-			height={140}
+			height={'max-content'}
 			width={600}
 			leftBttn={textAction}
 			rightBttn="Cancel"
 			title={title}
-			customFooter={() => {
-				return;
-			}}
+			footer
 		>
 			<Container>
 				<Label>{text}</Label>

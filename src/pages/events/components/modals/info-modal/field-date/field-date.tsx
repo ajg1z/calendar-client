@@ -34,7 +34,7 @@ export const FieldDate: React.FC<FieldProps> = ({
 						className=""
 						onBlur={() => {
 							setEditModeInputs({ ...editModeInputs, date: false });
-							if (!value) setValue("this field must not be empty");
+							if (!value) setValue("1970-01-01");
 						}}
 					/>
 				) : (
