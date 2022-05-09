@@ -30,8 +30,7 @@ export const Column = styled.div`
 `;
 
 export const ListEvents = styled.div`
-	overflow-y: auto,
-    ${scrollbar};
+	overflow-y: auto, ${scrollbar};
 `;
 
 export const Label = styled.p`
@@ -46,7 +45,8 @@ export const Label = styled.p`
 
 export const Item = styled.div`
 	cursor: pointer;
-	transition: all 0.3s ease 0s;
+	transition-timing-function: ease-in-out;
+	transition: background-color 0.3s , color 0.3s;
 	${flexCenter};
 	justify-content: space-between;
 	:hover {

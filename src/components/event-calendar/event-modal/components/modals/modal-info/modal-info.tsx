@@ -27,6 +27,7 @@ export const ModalInfo: FC<IModalProps> = ({ dispatch }) => {
 	const closeModalInfo = () => {
 		dispatch(modalActionCreator.SetModalInfo(false));
 	};
+	
 	return (
 		<EventModal
 			action={actionModalInfo}

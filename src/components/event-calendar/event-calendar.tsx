@@ -1,4 +1,3 @@
-import { Calendar } from "antd";
 import React, { FC } from "react";
 import { Months, weekHours, Years, hours } from "../../const/calendar";
 import Select from "../select/select";

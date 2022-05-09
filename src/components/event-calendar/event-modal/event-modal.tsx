@@ -30,7 +30,7 @@ export const EventModal: FC<IEventModalProps> = ({
 				<Close onClick={close}>x</Close>
 				<Top>{title}</Top>
 				<Body>{children}</Body>
-				{!footer && customFooter()}
+				{!footer && customFooter && customFooter()}
 				{footer && (
 					<Footer>
 						{leftBttn !== "" && (

@@ -1,4 +1,3 @@
-import { Layout, Row, Menu } from "antd";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { labelsRoutes } from "../../../../router";
