@@ -15,7 +15,8 @@ const GlobalStyle = createGlobalStyle`
   border:0;
   color:white;
   font-size: 16px;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe\UI, Roboto,
+		Helvetica\Neue, Arial, Noto\Sans, sans-serif;
   font-weight: 400;
 }
 p{

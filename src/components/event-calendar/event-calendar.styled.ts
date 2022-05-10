@@ -3,11 +3,9 @@ import styled from "styled-components";
 import { Day } from "./days/days.styled";
 
 export const Container = styled.div`
-	border: 1px solid #000;
 	width: 100%;
 	padding: 0px 100px;
 	position: relative;
-	/* height: 100%; */
 	color: ${({ theme }) => theme.colors.base};
 	background-color: ${({ theme }) => theme.colors.base}; ;
 `;

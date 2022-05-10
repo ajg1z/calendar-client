@@ -5,10 +5,8 @@ export const Container = styled.div`
 	${fullPage};
 `;
 export const Title = styled.h2`
-	transition: all 0.3s ease 0s;
 	color: white;
 	padding: 10px 0px;
-	border-bottom: 1px solid white;
 	text-align: center;
 `;
 
@@ -19,24 +17,27 @@ export const Body = styled.main`
 	height: 80%;
 	padding: 20px 0px 0px 0px;
 `;
+
 export const Column = styled.div`
-	border: 1px solid white;
+	transition: all 0.3s ease 0s;
 	flex: 33%;
 	:hover {
 		${Title} {
-			border-color: red;
+			outline: 1px solid white;
 		}
+		outline: 1px solid white;
 	}
 `;
 
 export const ListEvents = styled.div`
-	overflow-y: auto, ${scrollbar};
+	overflow-y: auto;
+	 ${scrollbar};
 `;
 
 export const Label = styled.p`
 	line-height: 1;
-	padding: 0px 0px 0px 0px;
-	margin: 0px 0px 0px 0px;
+	padding: 0;
+	margin: 0;
 	max-width: 400px;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -46,7 +47,7 @@ export const Label = styled.p`
 export const Item = styled.div`
 	cursor: pointer;
 	transition-timing-function: ease-in-out;
-	transition: background-color 0.3s , color 0.3s;
+	transition: background-color 0.3s, color 0.3s;
 	${flexCenter};
 	justify-content: space-between;
 	:hover {

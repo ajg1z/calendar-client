@@ -1,21 +1,22 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Container, Link, MenuStyled } from "./menu.styled";
+import { Container, MenuStyled } from "./menu.styled";
+import "./menu.scss";
 
 export const Menu = () => {
 	return (
 		<Container>
 			<MenuStyled>
-				<Link>
-					{" "}
-					<NavLink to="/calendar">Calendar</NavLink>
-				</Link>
-				<Link>
-					<NavLink to="/events">My events</NavLink>
-				</Link>
-				<Link>
-					<NavLink to="/settings">Settings</NavLink>
-				</Link>
+				{" "}
+				<NavLink className="nav-link-menu" to="/calendar">
+					Calendar
+				</NavLink>
+				<NavLink className="nav-link-menu" to="/events">
+					My events
+				</NavLink>
+				<NavLink className="nav-link-menu" to="/setting">
+					Settings
+				</NavLink>
 			</MenuStyled>
 		</Container>
 	);

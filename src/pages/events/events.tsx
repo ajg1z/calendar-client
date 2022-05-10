@@ -7,9 +7,7 @@ import { Body, Column, Item, Label, ListEvents, Title } from "./events.styled";
 import { EventsActionCreator } from "../../store/reducers/events/action-creators";
 import { useDispatch } from "react-redux";
 import { modalActionCreator } from "../../store/reducers/modal/action-creators";
-import { ConfirmModal } from "../../components/event-calendar/event-modal/components/modals/modal-confirm/modal-confirm";
 import { IEvent } from "../../models/event";
-import { IEventOrder } from "./events.types";
 import {
 	DragDropContext,
 	Droppable,
@@ -21,38 +19,7 @@ import {
 export const Events = () => {
 	const { events } = useTypesSelector((state) => state.event);
 	const [listEvents, setListEvents] = React.useState<IEvent[]>([]);
-	const [pickedEvent, setPickedEvent] = React.useState<IEvent | null>(null);
-	// const dragStartHandler = (
-	// 	e: React.DragEvent<HTMLDivElement>,
-	// 	event: IEventOrder
-	// ) => {
-	// 	setPickedEvent(event);
-	// };
-
-	// const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) => {
-	// 	e.preventDefault();
-	// 	e.currentTarget.style.opacity = "1";
-	// };
-
-	// const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
-	// 	e.preventDefault();
-	// 	e.currentTarget.style.opacity = "0.5";
-	// };
-
-	// const dropHandler = (
-	// 	e: React.DragEvent<HTMLDivElement>,
-	// 	event: IEventOrder
-	// ) => {
-	// 	e.preventDefault();
-	// 	setListEvents(
-	// 		listEvents.map((el) => {
-	// 			if (pickedEvent!.id === el.id) return { ...el, order: event.order };
-	// 			if (event.id === el.id) return { ...el, order: pickedEvent!.order };
-	// 			return el;
-	// 		})
-	// 	);
-	// 	e.currentTarget.style.opacity = "1";
-	// };
+	
 	const reorder = (list: IEvent[], startIndex: number, endIndex: number) => {
 		const result = Array.from(list);
 		const [removed] = result.splice(startIndex, 1);

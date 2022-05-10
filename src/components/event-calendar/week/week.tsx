@@ -5,7 +5,7 @@ import { Container, Img } from "./week.styled";
 import { WeekProps } from "./week.types";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { TriggerEvent } from "react-contexify";
-import { DefineEvents, defineMonth } from "../../../utils/event";
+import {  defineMonth,defineEvents } from "../../../utils/event";
 
 export const Week: React.FC<WeekProps> = ({
 	day,
@@ -32,7 +32,7 @@ export const Week: React.FC<WeekProps> = ({
 	const handleSelectDay = (d: number, e: TriggerEvent, i: number) => {
 		e.preventDefault();
 
-		const [displayEvents, allEventsDay] = DefineEvents(
+		const [displayEvents, allEventsDay] = defineEvents(
 			{ day: d, month: "current" },
 			month,
 			year,

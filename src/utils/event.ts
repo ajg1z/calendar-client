@@ -21,7 +21,7 @@ export const EventSome = (
 	}
 };
 
-export const DefineEvents = (
+export const defineEvents = (
 	day: IDays,
 	month: number,
 	year: number,

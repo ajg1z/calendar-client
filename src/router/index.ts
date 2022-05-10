@@ -3,6 +3,7 @@ import { Calendar } from "../pages/calendar/calendar";
 import { Login } from "../pages/login/login";
 import { Menu } from "../pages/menu/menu";
 import {Events} from '../pages/events/events'
+import { Settings } from "../pages/settings/settings";
 interface IRoute {
 	path: string;
 	component: React.ComponentType;
@@ -13,7 +14,8 @@ export enum RouteNames {
 	EVENT = "/events",
 	EVERY = "*",
 	MENU = "/",
-	CALENDAR='/calendar'
+	CALENDAR='/calendar',
+	SETTING='/setting'
 }
 
 export const privateRoutes: IRoute[] = [
@@ -32,6 +34,10 @@ export const privateRoutes: IRoute[] = [
 	{
 		path:RouteNames.CALENDAR,
 		component:Calendar
+	},
+	{
+		path:RouteNames.SETTING,
+		component:Settings
 	}
 ];
 
