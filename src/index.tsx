@@ -30,6 +30,7 @@ a{
 }
 
 body{
+  background-color: black;
   overflow-x:hidden;
  ::-webkit-scrollbar-thumb{
         width:6px;

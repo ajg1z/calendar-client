@@ -39,25 +39,28 @@ export const Top = styled.header`
 	height: auto;
 	display: flex;
 	align-items: center;
-
-	padding: 0px 0px 5px 5px;
-	border-bottom: 1px solid white;
+	padding: 10px 5px;
+	outline: 1px solid white;
 `;
 
 export const Footer = styled.footer`
 	${flexCenter};
 	justify-content: flex-end;
-	padding: 0px 5px;
+	padding: 0px 10px;
 	align-items: flex-end; ;
 `;
 
 export const Close = styled.p`
 	position: absolute;
-	top: 0px;
+	top: 5px;
 	cursor: pointer;
 	line-height: 1;
-	font-size: 30px;
-	right: 5px;
+	font-size: 20px;
+	right: 8px;
+	transition: color 0.3s ease 0s;
+	:hover {
+		color: red;
+	}
 `;
 
 export const Button = styled.button`
@@ -69,5 +72,8 @@ export const Button = styled.button`
 	background-color: black;
 	cursor: pointer;
 	margin: 0px 0px 0px 20px;
-	border: 1px solid white;
+	outline: 1px solid white;
+	:hover {
+		outline-width: 2px;
+	}
 `;

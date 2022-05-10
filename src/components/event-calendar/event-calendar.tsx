@@ -8,7 +8,7 @@ import {
 	Container,
 	Top,
 	WeekDay,
-	WeekDays,
+	WrapperFlex,
 	EventsLabel,
 	Switch,
 	SwitchText,
@@ -345,13 +345,13 @@ export const EventCalendar: FC<IEventProps> = () => {
 						)}
 					</Active>
 				</Top>
-				<WeekDays>
+				<WrapperFlex>
 					{weekDays.map((i) => (
 						<WeekDay current={false} key={i}>
 							{i}
 						</WeekDay>
 					))}
-				</WeekDays>
+				</WrapperFlex>
 				<Body>
 					<>
 						{typeCalendar === "standart" ? (

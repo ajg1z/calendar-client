@@ -1,27 +1,30 @@
 .MuiPaper-root {
-  margin: 10px 0px;
-  background-color: black;
-  border: 1px solid white;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  ::-webkit-scrollbar {
-    cursor: pointer;
-    width: 0;
-    height: 0;
-  }
-  ::-webkit-scrollbar-thumb {
-    width: 2px;
-    background-color: #fff;
-  }
+	margin: 10px 0px;
+	background-color: black;
+	border: 1px solid white;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+	::-webkit-scrollbar {
+		cursor: pointer;
+		width: 0;
+		height: 0;
+	}
+	::-webkit-scrollbar-thumb {
+		width: 2px;
+		background-color: #fff;
+	}
 }
 .MuiOutlinedInput-root {
-  ::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
-  color: white;
-  border: 1px solid white;
+	::-webkit-scrollbar {
+		width: 0;
+		height: 0;
+	}
+	color: white;
+	border: 1px solid white;
 }
 .MuiOutlinedInput-notchedOutline {
-  border: none;
+	border: none;
+}
+.MuiList-root {
+	width: 220px;
 }

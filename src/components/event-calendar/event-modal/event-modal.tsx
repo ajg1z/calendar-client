@@ -27,7 +27,7 @@ export const EventModal: FC<IEventModalProps> = ({
 	return ReactDOM.createPortal(
 		<Background>
 			<Container width={width} height={height}>
-				<Close onClick={close}>x</Close>
+				<Close onClick={close}>╳</Close>
 				<Top>{title}</Top>
 				<Body>{children}</Body>
 				{!footer && customFooter && customFooter()}

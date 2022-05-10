@@ -3,9 +3,9 @@ import styled from "styled-components";
 
 export const Container = styled.div`
 	${fullPage};
+	height: 100vh;
 `;
 export const Title = styled.h2`
-	color: white;
 	padding: 10px 0px;
 	text-align: center;
 `;
@@ -31,7 +31,7 @@ export const Column = styled.div`
 
 export const ListEvents = styled.div`
 	overflow-y: auto;
-	 ${scrollbar};
+	${scrollbar};
 `;
 
 export const Label = styled.p`

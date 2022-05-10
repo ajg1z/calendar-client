@@ -21,17 +21,18 @@ export const ProgressDay = styled.div<{ progress: number }>`
 	height: ${({ progress }) => progress}%;
 	background-color: rgb(71, 89, 226, 0.5);
 `;
+
 export const Day = styled.div<{ current: boolean }>`
 	width: 180px;
 	position: relative;
 	${flexCenter}
 	height:100px;
-	border: 1px solid white;
+	outline: 1px solid white;
 	${(props) =>
 		props.current &&
 		`
-      border-width:1px;
-      border-color:red;
+		outline-width:1px;
+		outline-color:red;
       font-weight:500;
     `};
 `;

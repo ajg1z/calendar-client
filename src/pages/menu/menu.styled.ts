@@ -2,7 +2,7 @@ import { flexCenter, fullPage } from "./../../styled.common";
 import styled from "styled-components";
 
 export const Container = styled.div`
-	${fullPage}
+	${fullPage};
 `;
 
 export const MenuStyled = styled.div`

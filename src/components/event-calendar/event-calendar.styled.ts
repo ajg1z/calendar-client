@@ -4,7 +4,6 @@ import { Day } from "./days/days.styled";
 
 export const Container = styled.div`
 	width: 100%;
-	/* padding: 0px 60px; */
 	position: relative;
 	color: ${({ theme }) => theme.colors.base};
 	background-color: ${({ theme }) => theme.colors.base}; ;
@@ -51,20 +50,11 @@ export const Top = styled.div`
 	height: 80px;
 	width: 100%;
 	gap: 0px 20px;
-	padding: 0px 100px;
-	justify-content: space-between;
+	padding: 0px 150px;
 	margin: 0px 0px 20px 0px;
 `;
 
-export const Select = styled.select`
-	border: 1px solid white;
-	outline: none;
-	width: 50px;
-	padding: 10px;
-	background-color: ${({ theme }) => theme.colors.base};
-`;
-
-export const WeekDays = styled.div`
+export const WrapperFlex = styled.div`
 	${flexCenter};
 `;
 
@@ -76,19 +66,15 @@ export const EventsLabel = styled.div`
 
 export const Active = styled.div`
 	display: flex;
-	flex: 20%;
 	gap: 0px 20px;
-	justify-content: space-between;
 `;
 export const SwitchType = styled.button<{ active: boolean }>`
 	height: 40px;
 	background-color: black;
 	cursor: pointer;
-	outline: none;
-	border: 1px solid white;
+	outline: 1px solid white;
 	width: 120px;
-	/* margin:0px 20px 0px 0px; */
-	${({ active }) => active && `border-color:gold`}
+	${({ active }) => active && `outline-color:gold`}
 `;
 
 export const Left = styled.div`
@@ -100,7 +86,7 @@ export const WeekDay = styled.div<{ current: boolean }>`
 	position: relative;
 	${flexCenter}
 	height:100px;
-	border: 1px solid white;
+	outline: 1px solid white;
 	${(props) =>
 		props.current &&
 		`
@@ -122,15 +108,12 @@ export const Wrapper = styled(Body)`
 export const Hour = styled.div`
 	width: 100px;
 	height: 100px;
-	border: 1px solid white;
+	outline: 1px solid white;
 	${flexCenter};
 `;
 
 export const Label = styled.p`
 	font-size: 25px;
-	padding: 10px 10px 0px;
-	line-height: 1;
-	margin: 0;
 `;
 
 export const Cell = styled(Day)`
@@ -151,9 +134,8 @@ export const DayCell = styled.div`
 		color: black;
 	}
 	height: 100px;
-	/* flex: 100%; */
-	width: 1260px;
-	border: 1px solid white;
+	width: 1259px;
+	outline: 1px solid white;
 	${flexCenter};
 `;
 

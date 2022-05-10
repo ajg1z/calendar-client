@@ -1,11 +1,7 @@
 import { flexCenter } from "../../../../../../styled.common";
 import styled from "styled-components";
-
-export const Container = styled.div`
-  ${flexCenter};
-`;
-
-export const Label = styled.h2`
-  color: white;
-  font-size: 25px;
+import { Container as Ctn } from "../modal-add/modal-add.styled";
+export const Container = styled(Ctn)`
+	${flexCenter};
+	padding: 10px 0px;
 `;

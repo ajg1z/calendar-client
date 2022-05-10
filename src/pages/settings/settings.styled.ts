@@ -2,7 +2,8 @@ import { flexCenter, fullPage } from "./../../styled.common";
 import styled from "styled-components";
 
 export const Container = styled.div`
-	${fullPage}
+	${fullPage};
+	height: 100vh;
 `;
 
 export const Left = styled.div`
@@ -18,12 +19,38 @@ export const Section = styled.div`
 	margin: 20px 0px;
 	font-size: 20px;
 	cursor: pointer;
+	:hover {
+		text-decoration: underline;
+	}
 `;
 
+export const Line = styled.div`
+	${flexCenter};
+	width: 120px;
+	margin: 0px 0px 10px;
+	justify-content: space-between;
+`;
+
+export const EventIcon = styled.p`
+	width: 20px;
+	cursor: pointer;
+	height: 20px;
+	line-height: 1;
+	${flexCenter};
+	outline: 1px solid white;
+`;
+
+export const Text = styled.p``;
+
 export const Right = styled.div`
+	padding: 10px;
 	flex: 80%;
 	height: 100%;
 	:hover {
 		outline: 2px solid white;
 	}
+`;
+
+export const SectionOptions = styled.div`
+	margin: 0px 0px 20px;
 `;

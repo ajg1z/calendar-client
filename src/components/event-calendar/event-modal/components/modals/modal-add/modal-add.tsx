@@ -48,11 +48,11 @@ export const ModalAdd: FC<IModalProps> = ({ dispatch }) => {
 			footer
 			action={actionModalAdd}
 			close={closeModalAdd}
-			height={450}
+			height={420}
 			width={600}
 			leftBttn="OK"
 			rightBttn="Cancel"
-			title="Test modal"
+			title="Add event"
 		>
 			<Container>
 				<LineInput>

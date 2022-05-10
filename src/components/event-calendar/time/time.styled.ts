@@ -1,16 +1,7 @@
 import styled from "styled-components";
+import { Label } from "../event-calendar.styled";
 
-export const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
+export const LabelTime = styled(Label)`
+	font-size: 35px;
 `;
 
-export const LabelTime = styled.p`
-  font-size: 35px;
-  line-height: 1;
-  margin: 0;
-  font-family: monospace;
-`;
-export const Label = styled.p``;
-
-export const SwitchUTC = styled.input``;

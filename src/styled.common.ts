@@ -7,7 +7,6 @@ export const flexCenter = css`
 `;
 
 export const fullPage = css`
-	height: 100vh;
 	width: 100vw;
 	background-color: black;
 `;
