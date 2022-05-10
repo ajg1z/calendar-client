@@ -17,7 +17,7 @@ const initialState: EventsState = {
 							month: 8,
 							time: "22:00",
 							title: "this fucking",
-							typeEvent: "myEvent",
+							typeEvent: "weekend",
 							year: 2022,
 						},
 						{
@@ -27,7 +27,7 @@ const initialState: EventsState = {
 							month: 5,
 							time: "22:00",
 							title: "Holidays",
-							typeEvent: "myEvent",
+							typeEvent: "holiday",
 							year: 2022,
 						},
 						{
@@ -37,7 +37,7 @@ const initialState: EventsState = {
 							month: 12,
 							time: "22:00",
 							title: "test 3",
-							typeEvent: "myEvent",
+							typeEvent: "holiday",
 							year: 2022,
 						},
 						{
@@ -47,7 +47,7 @@ const initialState: EventsState = {
 							month: 1,
 							time: "22:00",
 							title: "Yup 00",
-							typeEvent: "myEvent",
+							typeEvent: "holiday",
 							year: 2002,
 						},
 					],

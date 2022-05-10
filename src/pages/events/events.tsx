@@ -19,7 +19,7 @@ import {
 export const Events = () => {
 	const { events } = useTypesSelector((state) => state.event);
 	const [listEvents, setListEvents] = React.useState<IEvent[]>([]);
-	
+
 	const reorder = (list: IEvent[], startIndex: number, endIndex: number) => {
 		const result = Array.from(list);
 		const [removed] = result.splice(startIndex, 1);
@@ -49,7 +49,11 @@ export const Events = () => {
 		// styles we need to apply on draggables
 		...draggableStyle,
 	});
-	
+
+	const handleDelete = () => {};
+
+	const handleEdit = () => {};
+
 	React.useEffect(() => {
 		const eventsLabels: IEvent[] = [];
 		events.forEach((el) => {
@@ -67,7 +71,12 @@ export const Events = () => {
 	return (
 		<Container>
 			{modalInfo && (
-				<InfoModal modalConfirm={modalConfirm} dispatch={dispatch} />
+				<InfoModal
+					handleDelete={handleDelete}
+					handleEdit={handleEdit}
+					modalConfirm={modalConfirm}
+					dispatch={dispatch}
+				/>
 			)}
 			<Body>
 				<Column>

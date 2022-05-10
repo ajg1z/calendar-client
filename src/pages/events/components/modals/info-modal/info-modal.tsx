@@ -14,6 +14,7 @@ import {
 	TextInput,
 	Button,
 	Buttons,
+	TypeEvent,
 } from "./info-modal.styled";
 import { modalActionCreator } from "../../../../../store/reducers/modal/action-creators";
 import { InfoModalProps, InputsModes } from "./info-modal.types";
@@ -23,10 +24,13 @@ import { ConfirmModal } from "../../../../../components/event-calendar/event-mod
 import { FieldString } from "./field-string/field-string";
 import { FieldDate } from "./field-date/field-date";
 import { ConvertTime, сoncatTimeToNumber } from "../../../../../utils/time";
+import { EventLabel } from "../../../../../components/event-calendar/event-label/event-label";
 
 export const InfoModal: React.FC<InfoModalProps> = ({
 	dispatch,
 	modalConfirm,
+	handleDelete,
+	handleEdit,
 }) => {
 	const { selectedEvent } = useTypesSelector((state) => state.event);
 	const [title, setTitle] = React.useState(selectedEvent!.title);
@@ -55,6 +59,7 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 			text: "You definitely want to delete this event?",
 			textAction: "Delete",
 			action: () => {
+				handleDelete(selectedEvent!.id);
 				dispatch(
 					EventsActionCreator.RemoveEvent({
 						year: selectedEvent!.year || 0,
@@ -69,6 +74,16 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 	};
 
 	const handleEditEvent = () => {
+		handleEdit({
+			day: сoncatTimeToNumber(date, [8, 9], true) as number,
+			year: сoncatTimeToNumber(date, [0, 1, 2, 3], true) as number,
+			description,
+			month: (сoncatTimeToNumber(date, [5, 6], true) as number) - 1,
+			id: selectedEvent!.id,
+			time,
+			title,
+			typeEvent: selectedEvent!.typeEvent,
+		});
 		dispatch(
 			EventsActionCreator.EditEvent({
 				day: сoncatTimeToNumber(date, [8, 9], true) as number,
@@ -119,7 +134,7 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 		time: false,
 		date: false,
 	});
-	
+
 	const handleCloseModal = () => {
 		if (!isChanges()) {
 			dispatch(modalActionCreator.SetModalConfirm(true));
@@ -164,6 +179,11 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 				/>
 			)}
 			<Container>
+				<Label>Type event</Label>
+				<TypeEvent>
+					{selectedEvent!.typeEvent}
+					<EventLabel count={1} typeEvent={selectedEvent!.typeEvent} />
+				</TypeEvent>
 				<FieldString
 					editModeInputs={editModeInputs}
 					label={"Title"}

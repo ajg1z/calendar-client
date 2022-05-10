@@ -1,0 +1,9 @@
+.switch-setting {
+	.MuiSwitch-track {
+		background-color: #c1c1c1;
+	}
+	.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked
+		+ .MuiSwitch-track {
+		background-color: #fff200;
+	}
+}

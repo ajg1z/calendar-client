@@ -99,3 +99,9 @@ export const Text = styled.p`
 	position: relative;
 	min-height: 40px;
 `;
+
+export const TypeEvent = styled.div`
+	${flexCenter};
+	gap: 0px 20px;
+	justify-content: stretch;
+`;

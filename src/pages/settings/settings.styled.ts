@@ -50,6 +50,27 @@ export const Right = styled.div`
 		outline: 2px solid white;
 	}
 `;
+export const ListHolydays = styled.div`
+	width: 450px;
+`;
+
+export const ItemHolydays = styled.div<{ selected: boolean }>`
+	width: 100%;
+	margin: 0px 0px 10px;
+	padding: 10px;
+	${flexCenter};
+	justify-content: space-between;
+	${({ selected }) => selected && `background-color:gray`};
+`;
+
+export const Actions = styled.div`
+	${flexCenter}
+`;
+
+export const NameEvent = styled.p`
+	width: max-content;
+	cursor: pointer;
+`;
 
 export const SectionOptions = styled.div`
 	margin: 0px 0px 20px;

@@ -1,20 +1,21 @@
 export interface IEvent {
-  title: string;
-  description: string;
-  typeEvent: "holiday" | "weekend" | "myEvent";
-  year: null | number;
-  month: number;
-  day: number;
-  id: string;
-  time:string
+	title: string;
+	description: string;
+	typeEvent: typeEvent;
+	year: null | number;
+	month: number;
+	day: number;
+	id: string;
+	time: string;
 }
+export type typeEvent = "holiday" | "weekend" | "myEvent";
 
 export interface IYear {
-  year: number;
-  month: IMonth[];
+	year: number;
+	month: IMonth[];
 }
 
 export interface IMonth {
-  month: number;
-  events: IEvent[];
+	month: number;
+	events: IEvent[];
 }
