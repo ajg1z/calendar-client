@@ -30,53 +30,6 @@ export const Days: React.FC<IDaysProps> = ({
 					i,
 					events
 				);
-				// const displayEvents: IEvents[] = [];
-				// const allEventsDay: IEvent[] = [];
-				// let appropriateYear = events.find((event) => event.year === year);
-
-				// if (weekendDays.includes(i + 1)) {
-				// 	displayEvents.push({
-				// 		day: day.day,
-				// 		description: "weekend",
-				// 		id: nanoid(5),
-				// 		month:
-				// 			day.month === "prev"
-				// 				? month - 1
-				// 				: day.month === "next"
-				// 				? month + 1
-				// 				: month,
-				// 		title: "weekend",
-				// 		typeEvent: "weekend",
-				// 		year,
-				// 		time: "00:00",
-				// 	});
-				// }
-				// if (appropriateYear) {
-				// 	let appropriateMonth = appropriateYear.month.find(
-				// 		(d) =>
-				// 			d.month ===
-				// 			(day.month === "prev"
-				// 				? month - 1
-				// 				: day.month === "next"
-				// 				? month + 1
-				// 				: month)
-				// 	);
-				// 	if (appropriateMonth) {
-				// 		appropriateMonth.events.forEach((event) => {
-				// 			if (event.day === day.day) {
-				// 				if (
-				// 					event.typeEvent === "holiday" ||
-				// 					event.typeEvent === "myEvent"
-				// 				) {
-				// 					EventSome(displayEvents, event.typeEvent, event);
-				// 				} else {
-				// 					displayEvents.push(event);
-				// 				}
-				// 				allEventsDay.push(event);
-				// 			}
-				// 		});
-				// 	}
-				// }
 				return (
 					<Day
 						onContextMenu={(e) =>

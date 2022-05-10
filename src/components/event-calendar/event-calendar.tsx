@@ -20,6 +20,7 @@ import {
 	Cell,
 	DayCell,
 	Line,
+	Wrapper,
 } from "./event-calendar.styled";
 import {
 	IEventProps,
@@ -288,7 +289,9 @@ export const EventCalendar: FC<IEventProps> = () => {
 					<SwitchText>{defineNameSwitch("next")}</SwitchText>
 				</Switch>
 				<ContextDay selected={selectedDay} id={MENU_ID} />
-				{modalDelete && <ModalDelete selected={selectedDay} dispatch={dispatch} />}
+				{modalDelete && (
+					<ModalDelete selected={selectedDay} dispatch={dispatch} />
+				)}
 				{modalInfo && <ModalInfo dispatch={dispatch} />}
 				{modalAdd && <ModalAdd dispatch={dispatch} />}
 				{modalShare && <ModalShare dispatch={dispatch} />}
@@ -349,7 +352,7 @@ export const EventCalendar: FC<IEventProps> = () => {
 						</WeekDay>
 					))}
 				</WeekDays>
-				<Body typeWeek={typeCalendar === "standart"}>
+				<Body>
 					<>
 						{typeCalendar === "standart" ? (
 							<Days
@@ -372,24 +375,26 @@ export const EventCalendar: FC<IEventProps> = () => {
 							<>
 								{weekHours.map((el) => {
 									return (
-										<Line key={el.hour}>
-											<Hour>{ConvertTime(el.hour)}</Hour>
-											{el.days.map((day, index) => {
-												return (
-													<Cell
-														onClick={() =>
-															selectDayInWeekType(
-																`${ConvertTime(el.hour)}:00`,
-																daysOfWeek[index]
-															)
-														}
-														current={false}
-													>
-														{day}
-													</Cell>
-												);
-											})}
-										</Line>
+										<Wrapper key={el.hour}>
+											<Line>
+												<Hour>{ConvertTime(el.hour)}</Hour>
+												{el.days.map((day, index) => {
+													return (
+														<Cell
+															onClick={() =>
+																selectDayInWeekType(
+																	`${ConvertTime(el.hour)}:00`,
+																	daysOfWeek[index]
+																)
+															}
+															current={false}
+														>
+															{day}
+														</Cell>
+													);
+												})}
+											</Line>
+										</Wrapper>
 									);
 								})}
 							</>
@@ -397,16 +402,18 @@ export const EventCalendar: FC<IEventProps> = () => {
 						{typeCalendar === "day" &&
 							hours.map((el) => {
 								return (
-									<Line key={el}>
-										<Hour>{ConvertTime(el)}</Hour>
-										<DayCell
-											onClick={() =>
-												selectDayInWeekType(`${ConvertTime(el)}:00`, null)
-											}
-										>
-											+
-										</DayCell>
-									</Line>
+									<Wrapper key={el}>
+										<Line key={el}>
+											<Hour>{ConvertTime(el)}</Hour>
+											<DayCell
+												onClick={() =>
+													selectDayInWeekType(`${ConvertTime(el)}:00`, null)
+												}
+											>
+												+
+											</DayCell>
+										</Line>
+									</Wrapper>
 								);
 							})}
 					</>

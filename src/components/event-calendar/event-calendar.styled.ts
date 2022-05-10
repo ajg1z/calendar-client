@@ -4,7 +4,7 @@ import { Day } from "./days/days.styled";
 
 export const Container = styled.div`
 	width: 100%;
-	padding: 0px 100px;
+	/* padding: 0px 60px; */
 	position: relative;
 	color: ${({ theme }) => theme.colors.base};
 	background-color: ${({ theme }) => theme.colors.base}; ;
@@ -51,6 +51,7 @@ export const Top = styled.div`
 	height: 80px;
 	width: 100%;
 	gap: 0px 20px;
+	padding: 0px 100px;
 	justify-content: space-between;
 	margin: 0px 0px 20px 0px;
 `;
@@ -65,8 +66,6 @@ export const Select = styled.select`
 
 export const WeekDays = styled.div`
 	${flexCenter};
-	padding: 0px 0px 0px 145px;
-	justify-content: stretch;
 `;
 
 export const EventsLabel = styled.div`
@@ -109,13 +108,15 @@ export const WeekDay = styled.div<{ current: boolean }>`
        `};
 `;
 
-export const Body = styled.div<{ typeWeek: boolean }>`
+export const Body = styled.div`
 	${flexCenter};
 	width: 100%;
 	justify-content: stretch;
 	flex-wrap: wrap;
-	padding: 0px 0px 0px 45px;
-	${({ typeWeek }) => typeWeek && `padding: 0px 100px;`}
+`;
+
+export const Wrapper = styled(Body)`
+	padding: 0px 38px;
 `;
 
 export const Hour = styled.div`
@@ -143,12 +144,12 @@ export const Cell = styled(Day)`
 `;
 
 export const DayCell = styled.div`
-cursor: pointer;
+	cursor: pointer;
 	transition: all 0.3s linear;
-&:hover{
-  background-color: #fff;
+	&:hover {
+		background-color: #fff;
 		color: black;
-}
+	}
 	height: 100px;
 	/* flex: 100%; */
 	width: 1260px;

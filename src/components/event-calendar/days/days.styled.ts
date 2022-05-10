@@ -4,8 +4,8 @@ import { flexCenter } from "../../../styled.common";
 export const Container = styled.div`
 	${flexCenter};
 	width: 100%;
-	justify-content: flex-end;
 	flex-wrap: wrap;
+	padding: 0px 100px;
 `;
 
 export const EventsLabel = styled.div`
@@ -30,7 +30,7 @@ export const Day = styled.div<{ current: boolean }>`
 	${(props) =>
 		props.current &&
 		`
-     border-width:2px;
+      border-width:1px;
       border-color:red;
       font-weight:500;
     `};

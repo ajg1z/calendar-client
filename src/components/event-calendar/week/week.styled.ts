@@ -5,7 +5,7 @@ import { Hour } from "../event-calendar.styled";
 export const Container = styled.div`
 	width: 100%;
 	${flexCenter};
-	padding: 0px;
-	justify-content: stretch;
+	justify-content: flex-start;
+	padding: 0px 0px 0px 38px;
 `;
-export const Img=styled(Hour)``
+export const Img = styled(Hour)``;
