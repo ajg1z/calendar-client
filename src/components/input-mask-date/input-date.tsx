@@ -60,6 +60,8 @@ export const InputMaskDate = React.forwardRef<HTMLInputElement, InputTimeProps>(
 							return false;
 						case 8: {
 							const countDays = calculateCountDays(values.value);
+							if (values.value[6] === "0" && values.value[7] === "0")
+								return false;
 							if (`${values.value[6]}${values.value[7]}` <= countDays)
 								return true;
 							return false;

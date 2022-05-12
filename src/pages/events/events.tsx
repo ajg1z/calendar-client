@@ -50,10 +50,22 @@ export const Events = () => {
 		...draggableStyle,
 	});
 
-	const handleDelete = () => {};
+	const handleEdit = (event: IEvent) => {
+		setListEvents(
+			listEvents.map((ev) => {
+				if (ev.id === event.id) {
+					return event;
+				}
+				return ev;
+			})
+		);
+	};
 
-	const handleEdit = () => {};
+	const handleDelete = (id: string) => {
+		setListEvents(listEvents.filter((ev) => ev.id !== id));
+	};
 
+	const { modalInfo, modalConfirm } = useTypesSelector((state) => state.modal);
 	React.useEffect(() => {
 		const eventsLabels: IEvent[] = [];
 		events.forEach((el) => {
@@ -67,7 +79,6 @@ export const Events = () => {
 	}, []);
 
 	const dispatch = useDispatch();
-	const { modalInfo, modalConfirm } = useTypesSelector((state) => state.modal);
 	return (
 		<Container>
 			{modalInfo && (

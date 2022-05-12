@@ -7,23 +7,32 @@ import {
 	Textarea,
 } from "./modal-add.styled";
 import { EventModal } from "../../../event-modal";
-import { IModalProps } from "./modal-add.types";
+import { IModalAddProps } from "./modal-add.types";
 import { modalActionCreator } from "../../../../../../store/reducers/modal/action-creators";
 import { EventsActionCreator } from "../../../../../../store/reducers/events/action-creators";
 import { useTypesSelector } from "../../../../../../hooks/useTypedSelector";
 import { nanoid } from "nanoid";
 import { InputMaskTime } from "../../../../../input-mask-time/input-time";
 import { ConvertTime } from "../../../../../../utils/time";
-export const ModalAdd: FC<IModalProps> = ({ dispatch }) => {
+import { InputMaskDate } from "../../../../../input-mask-date/input-date";
+export const ModalAdd: FC<IModalAddProps> = ({ dispatch, typeEvent }) => {
 	const [title, setTitle] = React.useState("");
 	const [description, setDescription] = React.useState("");
-	const { selectedDay:selected } = useTypesSelector((state) => state.event);
-	const [time, setTime] = React.useState(selected!.time || "");
+	const { selectedDay: selected } = useTypesSelector((state) => state.event);
+	const [time, setTime] = React.useState(selected?.time || "");
+
+	const [date, setDate] = React.useState(() => {
+		if (selected) {
+			return `${selected!.year}-${ConvertTime(selected!.month)}-${ConvertTime(
+				selected!.day
+			)}`;
+		} else return "";
+	});
 
 	const closeModalAdd = () => {
 		dispatch(modalActionCreator.SetModalAdd(false));
 	};
-	console.log(selected);
+
 	const actionModalAdd = () => {
 		dispatch(
 			EventsActionCreator.AddEvent({
@@ -35,7 +44,7 @@ export const ModalAdd: FC<IModalProps> = ({ dispatch }) => {
 					id: nanoid(5),
 					month: selected!.month,
 					year: selected!.year,
-					typeEvent: "myEvent",
+					typeEvent,
 					description,
 					title,
 				},
@@ -48,7 +57,7 @@ export const ModalAdd: FC<IModalProps> = ({ dispatch }) => {
 			footer
 			action={actionModalAdd}
 			close={closeModalAdd}
-			height={420}
+			height={490}
 			width={600}
 			leftBttn="OK"
 			rightBttn="Cancel"
@@ -56,18 +65,16 @@ export const ModalAdd: FC<IModalProps> = ({ dispatch }) => {
 		>
 			<Container>
 				<LineInput>
-					<Label>
-						{ConvertTime(selected!.day)}:{ConvertTime(selected!.month)}:
-						{selected?.year}
-					</Label>
-				</LineInput>
-				<LineInput>
 					<Label>Название события</Label>
 					<Input value={title} onChange={(e) => setTitle(e.target.value)} />
 				</LineInput>
 				<LineInput>
 					<Label>Время события</Label>
-					<InputMaskTime  value={time} setValue={setTime} />
+					<InputMaskTime value={time} setValue={setTime} />
+				</LineInput>
+				<LineInput>
+					<Label>Дата события</Label>
+					<InputMaskDate setValue={setDate} value={date} />
 				</LineInput>
 				<LineInput>
 					<Label>Описание событие</Label>

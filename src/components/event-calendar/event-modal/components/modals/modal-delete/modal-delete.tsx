@@ -1,7 +1,6 @@
 import React from "react";
 import { EventModal } from "../../../event-modal";
 
-import { IModalProps } from "../modal-add/modal-add.types";
 import { IModalDeleteProps, ISelects } from "./modal-delete.types";
 import "./mui-select.scss";
 import { modalActionCreator } from "../../../../../../store/reducers/modal/action-creators";

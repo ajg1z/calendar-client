@@ -1,8 +1,7 @@
-import React, { FC } from "react";
+import React, { Dispatch, FC } from "react";
 import { useTypesSelector } from "../../../../../../hooks/useTypedSelector";
 import { IEvent } from "../../../../../../models/event";
 import { EventModal } from "../../../event-modal";
-import { IModalProps } from "../modal-add/modal-add.types";
 import {
 	Container,
 	Left,
@@ -18,7 +17,7 @@ import { EventsActionCreator } from "../../../../../../store/reducers/events/act
 import { modalActionCreator } from "../../../../../../store/reducers/modal/action-creators";
 import { Label as Text } from "../modal-add/modal-add.styled";
 
-export const ModalInfo: FC<IModalProps> = ({ dispatch }) => {
+export const ModalInfo: FC<{ dispatch: Dispatch<any> }> = ({ dispatch }) => {
 	const { selectedDay: selected } = useTypesSelector((state) => state.event);
 	const [selectedEvent, setSelectedEvent] = React.useState<IEvent | null>(null);
 	const actionModalInfo = () => {};

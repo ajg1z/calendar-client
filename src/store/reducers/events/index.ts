@@ -24,7 +24,7 @@ const initialState: EventsState = {
 							day: 25,
 							description: "year dadasd",
 							id: "sdaasd",
-							month: 5,
+							month: 8,
 							time: "22:00",
 							title: "Holidays",
 							typeEvent: "holiday",
@@ -34,7 +34,7 @@ const initialState: EventsState = {
 							day: 13,
 							description: "blabal",
 							id: "fsdfdsf",
-							month: 12,
+							month: 8,
 							time: "22:00",
 							title: "test 3",
 							typeEvent: "holiday",
@@ -44,11 +44,11 @@ const initialState: EventsState = {
 							day: 1,
 							description: "test 2",
 							id: "sfsdfsdfs",
-							month: 1,
+							month: 8,
 							time: "22:00",
 							title: "Yup 00",
 							typeEvent: "holiday",
-							year: 2002,
+							year: 2022,
 						},
 					],
 				},
@@ -129,6 +129,7 @@ export default function eventsReducer(
 
 		case EventActionEnum.EDIT_EVENT:
 			let edited: IYear[];
+			debugger;
 			if (state.selectedEvent!.year === action.payload.year) {
 				if (state.selectedEvent!.month === action.payload.month) {
 					edited = state.events.map((el) => {
@@ -178,10 +179,10 @@ export default function eventsReducer(
 									return true;
 								});
 							}
-							return m
+							return m;
 						});
 					}
-					return el
+					return el;
 				});
 				edited.push({
 					year: action.payload.year || 0,

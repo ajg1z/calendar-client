@@ -293,7 +293,7 @@ export const EventCalendar: FC<IEventProps> = () => {
 					<ModalDelete selected={selectedDay} dispatch={dispatch} />
 				)}
 				{modalInfo && <ModalInfo dispatch={dispatch} />}
-				{modalAdd && <ModalAdd dispatch={dispatch} />}
+				{modalAdd && <ModalAdd typeEvent="myEvent" dispatch={dispatch} />}
 				{modalShare && <ModalShare dispatch={dispatch} />}
 				<Top>
 					<Left>

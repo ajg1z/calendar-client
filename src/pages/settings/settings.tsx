@@ -14,6 +14,7 @@ import {
 	ItemHolydays,
 	NameEvent,
 	Actions,
+	Button,
 } from "./settings.styled";
 import { ISections } from "./settings.types";
 import { Label } from "../events/components/modals/info-modal/info-modal.styled";
@@ -27,6 +28,8 @@ import { EventsActionCreator } from "../../store/reducers/events/action-creators
 import { IEvent } from "../../models/event";
 import { modalActionCreator } from "../../store/reducers/modal/action-creators";
 import { InfoModal } from "../events/components/modals/info-modal/info-modal";
+import { ConfirmModal } from "../../components/event-calendar/event-modal/components/modals/modal-confirm/modal-confirm";
+import { ModalAdd } from "../../components/event-calendar/event-modal/components/modals/modal-add/modal-add";
 
 const sections = ["customization", "time", "holidays", "language"];
 export const Settings = () => {
@@ -34,8 +37,11 @@ export const Settings = () => {
 	const { colorIconsEvent, font, language, theme, timezone } = useTypesSelector(
 		(state) => state.setting
 	);
-	const { modalInfo, modalConfirm } = useTypesSelector((state) => state.modal);
-	const { events } = useTypesSelector((state) => state.event);
+	const { modalInfo, modalConfirm, modalAdd } = useTypesSelector(
+		(state) => state.modal
+	);
+	const { events, selectedEvent } = useTypesSelector((state) => state.event);
+
 	const [selectedSection, setSelectedSection] =
 		React.useState<ISections | null>(null);
 	const [listHolydays, setListHolidays] = React.useState<IEvent[]>([]);
@@ -45,12 +51,12 @@ export const Settings = () => {
 		events.forEach((el) => {
 			el.month.forEach((m) => {
 				m.events.forEach((event) => {
-					holydays.push(event);
+					if (event.typeEvent === "holiday") holydays.push(event);
 				});
 			});
 		});
 		setListHolidays(holydays);
-	}, [events]);
+	}, []);
 
 	const handleEdit = (event: IEvent) => {
 		setListHolidays(
@@ -127,7 +133,7 @@ export const Settings = () => {
 							<ListHolydays>
 								{listHolydays.map((event) => {
 									return (
-										<ItemHolydays selected>
+										<ItemHolydays key={event.id} selected>
 											<NameEvent
 												onClick={() => {
 													dispatch(EventsActionCreator.SetSelectEvent(event));
@@ -137,12 +143,25 @@ export const Settings = () => {
 												{event.title}
 											</NameEvent>
 											<Actions>
-												<Checkbox />
-												<DeleteIcon sx={{ cursor: "pointer" }} />
+												<DeleteIcon
+													onClick={() => {
+														dispatch(EventsActionCreator.SetSelectEvent(event));
+														dispatch(modalActionCreator.SetModalConfirm(true));
+													}}
+													sx={{ cursor: "pointer" }}
+												/>
 											</Actions>
 										</ItemHolydays>
 									);
 								})}
+								<Button
+									onClick={() => {
+										dispatch(EventsActionCreator.SetSelectDay(null));
+										dispatch(modalActionCreator.SetModalAdd(true));
+									}}
+								>
+									Add holiday
+								</Button>
 							</ListHolydays>
 						</SectionOptions>
 					</>
@@ -151,10 +170,30 @@ export const Settings = () => {
 			default:
 				return <></>;
 		}
-	}, [selectedSection]);
+	}, [selectedSection, listHolydays]);
 
 	return (
 		<Container>
+			{modalConfirm && (
+				<ConfirmModal
+					dispatch={dispatch}
+					title="delete"
+					text="You really want to delete event?"
+					textAction="delete"
+					action={() => {
+						if (selectedEvent) {
+							handleDelete(selectedEvent.id);
+							EventsActionCreator.RemoveEvent({
+								month: selectedEvent.month,
+								year: selectedEvent.year || 2022,
+								id: selectedEvent.id,
+							});
+							dispatch(modalActionCreator.SetModalConfirm(false));
+						}
+					}}
+				/>
+			)}
+			{modalAdd && <ModalAdd typeEvent="holiday" dispatch={dispatch} />}
 			{modalInfo && (
 				<InfoModal
 					handleDelete={handleDelete}
@@ -167,7 +206,10 @@ export const Settings = () => {
 				<Left>
 					{sections.map((s) => {
 						return (
-							<Section onClick={() => setSelectedSection(s as ISections)}>
+							<Section
+								key={s}
+								onClick={() => setSelectedSection(s as ISections)}
+							>
 								{s[0].toUpperCase() + s.slice(1)}
 							</Section>
 						);

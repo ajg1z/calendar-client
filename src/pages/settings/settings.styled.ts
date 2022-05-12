@@ -67,6 +67,35 @@ export const Actions = styled.div`
 	${flexCenter}
 `;
 
+export const Button = styled.button`
+	::before {
+		transition: all 0.3s ease 0s;
+		top: 22%;
+		opacity: 0;
+		left: 8%;
+		content: "+";
+		font-size: 25px;
+		position: absolute;
+	}
+	overflow: hidden;
+	position: relative;
+	display: block;
+	text-align: center;
+	outline: 1px solid white;
+	height: 3em;
+	width: 40%;
+	margin: 0px auto;
+	cursor: pointer;
+	transition: all 0.3s ease 0s;
+	:hover {
+		outline-color: darkblue;
+		::before {
+			opacity: 1;
+		}
+	}
+	background-color: black;
+`;
+
 export const NameEvent = styled.p`
 	width: max-content;
 	cursor: pointer;
