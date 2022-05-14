@@ -24,7 +24,6 @@ export default function settingReducer(
 		case SettingActionEnum.SET_LANGUAGE:
 			return { ...state, language: action.payload };
 		case SettingActionEnum.SET_COLOR_ICON:
-			console.log("HHHH");
 			return {
 				...state,
 				colorIconsEvent: {

@@ -77,19 +77,22 @@ export default function eventsReducer(
 					newEvent
 						.find((y) => y.year === action.payload.year)!
 						.month.find((m) => m.month === action.payload.month)!
-						.events.push(action.payload.event);
+						.events.push(action.payload);
 				} else {
 					newEvent
 						.find((y) => y.year === action.payload.year)
 						?.month.push({
 							month: action.payload.month,
-							events: [action.payload.event],
+							events: [action.payload],
 						});
 				}
 			} else {
 				newEvent.push({
 					month: [
-						{ month: action.payload.month, events: [action.payload.event] },
+						{
+							month: action.payload.month,
+							events: [action.payload],
+						},
 					],
 					year: action.payload.year,
 				});
@@ -185,7 +188,7 @@ export default function eventsReducer(
 					return el;
 				});
 				edited.push({
-					year: action.payload.year || 0,
+					year: action.payload.year,
 					month: [{ month: action.payload.month, events: [action.payload] }],
 				});
 			}

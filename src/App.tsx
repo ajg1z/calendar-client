@@ -4,16 +4,22 @@ import { BrowserRouter } from "react-router-dom";
 import { Layout } from "./components/layout/index";
 import { AppRouter } from "./router/AppRouter";
 import { Provider } from "react-redux";
-import { store } from "./store/index";
+import { useTypesSelector } from "./hooks/useTypedSelector";
+import { ThemeProvider } from "styled-components";
+import { Theme } from "./components/theme";
 
 function App() {
+	const { theme } = useTypesSelector((state) => state.setting);
+	React.useEffect(() => {
+		document.body.className = theme;
+	}, [theme]);
 	return (
 		<BrowserRouter>
-			<Layout>
-				<Provider store={store}>
+			<ThemeProvider theme={() => Theme(theme)}>
+				<Layout>
 					<AppRouter />
-				</Provider>
-			</Layout>
+				</Layout>
+			</ThemeProvider>
 		</BrowserRouter>
 	);
 }

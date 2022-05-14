@@ -23,9 +23,9 @@ export const Column = styled.div`
 	flex: 33%;
 	:hover {
 		${Title} {
-			outline: 1px solid white;
+			outline: 1px solid ${(props) => props.theme.colors.base};
 		}
-		outline: 1px solid white;
+		outline: 1px solid ${(props) => props.theme.colors.base};
 	}
 `;
 
@@ -51,9 +51,9 @@ export const Item = styled.div`
 	${flexCenter};
 	justify-content: space-between;
 	:hover {
-		background-color: white;
+		background-color: ${(props) => props.theme.colors.base};
 		${Label} {
-			color: black;
+			color: ${(props) => props.theme.colors.background};
 		}
 	}
 	padding: 10px;

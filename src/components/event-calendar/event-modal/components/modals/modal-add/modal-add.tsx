@@ -15,7 +15,14 @@ import { nanoid } from "nanoid";
 import { InputMaskTime } from "../../../../../input-mask-time/input-time";
 import { ConvertTime } from "../../../../../../utils/time";
 import { InputMaskDate } from "../../../../../input-mask-date/input-date";
-export const ModalAdd: FC<IModalAddProps> = ({ dispatch, typeEvent }) => {
+import { сoncatTimeToNumber } from "../../../../../../utils/time";
+import { IEvent } from "../../../../../../models/event";
+
+export const ModalAdd: FC<IModalAddProps> = ({
+	dispatch,
+	typeEvent,
+	handleAdd,
+}) => {
 	const [title, setTitle] = React.useState("");
 	const [description, setDescription] = React.useState("");
 	const { selectedDay: selected } = useTypesSelector((state) => state.event);
@@ -34,22 +41,18 @@ export const ModalAdd: FC<IModalAddProps> = ({ dispatch, typeEvent }) => {
 	};
 
 	const actionModalAdd = () => {
-		dispatch(
-			EventsActionCreator.AddEvent({
-				month: selected!.month,
-				year: selected!.year,
-				event: {
-					time: time,
-					day: selected!.day,
-					id: nanoid(5),
-					month: selected!.month,
-					year: selected!.year,
-					typeEvent,
-					description,
-					title,
-				},
-			})
-		);
+		const newEvent: IEvent = {
+			time: time,
+			day: сoncatTimeToNumber(date, [8, 9], true) as number,
+			id: nanoid(5),
+			month: сoncatTimeToNumber(date, [5, 6], true) as number,
+			year: сoncatTimeToNumber(date, [0, 1, 2, 3], true) as number,
+			typeEvent,
+			description,
+			title,
+		};
+		if (handleAdd) handleAdd(newEvent);
+		dispatch(EventsActionCreator.AddEvent(newEvent));
 		closeModalAdd();
 	};
 	return (

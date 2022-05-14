@@ -12,7 +12,7 @@ export const Container = styled.div<IContainerProps>`
 	flex-direction: column;
 	border: 1px solid white;
 	left: 50%;
-	background-color: black;
+	background-color: ${(props) => props.theme.colors.background};
 	z-index: 10;
 	transform: translate(-50%, -50%);
 	height: ${(props) =>
@@ -40,7 +40,7 @@ export const Top = styled.header`
 	display: flex;
 	align-items: center;
 	padding: 10px 5px;
-	outline: 1px solid white;
+	outline: 1px solid ${(props) => props.theme.colors.base}; ;
 `;
 
 export const Footer = styled.footer`
@@ -69,10 +69,11 @@ export const Button = styled.button`
 	}
 	padding: 0px 15px;
 	height: 40px;
-	background-color: black;
+	color: ${(props) => props.theme.colors.font};
+	background-color: ${(props) => props.theme.colors.background};
 	cursor: pointer;
 	margin: 0px 0px 0px 20px;
-	outline: 1px solid white;
+	outline: 1px solid ${(props) => props.theme.colors.base};
 	:hover {
 		outline-width: 2px;
 	}

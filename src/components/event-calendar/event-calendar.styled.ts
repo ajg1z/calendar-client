@@ -5,8 +5,8 @@ import { Day } from "./days/days.styled";
 export const Container = styled.div`
 	width: 100%;
 	position: relative;
-	color: ${({ theme }) => theme.colors.base};
-	background-color: ${({ theme }) => theme.colors.base}; ;
+	color: ${({ theme }) => theme.colors.font};
+	background-color: ${({ theme }) => theme.colors.background}; ;
 `;
 
 export const Switch = styled.div<{
@@ -34,13 +34,13 @@ export const SwitchText = styled.p`
 	${flexCenter};
 	width: 100px;
 	height: 100px;
-	color: black;
+	color: ${(props) => props.theme.colors.background};
 	opacity: 0;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	:hover {
 		opacity: 1;
-		background-color: white;
+		background-color: ${(props) => props.theme.colors.base};
 		border-radius: 50%;
 	}
 `;
@@ -70,9 +70,10 @@ export const Active = styled.div`
 `;
 export const SwitchType = styled.button<{ active: boolean }>`
 	height: 40px;
-	background-color: black;
+	color: ${(props) => props.theme.colors.font};
+	background-color: ${(props) => props.theme.colors.background};
 	cursor: pointer;
-	outline: 1px solid white;
+	outline: 1px solid ${(props) => props.theme.colors.base};
 	width: 120px;
 	${({ active }) => active && `outline-color:gold`}
 `;
@@ -86,7 +87,7 @@ export const WeekDay = styled.div<{ current: boolean }>`
 	position: relative;
 	${flexCenter}
 	height:100px;
-	outline: 1px solid white;
+	outline: 1px solid ${(props) => props.theme.colors.base};
 	${(props) =>
 		props.current &&
 		`
@@ -108,7 +109,7 @@ export const Wrapper = styled(Body)`
 export const Hour = styled.div`
 	width: 100px;
 	height: 100px;
-	outline: 1px solid white;
+	outline: 1px solid ${(props) => props.theme.colors.base};
 	${flexCenter};
 `;
 
@@ -121,8 +122,8 @@ export const Cell = styled(Day)`
 	font-size: 20px;
 	cursor: pointer;
 	&:hover {
-		background-color: #fff;
-		color: black;
+		background-color: ${(props) => props.theme.colors.background};
+		color: ${(props) => props.theme.colors.font};
 	}
 `;
 
@@ -130,12 +131,12 @@ export const DayCell = styled.div`
 	cursor: pointer;
 	transition: all 0.3s linear;
 	&:hover {
-		background-color: #fff;
-		color: black;
+		background-color: ${(props) => props.theme.colors.background};
+		color: ${(props) => props.theme.colors.font};
 	}
 	height: 100px;
 	width: 1259px;
-	outline: 1px solid white;
+	outline: 1px solid ${(props) => props.theme.colors.base};
 	${flexCenter};
 `;
 

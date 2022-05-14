@@ -1,5 +1,5 @@
 import { IEvent } from "./../../../models/event";
-import { Event, IRemoveEvent } from "./types";
+import { IRemoveEvent } from "./types";
 import { EventActionEnum, ISelectedDay } from "./types";
 
 export const EventsActionCreator = {
@@ -7,7 +7,7 @@ export const EventsActionCreator = {
 		type: EventActionEnum.SET_SELECT_DAY,
 		payload: value,
 	}),
-	AddEvent: (event: Event) => ({
+	AddEvent: (event: IEvent) => ({
 		type: EventActionEnum.ADD_EVENT,
 		payload: event,
 	}),

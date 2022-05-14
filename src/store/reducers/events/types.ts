@@ -32,17 +32,10 @@ export interface SelectedDay {
 	payload: ISelectedDay;
 }
 
-export interface Event {
-	year: number;
-	month: number;
-	event: IEvent;
-}
-
 export interface SelectedEvent {
 	type: EventActionEnum.SET_SELECT_EVENT;
 	payload: IEvent;
 }
-
 
 export interface IRemoveEvent {
 	id: string[] | string;
@@ -52,7 +45,7 @@ export interface IRemoveEvent {
 
 export interface AddEvent {
 	type: EventActionEnum.ADD_EVENT;
-	payload: Event;
+	payload: IEvent;
 }
 
 export interface RemoveEvent {

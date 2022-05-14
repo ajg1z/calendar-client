@@ -5,7 +5,7 @@ export const Container = styled.div`
 	width: 100%;
 	display: flex;
 	height: ${({ theme }) => theme.sizes.height.header};
-	background-color: ${({ theme }) => theme.colors.base};
+	background-color: ${({ theme }) => theme.colors.background};
 	padding: 5px 15px;
 	position: relative;
 	justify-content: flex-end;
@@ -13,6 +13,7 @@ export const Container = styled.div`
 export const LinkItem = styled.span`
 	margin: 0px 0px 0px;
 	cursor: pointer;
+	color: ${(props) => props.theme.colors.font};
 `;
 export const LinkChain = styled.div`
 	font-size: 20px;

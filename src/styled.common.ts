@@ -1,4 +1,5 @@
 import { css } from "styled-components";
+import { theme } from "./store/reducers/setting/types";
 
 export const flexCenter = css`
 	display: flex;
@@ -8,7 +9,9 @@ export const flexCenter = css`
 
 export const fullPage = css`
 	width: 100vw;
-	background-color: black;
+	color: ${(props) => props.theme.colors.font};
+	font-size: ${(props) => props.theme.fs.base};
+	background-color: ${(props) => props.theme.colors.background};
 `;
 
 export const scrollbar = css`

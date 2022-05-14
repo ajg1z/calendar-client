@@ -1,4 +1,38 @@
+.day {
+	.MuiSvgIcon-root {
+		color: black;
+	}
+	.MuiPaper-root {
+		color: black;
+		background-color: white !important;
+		border: 1px solid black;
+		::-webkit-scrollbar-thumb {
+			background-color: black;
+		}
+	}
+	.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected {
+		background-color: white;
+		:hover {
+			background-color: white;
+		}
+	}
+	.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root:hover {
+		background-color: #fff;
+	}
+	.MuiOutlinedInput-root {
+		color: black;
+		border: 1px solid black;
+	}
+}
+
+.night {
+	.MuiSvgIcon-root {
+		color: white;
+	}
+}
+
 .MuiPaper-root {
+	color: white;
 	margin: 10px 0px;
 	background-color: black;
 	border: 1px solid white;
@@ -14,6 +48,7 @@
 		background-color: #fff;
 	}
 }
+
 .MuiOutlinedInput-root {
 	::-webkit-scrollbar {
 		width: 0;
@@ -22,9 +57,11 @@
 	color: white;
 	border: 1px solid white;
 }
+
 .MuiOutlinedInput-notchedOutline {
 	border: none;
 }
+
 .MuiList-root {
 	width: 220px;
 }

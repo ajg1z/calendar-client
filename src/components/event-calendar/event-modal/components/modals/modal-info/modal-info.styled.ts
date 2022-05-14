@@ -11,8 +11,8 @@ export const Label = styled.p<{ active: boolean }>`
 	cursor: pointer;
 	transition: all 0.3s ease 0s;
 	:hover {
-		background-color: #fff;
-		color: black;
+		background-color: ${(props) => props.theme.colors.base};
+		color: ${(props) => props.theme.colors.background};
 	}
 	margin: 0px 0px 15px;
 `;
@@ -31,14 +31,14 @@ export const Right = styled.div`
 `;
 
 export const Left = styled(Right)`
-	border-right: 1px solid white;
+	border-right: 1px solid  ${props=>props.theme.colors.base};;
 	${scrollbar};
 `;
 
 export const Info = styled.p`
 	margin: 0px 0px 10px;
 	padding: 0px 0px 5px;
-	border-bottom: 1px solid white;
+	border-bottom: 1px solid  ${props=>props.theme.colors.base};;
 `;
 
 export const Date = styled.span`

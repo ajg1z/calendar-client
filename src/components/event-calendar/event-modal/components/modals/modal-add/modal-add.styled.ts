@@ -15,10 +15,11 @@ export const LineInput = styled.div`
 export const Textarea = styled.textarea.attrs((props) => {
 	return { rows: 5 };
 })`
+	color: ${(props) => props.theme.colors.font};
 	resize: none;
 	width: 100%;
-	background-color: black;
-	outline: 1px solid white;
+	background-color: ${(props) => props.theme.colors.background};
+	outline: 1px solid ${(props) => props.theme.colors.base};
 	display: block;
 	padding: 5px;
 	${scrollbar}
@@ -27,14 +28,13 @@ export const Textarea = styled.textarea.attrs((props) => {
 export const Input = styled.input`
 	padding: 0px 5px;
 	width: 100%;
-	color: white;
-	background-color: black;
+	color: ${(props) => props.theme.colors.font};
+	background-color: ${(props) => props.theme.colors.background};
 	height: 40px;
-	outline: 1px solid white;
-	font-size: 18px;
+	outline: 1px solid ${(props) => props.theme.colors.base};
 `;
 
 export const Label = styled(L)`
 	font-size: 18px;
-  margin:0px 0px 5px;
+	margin: 0px 0px 5px;
 `;

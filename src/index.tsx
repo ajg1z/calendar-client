@@ -2,8 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { scrollbar } from "./styled.common";
+import { Provider } from "react-redux";
+import { store } from "./store/index";
+
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement
 );
@@ -13,8 +16,6 @@ const GlobalStyle = createGlobalStyle`
   margin:0px 0px 0px 0px;
   padding:0px 0px 0px 0px ;
   border:0;
-  color:white;
-  font-size: 16px;
   font-family: -apple-system, BlinkMacSystemFont, Segoe\UI, Roboto,
 		Helvetica\Neue, Arial, Noto\Sans, sans-serif;
   font-weight: 400;
@@ -26,7 +27,6 @@ p{
 
 a{
   text-decoration: none;
-  color:white;
 }
 
 body{
@@ -46,7 +46,9 @@ body{
 `;
 root.render(
 	<>
-		<GlobalStyle />
-		<App />
+		<Provider store={store}>
+			<GlobalStyle />
+			<App />
+		</Provider>
 	</>
 );

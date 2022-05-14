@@ -11,7 +11,7 @@ export const Edit = styled.div`
 	right: 0;
 	border-radius: 50%;
 	z-index: 10;
-	background-color: black;
+	background-color: ${(props) => props.theme.colors.background};;
 	cursor: pointer;
 `;
 
@@ -20,8 +20,8 @@ export const EditButton = styled(EditIcon)`
 	height: 45px;
 	padding: 10px;
 	border-radius: 50%;
-	border-top: 1px solid white;
-	border-bottom: 1px solid white;
+	border-top: 1px solid ${(props) => props.theme.colors.base};;
+	border-bottom: 1px solid ${(props) => props.theme.colors.base};;
 `;
 
 export const CheckButton = styled(CheckIcon)`
@@ -29,14 +29,14 @@ export const CheckButton = styled(CheckIcon)`
 	height: 45px;
 	padding: 10px;
 	border-radius: 50%;
-	border-top: 1px solid white;
-	border-bottom: 1px solid white;
+	border-top: 1px solid ${(props) => props.theme.colors.base};;
+	border-bottom: 1px solid ${(props) => props.theme.colors.base};;
 `;
 
 export const TextInput = styled.textarea`
 	padding: 0px 0px 0px 5px;
-	background-color: black;
-	border: 1px solid white;
+	background-color: ${(props) => props.theme.colors.background};;
+	border: 1px solid ${(props) => props.theme.colors.base};;
 	width: 85%;
 	${scrollbar};
 `;
@@ -54,8 +54,8 @@ export const Button = styled.button`
 	height: 35px;
 	padding: 0px 20px;
 	cursor: pointer;
-	background-color: black;
-	border: 1px solid white;
+	background-color: ${(props) => props.theme.colors.background};;
+	border: 1px solid ${(props) => props.theme.colors.base};;
 	outline: none;
 `;
 

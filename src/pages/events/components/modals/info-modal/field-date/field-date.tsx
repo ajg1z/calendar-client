@@ -11,7 +11,7 @@ import {
 	Label,
 	Text,
 	TextInput,
-} from "./field-date.styled";
+} from "../field-string/field-string.styled";
 import { InputMaskDate } from "../../../../../../components/input-mask-date/input-date";
 
 export const FieldDate: React.FC<FieldProps> = ({

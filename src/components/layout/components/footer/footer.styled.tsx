@@ -4,7 +4,7 @@ export const Container = styled.div`
 	height: 100px;
 	width: ${({ theme }) => theme.sizes.width.footer};
 	padding: 20px 10px;
-	background-color: ${({ theme }) => theme.colors.base}; ;
+	background-color: ${({ theme }) => theme.colors.background}; ;
 `;
 
 export const Logo = styled.div`

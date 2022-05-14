@@ -2,7 +2,7 @@ export interface IEvent {
 	title: string;
 	description: string;
 	typeEvent: typeEvent;
-	year: null | number;
+	year: number;
 	month: number;
 	day: number;
 	id: string;

@@ -41,7 +41,11 @@ export const Settings = () => {
 		(state) => state.modal
 	);
 	const { events, selectedEvent } = useTypesSelector((state) => state.event);
+	const [checked, setChecked] = React.useState(true);
 
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setChecked(event.target.checked);
+	};
 	const [selectedSection, setSelectedSection] =
 		React.useState<ISections | null>(null);
 	const [listHolydays, setListHolidays] = React.useState<IEvent[]>([]);
@@ -69,10 +73,15 @@ export const Settings = () => {
 		);
 	};
 
+	const handleAdd = (event: IEvent) => {
+		setListHolidays([...listHolydays, event]);
+	};
+
 	const handleDelete = (id: string) => {
 		setListHolidays(listHolydays.filter((ev) => ev.id !== id));
 	};
 
+	console.log(theme);
 	const right = React.useMemo(() => {
 		switch (selectedSection) {
 			case "customization": {
@@ -110,6 +119,8 @@ export const Settings = () => {
 							<Line>
 								<Text>Day</Text>
 								<Switch
+									checked={theme === "day" ? false : true}
+									inputProps={{ "aria-label": "controlled" }}
 									onChange={(e) => {
 										dispatch(
 											SettingActionCreater.SetTheme(
@@ -170,7 +181,7 @@ export const Settings = () => {
 			default:
 				return <></>;
 		}
-	}, [selectedSection, listHolydays]);
+	}, [selectedSection, listHolydays, theme]);
 
 	return (
 		<Container>
@@ -193,7 +204,13 @@ export const Settings = () => {
 					}}
 				/>
 			)}
-			{modalAdd && <ModalAdd typeEvent="holiday" dispatch={dispatch} />}
+			{modalAdd && (
+				<ModalAdd
+					handleAdd={handleAdd}
+					typeEvent="holiday"
+					dispatch={dispatch}
+				/>
+			)}
 			{modalInfo && (
 				<InfoModal
 					handleDelete={handleDelete}

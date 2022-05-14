@@ -10,6 +10,7 @@ import {
 	Top,
 } from "./event.modal.styled";
 import ReactDOM from "react-dom";
+import { useSpring, animated } from "react-spring";
 
 export const EventModal: FC<IEventModalProps> = ({
 	children,
@@ -26,7 +27,7 @@ export const EventModal: FC<IEventModalProps> = ({
 }) => {
 	return ReactDOM.createPortal(
 		<Background>
-			<Container width={width} height={height}>
+			<animated.Container width={width} height={height}>
 				<Close onClick={close}>╳</Close>
 				<Top>{title}</Top>
 				<Body>{children}</Body>
@@ -41,7 +42,7 @@ export const EventModal: FC<IEventModalProps> = ({
 						{rightBttn !== "" && <Button onClick={close}>{rightBttn}</Button>}
 					</Footer>
 				)}
-			</Container>
+			</animated.Container>
 		</Background>,
 		document.body
 	);

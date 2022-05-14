@@ -10,17 +10,18 @@ import { Label } from "../modal-add/modal-add.styled";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { Title } from "../../../../../../pages/events/events.styled";
+import { useTypesSelector } from "../../../../../../hooks/useTypedSelector";
 
 export const ModalDelete: React.FC<IModalDeleteProps> = ({
 	dispatch,
 	selected,
 }) => {
 	const [selects, setSelects] = React.useState<string[]>([]);
-
+	const { theme } = useTypesSelector((state) => state.setting);
 	const closeModalDelete = () => {
 		dispatch(modalActionCreator.SetModalDelete(false));
 	};
-
+	
 	const actionModalDelete = () => {
 		if (!selects) return;
 		if (!selected) return;
@@ -75,25 +76,26 @@ export const ModalDelete: React.FC<IModalDeleteProps> = ({
 					{!selected!.events.length ? (
 						<Label>This day not have events</Label>
 					) : (
-							<Select
-								sx={{
-									width: "50%",
-									"-ms-overflow-style": "none",
-									"scrollbar-width": "none",
-									"::-webkit-scrollbar": {
-										cursor: "pointer",
-										width: 0,
-										height: 0,
-									},
-								}}
-								value={selects}
-								onChange={handleChange}
-								multiple
-							>
-								{selected!.events.map((event) => {
-									return <MenuItem value={event.id}>{event.title}</MenuItem>;
-								})}
-							</Select>
+						<Select
+							sx={{
+								width: "50%",
+								"-ms-overflow-style": "none",
+								"scrollbar-width": "none",
+								"::-webkit-scrollbar": {
+									cursor: "pointer",
+									width: 0,
+									height: 0,
+								},
+							}}
+							className={`select ${theme}`}
+							value={selects}
+							onChange={handleChange}
+							multiple
+						>
+							{selected!.events.map((event) => {
+								return <MenuItem value={event.id}>{event.title}</MenuItem>;
+							})}
+						</Select>
 					)}
 				</Container>
 			</EventModal>

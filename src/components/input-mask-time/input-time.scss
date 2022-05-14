@@ -7,4 +7,9 @@
 	text-align: center;
 	height: 35px;
 	outline: none;
+	&.day {
+		color: black;
+		background-color: white;
+		border-color: black;
+	}
 }

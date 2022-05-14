@@ -27,7 +27,7 @@ export const Day = styled.div<{ current: boolean }>`
 	position: relative;
 	${flexCenter}
 	height:100px;
-	outline: 1px solid white;
+	outline: 1px solid ${(props) => props.theme.colors.base};;
 	${(props) =>
 		props.current &&
 		`

@@ -11,7 +11,7 @@ export const Left = styled.div`
 	flex: 20%;
 	padding: 10px;
 	:hover {
-		outline: 2px solid white;
+		outline: 2px solid ${(props) => props.theme.colors.base};
 	}
 `;
 
@@ -47,7 +47,7 @@ export const Right = styled.div`
 	flex: 80%;
 	height: 100%;
 	:hover {
-		outline: 2px solid white;
+		outline: 2px solid ${(props) => props.theme.colors.base};
 	}
 `;
 export const ListHolydays = styled.div`
@@ -59,8 +59,8 @@ export const ItemHolydays = styled.div<{ selected: boolean }>`
 	margin: 0px 0px 10px;
 	padding: 10px;
 	${flexCenter};
+	outline: 1px solid ${(props) => props.theme.colors.base};
 	justify-content: space-between;
-	${({ selected }) => selected && `background-color:gray`};
 `;
 
 export const Actions = styled.div`
@@ -77,11 +77,12 @@ export const Button = styled.button`
 		font-size: 25px;
 		position: absolute;
 	}
+	color: ${(props) => props.theme.colors.font};
 	overflow: hidden;
 	position: relative;
 	display: block;
 	text-align: center;
-	outline: 1px solid white;
+	outline: 1px solid ${(props) => props.theme.colors.base};
 	height: 3em;
 	width: 40%;
 	margin: 0px auto;
@@ -93,7 +94,7 @@ export const Button = styled.button`
 			opacity: 1;
 		}
 	}
-	background-color: black;
+	background-color: ${(props) => props.theme.colors.background}; ;
 `;
 
 export const NameEvent = styled.p`

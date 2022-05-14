@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
 	width: 100vw;
-	background-color: black;
+	background-color: ${(props) => props.theme.colors.background};
 	height: 100vh;
 	display: flex;
 	flex-direction: column;

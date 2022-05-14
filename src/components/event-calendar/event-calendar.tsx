@@ -233,22 +233,7 @@ export const EventCalendar: FC<IEventProps> = () => {
 			setCurrentTime();
 			setDay(today);
 		}
-		// const middleMonth =
-		// 	new Date(year, month, day).getDay() === 0
-		// 		? new Date(year, month, day - 1).getMonth()
-		// 		: new Date(year, month, day).getDay() < 4
-		// 		? new Date(
-		// 				year,
-		// 				month,
-		// 				day - (4 - new Date(year, month, day).getDay())
-		// 		  ).getMonth()
-		// 		: new Date(
-		// 				year,
-		// 				month,
-		// 				day - (new Date(year, month, day).getDay() - 4)
-		// 		  ).getMonth();
-		// setMonth(middleMonth);
-		// setYear(currentYear);
+	
 	};
 
 	function displayMenu(e: TriggerEvent, value: ISelectedDay) {

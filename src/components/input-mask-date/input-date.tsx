@@ -2,8 +2,10 @@ import React from "react";
 import "./input-date.scss";
 import NumberFormat, { NumberFormatValues } from "react-number-format";
 import { InputTimeProps } from "./input-date.types";
+import { useTypesSelector } from "../../hooks/useTypedSelector";
 export const InputMaskDate = React.forwardRef<HTMLInputElement, InputTimeProps>(
 	({ setValue, value, className, onBlur }, ref) => {
+		const { theme } = useTypesSelector((state) => state.setting);
 		const [formatsCharacter, setFormatsCharacter] = React.useState({
 			"1": /[0-9]/,
 			"2": /[0-9]/,
@@ -70,7 +72,7 @@ export const InputMaskDate = React.forwardRef<HTMLInputElement, InputTimeProps>(
 							return true;
 					}
 				}}
-				className={"input-date-mask " + className}
+				className={"input-date-mask " + className + " " + theme}
 				displayType="input"
 				mask="_"
 				format="####-##-##"
