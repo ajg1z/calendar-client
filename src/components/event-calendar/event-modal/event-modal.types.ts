@@ -11,7 +11,8 @@ export interface IEventModalProps {
 	height: number | string;
 	disabled?: boolean;
 	action: () => void;
-	customFooter?: ()=>any;
+	isModal: boolean;
+	customFooter?: () => any;
 }
 
 export interface IContainerProps {

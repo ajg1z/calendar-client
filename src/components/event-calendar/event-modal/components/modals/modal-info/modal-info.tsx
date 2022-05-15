@@ -21,13 +21,16 @@ export const ModalInfo: FC<{ dispatch: Dispatch<any> }> = ({ dispatch }) => {
 	const { selectedDay: selected } = useTypesSelector((state) => state.event);
 	const [selectedEvent, setSelectedEvent] = React.useState<IEvent | null>(null);
 	const actionModalInfo = () => {};
-
+	const { modalInfo } = useTypesSelector((state) => state.modal);
 	const closeModalInfo = () => {
 		dispatch(modalActionCreator.SetModalInfo(false));
+		setSelectedEvent(null)
 	};
+	if (!selected) return <></>;
 
 	return (
 		<EventModal
+			isModal={modalInfo}
 			action={actionModalInfo}
 			close={closeModalInfo}
 			height={500}
@@ -38,10 +41,10 @@ export const ModalInfo: FC<{ dispatch: Dispatch<any> }> = ({ dispatch }) => {
 		>
 			<Container>
 				<Left>
-					{!selected?.events.length && (
+					{!selected.events.length && (
 						<LabelNotEvents>Not events</LabelNotEvents>
 					)}
-					{selected!.events.map((el) => {
+					{selected.events.map((el) => {
 						return (
 							<Label
 								active={selectedEvent?.id === el.id}
@@ -56,9 +59,9 @@ export const ModalInfo: FC<{ dispatch: Dispatch<any> }> = ({ dispatch }) => {
 				<Right>
 					<Info>
 						Date:
-						<Date>{ConvertTime(selected!.day)}</Date>-
-						<Date>{ConvertTime(selected!.month)}</Date>-
-						<Date>{ConvertTime(selected!.year)}</Date>
+						<Date>{ConvertTime(selected.day)}</Date>-
+						<Date>{ConvertTime(selected.month)}</Date>-
+						<Date>{ConvertTime(selected.year)}</Date>
 					</Info>
 					{selectedEvent ? (
 						<>
@@ -75,7 +78,7 @@ export const ModalInfo: FC<{ dispatch: Dispatch<any> }> = ({ dispatch }) => {
 						</>
 					) : (
 						<Text>
-							{selected!.events.length && !selectedEvent
+							{selected.events.length && !selectedEvent
 								? "Select event"
 								: "Not event for select"}
 						</Text>

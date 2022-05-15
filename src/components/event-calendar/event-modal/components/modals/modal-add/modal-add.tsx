@@ -27,7 +27,7 @@ export const ModalAdd: FC<IModalAddProps> = ({
 	const [description, setDescription] = React.useState("");
 	const { selectedDay: selected } = useTypesSelector((state) => state.event);
 	const [time, setTime] = React.useState(selected?.time || "");
-
+	const { modalAdd } = useTypesSelector((state) => state.modal);
 	const [date, setDate] = React.useState(() => {
 		if (selected) {
 			return `${selected!.year}-${ConvertTime(selected!.month)}-${ConvertTime(
@@ -37,8 +37,19 @@ export const ModalAdd: FC<IModalAddProps> = ({
 	});
 
 	const closeModalAdd = () => {
+		cleanInputs();
 		dispatch(modalActionCreator.SetModalAdd(false));
 	};
+
+	React.useEffect(() => {
+		if (selected) {
+			setDate(
+				`${selected!.year}-${ConvertTime(selected!.month)}-${ConvertTime(
+					selected!.day
+				)}`
+			);
+		}
+	}, [modalAdd]);
 
 	const actionModalAdd = () => {
 		const newEvent: IEvent = {
@@ -53,11 +64,26 @@ export const ModalAdd: FC<IModalAddProps> = ({
 		};
 		if (handleAdd) handleAdd(newEvent);
 		dispatch(EventsActionCreator.AddEvent(newEvent));
+		cleanInputs();
 		closeModalAdd();
 	};
+
+	const cleanInputs = () => {
+		setTitle("");
+		setTime("");
+		setDescription("");
+		if (selected)
+			setDate(
+				`${selected.year}-${ConvertTime(selected.month)}-${ConvertTime(
+					selected.day
+				)}`
+			);
+	};
+
 	return (
 		<EventModal
 			footer
+			isModal={modalAdd}
 			action={actionModalAdd}
 			close={closeModalAdd}
 			height={490}

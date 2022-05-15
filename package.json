@@ -19,6 +19,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/redux-thunk": "^2.1.0",
     "axios": "^0.26.1",
+    "framer-motion": "^6.3.3",
     "moment": "^2.29.2",
     "nanoid": "^3.3.2",
     "react": "^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0",

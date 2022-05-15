@@ -1,5 +1,6 @@
 import { flexCenter, fullPage } from "./../../styled.common";
 import styled from "styled-components";
+import { animated } from "react-spring";
 
 export const Container = styled.div`
 	${fullPage};
@@ -16,11 +17,18 @@ export const Left = styled.div`
 `;
 
 export const Section = styled.div`
-	margin: 20px 0px;
+	text-align: center;
+	margin: 20px auto;
+	padding: 10px 0px;
+	width: 150px;
 	font-size: 20px;
+	border-radius: 5px;
 	cursor: pointer;
+	transition: all 0.3s ease 0s;
 	:hover {
-		text-decoration: underline;
+		background-color: #a4a4ac;
+		transform: scale(1.1);
+		box-shadow: 2px 2px 15px #a4a4ac;
 	}
 `;
 
@@ -102,6 +110,6 @@ export const NameEvent = styled.p`
 	cursor: pointer;
 `;
 
-export const SectionOptions = styled.div`
+export const SectionOptions = styled(animated.div)`
 	margin: 0px 0px 20px;
 `;

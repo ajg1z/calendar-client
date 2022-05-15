@@ -27,7 +27,6 @@ export const Events = () => {
 
 		return result;
 	};
-
 	const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
 		if (!result.destination) return;
 		const newList = reorder(
@@ -81,14 +80,12 @@ export const Events = () => {
 	const dispatch = useDispatch();
 	return (
 		<Container>
-			{modalInfo && (
-				<InfoModal
-					handleDelete={handleDelete}
-					handleEdit={handleEdit}
-					modalConfirm={modalConfirm}
-					dispatch={dispatch}
-				/>
-			)}
+			<InfoModal
+				handleDelete={handleDelete}
+				handleEdit={handleEdit}
+				modalConfirm={modalConfirm}
+				dispatch={dispatch}
+			/>
 			<Body>
 				<Column>
 					<Title>My Events</Title>
@@ -120,10 +117,10 @@ export const Events = () => {
 																key={event.id}
 																onClick={() => {
 																	dispatch(
-																		modalActionCreator.SetModalInfo(true)
+																		EventsActionCreator.SetSelectEvent(event)
 																	);
 																	dispatch(
-																		EventsActionCreator.SetSelectEvent(event)
+																		modalActionCreator.SetModalInfo(true)
 																	);
 																}}
 															>

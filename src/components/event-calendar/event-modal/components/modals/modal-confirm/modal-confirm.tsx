@@ -5,7 +5,7 @@ import { EventModal } from "../../../event-modal";
 import { Container } from "./modal-confirm.styled";
 import { modalActionCreator } from "../../../../../../store/reducers/modal/action-creators";
 import { IModalConfirmProps } from "./modal-confirm.types";
-import {Label} from '../modal-add/modal-add.styled'
+import { Label } from "../modal-add/modal-add.styled";
 
 export const ConfirmModal: FC<IModalConfirmProps> = ({
 	dispatch,
@@ -14,16 +14,17 @@ export const ConfirmModal: FC<IModalConfirmProps> = ({
 	textAction,
 	title,
 }) => {
-	
+	const { modalConfirm } = useTypesSelector((state) => state.modal);
 	const closeModalDelete = () => {
 		dispatch(modalActionCreator.SetModalConfirm(false));
 	};
 
 	return (
 		<EventModal
+			isModal={modalConfirm}
 			action={action}
 			close={closeModalDelete}
-			height={'max-content'}
+			height={200}
 			width={600}
 			leftBttn={textAction}
 			rightBttn="Cancel"

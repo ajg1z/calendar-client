@@ -8,9 +8,11 @@ import {
 	Container,
 	Footer,
 	Top,
+	Text
 } from "./event.modal.styled";
 import ReactDOM from "react-dom";
-import { useSpring, animated } from "react-spring";
+import { useSpring, animated, useTransition } from "react-spring";
+import { useTypesSelector } from "../../../hooks/useTypedSelector";
 
 export const EventModal: FC<IEventModalProps> = ({
 	children,
@@ -24,26 +26,43 @@ export const EventModal: FC<IEventModalProps> = ({
 	action,
 	disabled,
 	customFooter,
+	isModal,
 }) => {
+	const transition = useTransition(isModal, {
+		enter: { scale: 1 },
+		from: { scale: 0 },
+		leave: { scale: 0 },
+		config: { duration: 300 },
+	});
 	return ReactDOM.createPortal(
-		<Background>
-			<animated.Container width={width} height={height}>
-				<Close onClick={close}>╳</Close>
-				<Top>{title}</Top>
-				<Body>{children}</Body>
-				{!footer && customFooter && customFooter()}
-				{footer && (
-					<Footer>
-						{leftBttn !== "" && (
-							<Button disabled={disabled} onClick={action}>
-								{leftBttn}
-							</Button>
-						)}
-						{rightBttn !== "" && <Button onClick={close}>{rightBttn}</Button>}
-					</Footer>
-				)}
-			</animated.Container>
-		</Background>,
+		transition((style, item: boolean) => {
+			return (
+				item && (
+					<Background>
+						<Container style={style} width={width} height={height}>
+							<Top>
+								<Text>{title}</Text>
+								<Close onClick={close}>╳</Close>
+							</Top>
+							<Body>{children}</Body>
+							{!footer && customFooter && customFooter()}
+							{footer && (
+								<Footer>
+									{leftBttn !== "" && (
+										<Button disabled={disabled} onClick={action}>
+											{leftBttn}
+										</Button>
+									)}
+									{rightBttn !== "" && (
+										<Button onClick={close}>{rightBttn}</Button>
+									)}
+								</Footer>
+							)}
+						</Container>
+					</Background>
+				)
+			);
+		}),
 		document.body
 	);
 };

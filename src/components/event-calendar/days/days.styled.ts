@@ -1,3 +1,4 @@
+import { animated } from "react-spring";
 import styled from "styled-components";
 import { flexCenter } from "../../../styled.common";
 
@@ -22,12 +23,12 @@ export const ProgressDay = styled.div<{ progress: number }>`
 	background-color: rgb(71, 89, 226, 0.5);
 `;
 
-export const Day = styled.div<{ current: boolean }>`
+export const Day = styled(animated.div)<{ current: boolean }>`
 	width: 180px;
 	position: relative;
 	${flexCenter}
 	height:100px;
-	outline: 1px solid ${(props) => props.theme.colors.base};;
+	outline: 1px solid ${(props) => props.theme.colors.base};
 	${(props) =>
 		props.current &&
 		`

@@ -1,6 +1,7 @@
 import { flexCenter } from "./../../styled.common";
 import styled from "styled-components";
 import { Day } from "./days/days.styled";
+import { animated } from "react-spring";
 
 export const Container = styled.div`
 	width: 100%;
@@ -127,7 +128,7 @@ export const Cell = styled(Day)`
 	}
 `;
 
-export const DayCell = styled.div`
+export const DayCell = styled(animated.div)`
 	cursor: pointer;
 	transition: all 0.3s linear;
 	&:hover {

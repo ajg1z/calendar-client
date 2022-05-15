@@ -1,6 +1,6 @@
 import { TriggerEvent } from "react-contexify";
 import { ISelectedDay } from "../../../store/reducers/events/types";
-import { typeCalendar } from "../event-calendar.types";
+import { direction, typeCalendar } from "../event-calendar.types";
 
 export interface WeekProps {
   day: number;
@@ -8,5 +8,6 @@ export interface WeekProps {
   year: number;
 	month: number;
   typeCalendar: typeCalendar;
-  displayMenu:(e: TriggerEvent, value: ISelectedDay)=>void
+  displayMenu:(e: TriggerEvent, value: ISelectedDay)=>void,
+  direction: direction;
 }

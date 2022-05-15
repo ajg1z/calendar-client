@@ -5,7 +5,8 @@ import { Container, Img } from "./week.styled";
 import { WeekProps } from "./week.types";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { TriggerEvent } from "react-contexify";
-import {  defineMonth,defineEvents } from "../../../utils/event";
+import { defineMonth, defineEvents } from "../../../utils/event";
+import { useTransition } from "react-spring";
 
 export const Week: React.FC<WeekProps> = ({
 	day,
@@ -14,6 +15,7 @@ export const Week: React.FC<WeekProps> = ({
 	month,
 	year,
 	displayMenu,
+	direction,
 }) => {
 	const { today, currentYear, currentMonth } = useTypesSelector(
 		(state) => state.date
@@ -47,19 +49,41 @@ export const Week: React.FC<WeekProps> = ({
 			time: "",
 		});
 	};
+
+	const props = React.useMemo(() => {
+		const obj = {
+			from: {
+				opacity: 0,
+				transform:
+					direction === "prev" ? "translateX(-100px)" : "translateX(100px)",
+			},
+			enter: { opacity: 1, transform: "translateX(0px)" },
+			leave: {
+				opacity: 0,
+				transform:
+					direction === "prev" ? "translateX(100px)" : "translateX(-100px)",
+			},
+			config: { duration: 200 },
+			exitBeforeEnter: true,
+		};
+		return obj;
+	}, [direction]);
+
+	const transition = useTransition(days, props);
 	return (
 		<Container>
 			<Img>
 				<AccessTimeIcon />
 			</Img>
-			{days.map((d, i) => {
+			{transition((style, item, config, index) => {
 				return (
 					<Day
-						onContextMenu={(e) => handleSelectDay(d, e, i)}
-						key={d}
-						current={defineCurrentDay(d)}
+						style={style}
+						onContextMenu={(e) => handleSelectDay(item, e, index)}
+						key={item}
+						current={defineCurrentDay(item)}
 					>
-						{d}
+						{item}
 					</Day>
 				);
 			})}

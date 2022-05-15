@@ -8,37 +8,58 @@ import { useTypesSelector } from "../../../hooks/useTypedSelector";
 import { defineEvents, EventSome } from "../../../utils/event";
 import { weekendDays } from "../../../const/calendar";
 import { nanoid } from "nanoid";
+import { useTransition, useSprings } from "react-spring";
 export const Days: React.FC<IDaysProps> = ({
 	days,
 	month,
 	year,
+	direction,
 	displayMenu,
 }) => {
 	const { today, currentYear, currentMonth } = useTypesSelector(
 		(state) => state.date
 	);
-	const { events } = useTypesSelector((state) => state.event);
+	const props = React.useMemo(() => {
+		const obj = {
+			from: {
+				opacity: 0,
+				transform:
+					direction === "prev" ? "translateX(-100px)" : "translateX(100px)",
+			},
+			enter: { opacity: 1, transform: "translateX(0px)" },
+			leave: {
+				opacity: 0,
+				transform:
+					direction === "prev" ? "translateX(100px)" : "translateX(-100px)",
+			},
+			config: { duration: 200 },
+			exitBeforeEnter: true,
+		};
+		return obj;
+	}, [month, year]);
 
+	const transition = useTransition(days, props);
+	const { events } = useTypesSelector((state) => state.event);
 	return (
 		<Container>
-			{days.map((day, i) => {
-				
+			{transition((style, item, config, index) => {
 				const [displayEvents, allEventsDay] = defineEvents(
-					{ day: day.day, month: day.month },
+					{ day: item.day, month: item.month },
 					month,
 					year,
-					i,
+					index,
 					events
 				);
 				return (
 					<Day
+						style={style}
 						onContextMenu={(e) =>
 							displayMenu(e, {
-								day: day.day,
+								day: item.day,
 								month:
-									day.month === "next"
+									item.month === "next"
 										? month + 1
-										: day.month === "prev"
+										: item.month === "prev"
 										? month - 1
 										: month,
 								year,
@@ -49,17 +70,17 @@ export const Days: React.FC<IDaysProps> = ({
 						current={
 							currentYear === year &&
 							month === currentMonth &&
-							today === day.day &&
-							day.month === "current"
+							today === item.day &&
+							item.month === "current"
 						}
 					>
 						{currentYear === year &&
 							month === currentMonth &&
-							day.month === "current" &&
-							today === day.day && (
+							item.month === "current" &&
+							today === item.day && (
 								<ProgressDay progress={new Date().getHours() * 4} />
 							)}
-						{day.day}
+						{item.day}
 						<EventsLabel>
 							{displayEvents.map((el) => {
 								return (

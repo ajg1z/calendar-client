@@ -1,12 +1,11 @@
 import { flexCenter } from "./../../../styled.common";
 import styled from "styled-components";
 import { IContainerProps } from "./event-modal.types";
+import { animated } from "react-spring";
 
-export const Container = styled.div<IContainerProps>`
+export const Container = styled(animated.div)<IContainerProps>`
 	width: ${(props) =>
 		typeof props.width === "string" ? props.width : props.width + "px"};
-	position: fixed;
-	top: 50%;
 	display: flex;
 	padding: 0px 0px 15px;
 	flex-direction: column;
@@ -14,17 +13,20 @@ export const Container = styled.div<IContainerProps>`
 	left: 50%;
 	background-color: ${(props) => props.theme.colors.background};
 	z-index: 10;
-	transform: translate(-50%, -50%);
 	height: ${(props) =>
 		typeof props.height === "string" ? props.height : props.height + "px"}; ;
 `;
 
-export const Background = styled.div`
+export const Text = styled.p``;
+
+export const Background = styled(animated.div)`
 	position: fixed;
 	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
+	${flexCenter};
+	transition: all 0.3s ease 0s;
 	background-color: rgb(0, 0, 0, 0.8);
 `;
 
@@ -38,6 +40,7 @@ export const Body = styled.main`
 export const Top = styled.header`
 	height: auto;
 	display: flex;
+	justify-content: space-between;
 	align-items: center;
 	padding: 10px 5px;
 	outline: 1px solid ${(props) => props.theme.colors.base}; ;
@@ -51,12 +54,9 @@ export const Footer = styled.footer`
 `;
 
 export const Close = styled.p`
-	position: absolute;
-	top: 5px;
 	cursor: pointer;
 	line-height: 1;
 	font-size: 20px;
-	right: 8px;
 	transition: color 0.3s ease 0s;
 	:hover {
 		color: red;

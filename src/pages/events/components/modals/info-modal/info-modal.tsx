@@ -33,20 +33,30 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 	handleEdit,
 }) => {
 	const { selectedEvent } = useTypesSelector((state) => state.event);
-	const [title, setTitle] = React.useState(selectedEvent!.title);
-	const [time, setTime] = React.useState(selectedEvent!.time);
+	const [title, setTitle] = React.useState(selectedEvent?.title || "");
+	const [time, setTime] = React.useState(selectedEvent?.time || "");
 	const [description, setDescription] = React.useState(
-		selectedEvent!.description
-	);
-	const [month, setMonth] = React.useState();
-	const [day, setDay] = React.useState();
-	const [year, setYear] = React.useState();
-	const [date, setDate] = React.useState(
-		`${selectedEvent!.year}-${ConvertTime(selectedEvent!.month)}-${ConvertTime(
-			selectedEvent!.day
-		)}`
+		selectedEvent?.description || ""
 	);
 
+	const { modalInfo } = useTypesSelector((state) => state.modal);
+	const [date, setDate] = React.useState(
+		`${selectedEvent?.year}-${ConvertTime(
+			selectedEvent?.month || 1
+		)}-${ConvertTime(selectedEvent?.day || 1)}`
+	);
+	React.useEffect(() => {
+		if (modalInfo && selectedEvent) {
+			setTitle(selectedEvent.title);
+			setTime(selectedEvent.time);
+			setDescription(selectedEvent.description);
+			setDate(
+				`${selectedEvent?.year}-${ConvertTime(
+					selectedEvent?.month || 1
+				)}-${ConvertTime(selectedEvent?.day || 1)}`
+			);
+		}
+	}, [modalInfo]);
 	const closeModal = () => {
 		dispatch(modalActionCreator.SetModalConfirm(false));
 		dispatch(modalActionCreator.SetModalInfo(false));
@@ -89,7 +99,7 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 				day: сoncatTimeToNumber(date, [8, 9], true) as number,
 				year: сoncatTimeToNumber(date, [0, 1, 2, 3], true) as number,
 				description,
-				month: (сoncatTimeToNumber(date, [5, 6], true) as number),
+				month: сoncatTimeToNumber(date, [5, 6], true) as number,
 				id: selectedEvent!.id,
 				time,
 				title,
@@ -101,7 +111,7 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 				day: сoncatTimeToNumber(date, [8, 9], true) as number,
 				year: сoncatTimeToNumber(date, [0, 1, 2, 3], true) as number,
 				description,
-				month: (сoncatTimeToNumber(date, [5, 6], true) as number),
+				month: сoncatTimeToNumber(date, [5, 6], true) as number,
 				id: selectedEvent!.id,
 				time,
 				title,
@@ -148,11 +158,13 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 		}
 		dispatch(modalActionCreator.SetModalInfo(false));
 	};
+	if (!selectedEvent) return <></>;
 	return (
 		<EventModal
+			isModal={modalInfo}
 			action={() => console.log}
 			close={handleCloseModal}
-			height={"max-content"}
+			height={550}
 			width={500}
 			leftBttn="Delete"
 			rightBttn="Close"
@@ -169,15 +181,13 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 				);
 			}}
 		>
-			{modalConfirm && (
-				<ConfirmModal
-					title={stateModalConfirm.title}
-					textAction={stateModalConfirm.textAction}
-					text={stateModalConfirm.text}
-					action={stateModalConfirm.action}
-					dispatch={dispatch}
-				/>
-			)}
+			<ConfirmModal
+				title={stateModalConfirm.title}
+				textAction={stateModalConfirm.textAction}
+				text={stateModalConfirm.text}
+				action={stateModalConfirm.action}
+				dispatch={dispatch}
+			/>
 			<Container>
 				<Label>Type event</Label>
 				<TypeEvent>

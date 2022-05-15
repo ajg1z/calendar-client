@@ -30,9 +30,12 @@ import { modalActionCreator } from "../../store/reducers/modal/action-creators";
 import { InfoModal } from "../events/components/modals/info-modal/info-modal";
 import { ConfirmModal } from "../../components/event-calendar/event-modal/components/modals/modal-confirm/modal-confirm";
 import { ModalAdd } from "../../components/event-calendar/event-modal/components/modals/modal-add/modal-add";
+import { animated, useSpring } from "react-spring";
+import { useLocation } from "react-router-dom";
 
 const sections = ["customization", "time", "holidays", "language"];
 export const Settings = () => {
+	const location = useLocation().pathname;
 	const dispatch = useDispatch();
 	const { colorIconsEvent, font, language, theme, timezone } = useTypesSelector(
 		(state) => state.setting
@@ -41,13 +44,22 @@ export const Settings = () => {
 		(state) => state.modal
 	);
 	const { events, selectedEvent } = useTypesSelector((state) => state.event);
-	const [checked, setChecked] = React.useState(true);
-
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setChecked(event.target.checked);
-	};
 	const [selectedSection, setSelectedSection] =
 		React.useState<ISections | null>(null);
+	const [prevState, setPrevState] = React.useState(true);
+	const stylesToRight = useSpring({
+		config: { duration: 200 },
+		from: { transform: "translateX(-100px)", opacity: 0 },
+		to: { transform: "translateX(0px)", opacity: 1 },
+		reset: true,
+
+		immediate: () => {
+			if (!location.includes("setting")) return true;
+			if (!prevState) return true;
+			return false;
+		},
+	});
+
 	const [listHolydays, setListHolidays] = React.useState<IEvent[]>([]);
 
 	React.useEffect(() => {
@@ -81,12 +93,12 @@ export const Settings = () => {
 		setListHolidays(listHolydays.filter((ev) => ev.id !== id));
 	};
 
-	console.log(theme);
 	const right = React.useMemo(() => {
+		// debugger;
 		switch (selectedSection) {
 			case "customization": {
 				return (
-					<>
+					<animated.div style={stylesToRight}>
 						<SectionOptions>
 							<Label>Event icon customization</Label>
 							<Line>
@@ -133,12 +145,12 @@ export const Settings = () => {
 								<Text>Night</Text>
 							</Line>
 						</SectionOptions>
-					</>
+					</animated.div>
 				);
 			}
 			case "holidays": {
 				return (
-					<>
+					<animated.div style={stylesToRight}>
 						<SectionOptions>
 							<Label>Holidays</Label>
 							<ListHolydays>
@@ -175,7 +187,7 @@ export const Settings = () => {
 								</Button>
 							</ListHolydays>
 						</SectionOptions>
-					</>
+					</animated.div>
 				);
 			}
 			default:
@@ -185,47 +197,43 @@ export const Settings = () => {
 
 	return (
 		<Container>
-			{modalConfirm && (
-				<ConfirmModal
-					dispatch={dispatch}
-					title="delete"
-					text="You really want to delete event?"
-					textAction="delete"
-					action={() => {
-						if (selectedEvent) {
-							handleDelete(selectedEvent.id);
-							EventsActionCreator.RemoveEvent({
-								month: selectedEvent.month,
-								year: selectedEvent.year || 2022,
-								id: selectedEvent.id,
-							});
-							dispatch(modalActionCreator.SetModalConfirm(false));
-						}
-					}}
-				/>
-			)}
-			{modalAdd && (
-				<ModalAdd
-					handleAdd={handleAdd}
-					typeEvent="holiday"
-					dispatch={dispatch}
-				/>
-			)}
-			{modalInfo && (
-				<InfoModal
-					handleDelete={handleDelete}
-					handleEdit={handleEdit}
-					dispatch={dispatch}
-					modalConfirm={modalConfirm}
-				/>
-			)}
+			<ConfirmModal
+				dispatch={dispatch}
+				title="delete"
+				text="You really want to delete event?"
+				textAction="delete"
+				action={() => {
+					if (selectedEvent) {
+						handleDelete(selectedEvent.id);
+						EventsActionCreator.RemoveEvent({
+							month: selectedEvent.month,
+							year: selectedEvent.year || 2022,
+							id: selectedEvent.id,
+						});
+						dispatch(modalActionCreator.SetModalConfirm(false));
+					}
+				}}
+			/>
+			<ModalAdd handleAdd={handleAdd} typeEvent="holiday" dispatch={dispatch} />
+			<InfoModal
+				handleDelete={handleDelete}
+				handleEdit={handleEdit}
+				dispatch={dispatch}
+				modalConfirm={modalConfirm}
+			/>
 			<Body>
 				<Left>
 					{sections.map((s) => {
 						return (
 							<Section
 								key={s}
-								onClick={() => setSelectedSection(s as ISections)}
+								onClick={() => {
+									setPrevState(true);
+									setSelectedSection(s as ISections);
+									setTimeout(() => {
+										setPrevState(false);
+									}, 1000);
+								}}
 							>
 								{s[0].toUpperCase() + s.slice(1)}
 							</Section>

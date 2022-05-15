@@ -16,11 +16,13 @@ export const ModalDelete: React.FC<IModalDeleteProps> = ({
 	dispatch,
 	selected,
 }) => {
+	const { modalDelete } = useTypesSelector((state) => state.modal);
 	const [selects, setSelects] = React.useState<string[]>([]);
 	const { theme } = useTypesSelector((state) => state.setting);
 	const closeModalDelete = () => {
 		dispatch(modalActionCreator.SetModalDelete(false));
 	};
+	if (!selected) return <></>;
 	
 	const actionModalDelete = () => {
 		if (!selects) return;
@@ -57,23 +59,24 @@ export const ModalDelete: React.FC<IModalDeleteProps> = ({
 	return (
 		<>
 			<EventModal
+				isModal={modalDelete}
 				disabled={!selects.length}
 				footer
 				action={actionModalDelete}
 				close={closeModalDelete}
-				height={selected!.events.length ? 240 : 150}
+				height={selected.events.length ? 240 : 150}
 				width={600}
 				leftBttn="Delete"
 				rightBttn="Cancel"
 				title="Remove event"
 			>
 				<Container>
-					{selected!.events.length ? (
+					{selected.events.length ? (
 						<Title>Select event which want remove</Title>
 					) : (
 						""
 					)}
-					{!selected!.events.length ? (
+					{!selected.events.length ? (
 						<Label>This day not have events</Label>
 					) : (
 						<Select
@@ -92,7 +95,7 @@ export const ModalDelete: React.FC<IModalDeleteProps> = ({
 							onChange={handleChange}
 							multiple
 						>
-							{selected!.events.map((event) => {
+							{selected.events.map((event) => {
 								return <MenuItem value={event.id}>{event.title}</MenuItem>;
 							})}
 						</Select>

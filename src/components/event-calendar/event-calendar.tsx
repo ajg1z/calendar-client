@@ -49,6 +49,7 @@ import { IEvent } from "../../models/event";
 import { modalActionCreator } from "../../store/reducers/modal/action-creators";
 import { ConvertTime } from "../../utils/time";
 import { defineMonth, defineYear } from "../../utils/event";
+import { Spring, useSpring, useTransition } from "react-spring";
 
 const MENU_ID = "calendar";
 
@@ -67,7 +68,7 @@ export const EventCalendar: FC<IEventProps> = () => {
 	const { show } = useContextMenu({
 		id: MENU_ID,
 	});
-
+	const [direction, setDirection] = React.useState<direction>("next");
 	const [year, setYear] = React.useState(currentYear);
 	const [month, setMonth] = React.useState(currentMonth);
 	const [daysOfWeek, setDaysOfWeek] = React.useState<number[]>([]);
@@ -167,6 +168,7 @@ export const EventCalendar: FC<IEventProps> = () => {
 				setMonth(month + 1);
 			}
 		}
+		setDirection("next");
 	};
 
 	const switchPrevMonth = () => {
@@ -182,6 +184,7 @@ export const EventCalendar: FC<IEventProps> = () => {
 				setMonth(month - 1);
 			}
 		}
+		setDirection("prev");
 	};
 
 	const days = React.useMemo(() => {
@@ -233,7 +236,6 @@ export const EventCalendar: FC<IEventProps> = () => {
 			setCurrentTime();
 			setDay(today);
 		}
-	
 	};
 
 	function displayMenu(e: TriggerEvent, value: ISelectedDay) {
@@ -254,7 +256,13 @@ export const EventCalendar: FC<IEventProps> = () => {
 		);
 		dispatch(modalActionCreator.SetModalAdd(true));
 	};
-
+	const styledToCell = useSpring({
+		config: { duration: 100 },
+		from: { opacity: 0 },
+		to: { opacity: 1 },
+		reset: true,
+	});
+	
 	const arrYears = React.useMemo(() => {
 		let arrYears = [];
 		for (let i = 1970; i <= year; i++) {
@@ -274,12 +282,10 @@ export const EventCalendar: FC<IEventProps> = () => {
 					<SwitchText>{defineNameSwitch("next")}</SwitchText>
 				</Switch>
 				<ContextDay selected={selectedDay} id={MENU_ID} />
-				{modalDelete && (
-					<ModalDelete selected={selectedDay} dispatch={dispatch} />
-				)}
-				{modalInfo && <ModalInfo dispatch={dispatch} />}
-				{modalAdd && <ModalAdd typeEvent="myEvent" dispatch={dispatch} />}
-				{modalShare && <ModalShare dispatch={dispatch} />}
+				<ModalDelete selected={selectedDay} dispatch={dispatch} />
+				<ModalInfo dispatch={dispatch} />
+				<ModalAdd typeEvent="myEvent" dispatch={dispatch} />
+				<ModalShare dispatch={dispatch} />
 				<Top>
 					<Left>
 						<Time />
@@ -341,6 +347,7 @@ export const EventCalendar: FC<IEventProps> = () => {
 					<>
 						{typeCalendar === "standart" ? (
 							<Days
+								direction={direction}
 								days={days}
 								displayMenu={displayMenu}
 								month={month}
@@ -348,6 +355,7 @@ export const EventCalendar: FC<IEventProps> = () => {
 							/>
 						) : (
 							<Week
+								direction={direction}
 								displayMenu={displayMenu}
 								month={month}
 								year={year}
@@ -366,6 +374,7 @@ export const EventCalendar: FC<IEventProps> = () => {
 												{el.days.map((day, index) => {
 													return (
 														<Cell
+															style={styledToCell}
 															onClick={() =>
 																selectDayInWeekType(
 																	`${ConvertTime(el.hour)}:00`,
@@ -391,6 +400,7 @@ export const EventCalendar: FC<IEventProps> = () => {
 										<Line key={el}>
 											<Hour>{ConvertTime(el)}</Hour>
 											<DayCell
+												style={styledToCell}
 												onClick={() =>
 													selectDayInWeekType(`${ConvertTime(el)}:00`, null)
 												}
