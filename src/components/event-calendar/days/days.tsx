@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Day, EventsLabel, ProgressDay } from "./days.styled";
+import { Container, Day, EventsLabel, ProgressDay, Line } from "./days.styled";
 import { IDaysProps } from "./days.types";
 import { EventLabel } from "../event-label/event-label";
 import { IEvent } from "../../../models/event";
@@ -37,62 +37,76 @@ export const Days: React.FC<IDaysProps> = ({
 		};
 		return obj;
 	}, [month, year]);
-
-	const transition = useTransition(days, props);
+	const daysOfMonth = React.useMemo(() => {
+		return new Array(days.length / 7)
+			.fill(1)
+			.map((el, index) =>
+				new Array(7).fill(1).map((d, ind) => days[ind + 7 * index])
+			);
+	}, [days]);
+	const transition2 = useTransition(daysOfMonth, props);
 	const { events } = useTypesSelector((state) => state.event);
 	return (
 		<Container>
-			{transition((style, item, config, index) => {
-				const [displayEvents, allEventsDay] = defineEvents(
-					{ day: item.day, month: item.month },
-					month,
-					year,
-					index,
-					events
-				);
+			{transition2((style, item, config, index) => {
+				console.log(index);
 				return (
-					<Day
-						style={style}
-						onContextMenu={(e) =>
-							displayMenu(e, {
-								day: item.day,
-								month:
-									item.month === "next"
-										? month + 1
-										: item.month === "prev"
-										? month - 1
-										: month,
+					<Line>
+						{item.map((d, ind) => {
+							const [displayEvents, allEventsDay] = defineEvents(
+								{ day: d.day, month: d.month },
+								month,
 								year,
-								time: null,
-								events: allEventsDay,
-							})
-						}
-						current={
-							currentYear === year &&
-							month === currentMonth &&
-							today === item.day &&
-							item.month === "current"
-						}
-					>
-						{currentYear === year &&
-							month === currentMonth &&
-							item.month === "current" &&
-							today === item.day && (
-								<ProgressDay progress={new Date().getHours() * 4} />
-							)}
-						{item.day}
-						<EventsLabel>
-							{displayEvents.map((el) => {
-								return (
-									<EventLabel
-										key={el.id}
-										count={el.count ? el.count : 1}
-										typeEvent={el.typeEvent}
-									/>
-								);
-							})}
-						</EventsLabel>
-					</Day>
+								ind + 7 * index,
+								events
+							);
+
+							return (
+								<Day
+									style={style}
+									onContextMenu={(e) =>
+										displayMenu(e, {
+											day: d.day,
+											month:
+												d.month === "next"
+													? month + 1
+													: d.month === "prev"
+													? month - 1
+													: month,
+											year,
+											time: null,
+											events: allEventsDay,
+										})
+									}
+									current={
+										currentYear === year &&
+										month === currentMonth &&
+										today === d.day &&
+										d.month === "current"
+									}
+								>
+									{currentYear === year &&
+										month === currentMonth &&
+										d.month === "current" &&
+										today === d.day && (
+											<ProgressDay progress={new Date().getHours() * 4} />
+										)}
+									{d.day}
+									<EventsLabel>
+										{displayEvents.map((el) => {
+											return (
+												<EventLabel
+													key={el.id}
+													count={el.count ? el.count : 1}
+													typeEvent={el.typeEvent}
+												/>
+											);
+										})}
+									</EventsLabel>
+								</Day>
+							);
+						})}
+					</Line>
 				);
 			})}
 		</Container>

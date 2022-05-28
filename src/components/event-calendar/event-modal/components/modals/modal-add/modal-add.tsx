@@ -63,7 +63,7 @@ export const ModalAdd: FC<IModalAddProps> = ({
 			title,
 		};
 		if (handleAdd) handleAdd(newEvent);
-		dispatch(EventsActionCreator.AddEvent(newEvent));
+		dispatch(EventsActionCreator.FetchEvent(newEvent));
 		cleanInputs();
 		closeModalAdd();
 	};

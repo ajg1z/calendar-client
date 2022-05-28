@@ -4,6 +4,7 @@ import styled from "styled-components";
 export const Container = styled.div`
 	${fullPage};
 	height: 100vh;
+	position: relative;
 `;
 export const Title = styled.h2`
 	padding: 10px 0px;
@@ -16,6 +17,12 @@ export const Body = styled.main`
 	width: 95%;
 	height: 80%;
 	padding: 20px 0px 0px 0px;
+`;
+
+export const Loaded = styled.div`
+	position: absolute;
+	bottom: 30px;
+	right: 30px;
 `;
 
 export const Column = styled.div`

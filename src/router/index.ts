@@ -2,20 +2,22 @@ import React from "react";
 import { Calendar } from "../pages/calendar/calendar";
 import { Login } from "../pages/login/login";
 import { Menu } from "../pages/menu/menu";
-import {Events} from '../pages/events/events'
+import { Events } from "../pages/events/events";
 import { Settings } from "../pages/settings/settings";
+import { Registration } from "../pages/registration/registration";
 interface IRoute {
 	path: string;
 	component: React.ComponentType;
 }
 
 export enum RouteNames {
-	LOGIN = "/login",
+	LOGIN = "login",
+	REGISTR = "registr",
 	EVENT = "/events",
 	EVERY = "*",
 	MENU = "/",
-	CALENDAR='/calendar',
-	SETTING='/setting'
+	CALENDAR = "/calendar",
+	SETTING = "/setting",
 }
 
 export const privateRoutes: IRoute[] = [
@@ -32,13 +34,13 @@ export const privateRoutes: IRoute[] = [
 		component: Menu,
 	},
 	{
-		path:RouteNames.CALENDAR,
-		component:Calendar
+		path: RouteNames.CALENDAR,
+		component: Calendar,
 	},
 	{
-		path:RouteNames.SETTING,
-		component:Settings
-	}
+		path: RouteNames.SETTING,
+		component: Settings,
+	},
 ];
 
 export const publicRoutes: IRoute[] = [
@@ -47,8 +49,8 @@ export const publicRoutes: IRoute[] = [
 		component: Login,
 	},
 	{
-		path: RouteNames.EVERY,
-		component: Login,
+		path: RouteNames.REGISTR,
+		component: Registration,
 	},
 ];
 
@@ -56,5 +58,5 @@ export const labelsRoutes: { [key: string]: string } = {
 	calendar: "Calendar",
 	setting: "Setting",
 	events: "Events",
-	home:'Home'
+	home: "Home",
 };

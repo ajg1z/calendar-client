@@ -23,16 +23,14 @@ export const ModalDelete: React.FC<IModalDeleteProps> = ({
 		dispatch(modalActionCreator.SetModalDelete(false));
 	};
 	if (!selected) return <></>;
-	
+
 	const actionModalDelete = () => {
 		if (!selects) return;
 		if (!selected) return;
 		dispatch(
-			EventsActionCreator.RemoveEvent({
-				id: selects,
-				month: selected.month,
-				year: selected.year,
-			})
+			EventsActionCreator.FetchRemoveEvent(
+				selects.length === 1 ? selects[0] : selects
+			)
 		);
 		dispatch(
 			EventsActionCreator.SetSelectDay({

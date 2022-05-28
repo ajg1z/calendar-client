@@ -34,20 +34,6 @@ export const Form = styled.form`
 	border-radius: 5px;
 `;
 
-export const Link = styled.div`
-	margin-top: 2rem;
-	color: ${(props) => props.theme.colors.font};
-	font-size: 16px;
-	text-align: center;
-	text-transform: uppercase;
-	&:hover {
-		text-decoration: underline;
-	}
-	a {
-		color: inherit;
-	}
-`;
-
 export const Button = styled.button`
 	border: 1px solid ${(props) => props.theme.colors.base};
 	width: 80px;

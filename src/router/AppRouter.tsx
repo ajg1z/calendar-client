@@ -5,7 +5,8 @@ import { RouteNames, publicRoutes, privateRoutes } from "./index";
 import { animated, useTransition } from "react-spring";
 
 export const AppRouter = () => {
-	const auth = useTypesSelector((state) => state.auth);
+	
+	const { auth } = useTypesSelector((state) => state.auth);
 	const location = useLocation();
 	const transition = useTransition(location, {
 		from: { opacity: 0 },
@@ -18,21 +19,27 @@ export const AppRouter = () => {
 		return (
 			<animated.div style={style}>
 				<Routes location={item}>
-					{auth &&
-						privateRoutes.map((route) => (
-							<Route
-								key={route.path}
-								path={route.path}
-								element={<route.component />}
-							/>
-						))}
-					{publicRoutes.map((route) => (
+					{auth
+						? privateRoutes.map((route) => (
+								<Route
+									key={route.path}
+									path={route.path}
+									element={<route.component />}
+								/>
+						  ))
+						: publicRoutes.map((route) => (
+								<Route
+									key={route.path}
+									path={route.path}
+									element={<route.component />}
+								/>
+						  ))}
+					{!auth && (
 						<Route
-							key={route.path}
-							path={route.path}
-							element={<route.component />}
+							path="*"
+							element={<Navigate to={RouteNames.LOGIN} replace={true} />}
 						/>
-					))}
+					)}
 				</Routes>
 			</animated.div>
 		);

@@ -25,6 +25,7 @@ import { FieldString } from "./field-string/field-string";
 import { FieldDate } from "./field-date/field-date";
 import { ConvertTime, сoncatTimeToNumber } from "../../../../../utils/time";
 import { EventLabel } from "../../../../../components/event-calendar/event-label/event-label";
+import { IEvent } from "../../../../../models/event";
 
 export const InfoModal: React.FC<InfoModalProps> = ({
 	dispatch,
@@ -32,7 +33,7 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 	handleDelete,
 	handleEdit,
 }) => {
-	const { selectedEvent } = useTypesSelector((state) => state.event);
+	const { selectedEvent, errors } = useTypesSelector((state) => state.event);
 	const [title, setTitle] = React.useState(selectedEvent?.title || "");
 	const [time, setTime] = React.useState(selectedEvent?.time || "");
 	const [description, setDescription] = React.useState(
@@ -70,13 +71,7 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 			textAction: "Delete",
 			action: () => {
 				handleDelete(selectedEvent!.id);
-				dispatch(
-					EventsActionCreator.RemoveEvent({
-						year: selectedEvent!.year || 0,
-						month: selectedEvent!.month,
-						id: selectedEvent!.id,
-					})
-				);
+				dispatch(EventsActionCreator.FetchRemoveEvent(selectedEvent!.id));
 				closeModal();
 			},
 		});
@@ -84,6 +79,10 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 	};
 
 	const handleEditEvent = () => {
+		dispatch(
+			EventsActionCreator.UpdateEvent(selectedEvent!.id, isChangesProperties())
+		);
+		if (errors.id) return;
 		handleEdit({
 			day: сoncatTimeToNumber(date, [8, 9], true) as number,
 			year: сoncatTimeToNumber(date, [0, 1, 2, 3], true) as number,
@@ -94,18 +93,6 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 			title,
 			typeEvent: selectedEvent!.typeEvent,
 		});
-		dispatch(
-			EventsActionCreator.EditEvent({
-				day: сoncatTimeToNumber(date, [8, 9], true) as number,
-				year: сoncatTimeToNumber(date, [0, 1, 2, 3], true) as number,
-				description,
-				month: сoncatTimeToNumber(date, [5, 6], true) as number,
-				id: selectedEvent!.id,
-				time,
-				title,
-				typeEvent: selectedEvent!.typeEvent,
-			})
-		);
 		dispatch(
 			EventsActionCreator.SetSelectEvent({
 				day: сoncatTimeToNumber(date, [8, 9], true) as number,
@@ -126,6 +113,28 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 		textAction: "Delete",
 		action: handleRemoveEvent,
 	});
+	const isChangesProperties = () => {
+		const obj = {} as IEvent;
+		if (title !== selectedEvent!.title) obj.title = title;
+		if (time !== selectedEvent!.time) obj.time = time;
+		if (description !== selectedEvent!.description)
+			obj.description = description;
+		if (
+			(сoncatTimeToNumber(date, [8, 9], true) as number) !== selectedEvent!.day
+		)
+			obj.day = сoncatTimeToNumber(date, [8, 9], true) as number;
+		if (
+			(сoncatTimeToNumber(date, [0, 1, 2, 3], true) as number) !==
+			selectedEvent!.year
+		)
+			obj.year = сoncatTimeToNumber(date, [0, 1, 2, 3], true) as number;
+		if (
+			(сoncatTimeToNumber(date, [5, 6], true) as number) !==
+			selectedEvent!.month
+		)
+			obj.month = сoncatTimeToNumber(date, [5, 6], true) as number;
+		return obj;
+	};
 
 	const isChanges = () => {
 		return (

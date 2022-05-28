@@ -18,6 +18,7 @@ export const Textarea = styled.textarea.attrs((props) => {
 	color: ${(props) => props.theme.colors.font};
 	resize: none;
 	width: 100%;
+	font-size: ${(props) => props.theme.fs.base}px;
 	background-color: ${(props) => props.theme.colors.background};
 	outline: 1px solid ${(props) => props.theme.colors.base};
 	display: block;
@@ -27,6 +28,7 @@ export const Textarea = styled.textarea.attrs((props) => {
 
 export const Input = styled.input`
 	padding: 0px 5px;
+	font-size: ${(props) => props.theme.fs.base}px;
 	width: 100%;
 	color: ${(props) => props.theme.colors.font};
 	background-color: ${(props) => props.theme.colors.background};

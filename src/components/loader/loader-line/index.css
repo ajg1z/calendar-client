@@ -1,0 +1,47 @@
+@keyframes loader {
+	0% {
+		left: 0%;
+	}
+	20% {
+		left: 20%;
+		background-color: red;
+	}
+	40% {
+		left: 40%;
+		background-color: blue;
+	}
+	60% {
+		left: 60%;
+		background-color: green;
+	}
+	80% {
+		left: 80%;
+		background-color: yellow;
+	}
+	100% {
+		left: calc(350px - 25px);
+		background-color: gold;
+	}
+}
+.container {
+	width: 350px;
+	height: 50px;
+	margin: 1rem auto;
+	position: relative;
+	outline: 1px solid white;
+}
+
+.move-item {
+	top: 0;
+	height: 100%;
+	position: absolute;
+	width: 25px;
+	background-color: #fff;
+	animation-name: loader;
+	animation-duration: 2s;
+	/* animation-play-state: paused; */
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	/* animation-fill-mode: forwards; */
+	animation-direction: alternate-reverse;
+}

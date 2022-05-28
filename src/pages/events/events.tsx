@@ -3,7 +3,15 @@ import { ConvertTime } from "../../utils/time";
 import { useTypesSelector } from "../../hooks/useTypedSelector";
 import { Container } from "../menu/menu.styled";
 import { InfoModal } from "./components/modals/info-modal/info-modal";
-import { Body, Column, Item, Label, ListEvents, Title } from "./events.styled";
+import {
+	Body,
+	Column,
+	Item,
+	Label,
+	ListEvents,
+	Loaded,
+	Title,
+} from "./events.styled";
 import { EventsActionCreator } from "../../store/reducers/events/action-creators";
 import { useDispatch } from "react-redux";
 import { modalActionCreator } from "../../store/reducers/modal/action-creators";
@@ -15,11 +23,12 @@ import {
 	DropResult,
 	ResponderProvided,
 } from "react-beautiful-dnd";
+import { LoaderRotate } from "../../components/loader/loader-rotate/loader-rotate";
 
 export const Events = () => {
-	const { events } = useTypesSelector((state) => state.event);
+	const { events, selectedEvent } = useTypesSelector((state) => state.event);
 	const [listEvents, setListEvents] = React.useState<IEvent[]>([]);
-
+	const { isLoading } = useTypesSelector((state) => state.event);
 	const reorder = (list: IEvent[], startIndex: number, endIndex: number) => {
 		const result = Array.from(list);
 		const [removed] = result.splice(startIndex, 1);
@@ -65,7 +74,9 @@ export const Events = () => {
 	};
 
 	const { modalInfo, modalConfirm } = useTypesSelector((state) => state.modal);
+	console.log(selectedEvent, events);
 	React.useEffect(() => {
+		if (isLoading || !events.length) return;
 		const eventsLabels: IEvent[] = [];
 		events.forEach((el) => {
 			el.month.forEach((m) => {
@@ -75,11 +86,16 @@ export const Events = () => {
 			});
 		});
 		setListEvents(eventsLabels);
-	}, []);
+	}, [isLoading]);
 
 	const dispatch = useDispatch();
 	return (
 		<Container>
+			{isLoading && (
+				<Loaded>
+					<LoaderRotate />
+				</Loaded>
+			)}
 			<InfoModal
 				handleDelete={handleDelete}
 				handleEdit={handleEdit}

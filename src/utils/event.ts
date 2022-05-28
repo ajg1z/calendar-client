@@ -28,7 +28,7 @@ export const defineEvents = (
 	i: number,
 	events: IYear[]
 ): [IEvents[], IEvent[]] => {
-	// debugger;
+
 	const displayEvents: IEvents[] = [];
 	const allEventsDay: IEvent[] = [];
 	let appropriateYear = events.find((event) => event.year === year);
@@ -50,6 +50,7 @@ export const defineEvents = (
 			time: "00:00",
 		});
 	}
+	
 	if (appropriateYear) {
 		let appropriateMonth = appropriateYear.month.find(
 			(d) =>

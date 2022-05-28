@@ -31,6 +31,7 @@ export const Months = [
 ];
 
 export const weekendDays = [6, 7, 13, 14, 20, 21, 27, 28, 34, 35, 41, 42];
+export const linePoint=[]
 export const Years = () => {
 	const begin = 1970;
 	const currentYear = new Date().getFullYear();

@@ -3,58 +3,7 @@ import { IError } from "./../../../models/error";
 import { EventsState, EventActionEnum, EventAction } from "./types";
 
 const initialState: EventsState = {
-	events: [
-		{
-			year: 2022,
-			month: [
-				{
-					month: 8,
-					events: [
-						{
-							day: 23,
-							description: "blabal",
-							id: "dsggs",
-							month: 8,
-							time: "22:00",
-							title: "this fucking",
-							typeEvent: "weekend",
-							year: 2022,
-						},
-						{
-							day: 25,
-							description: "year dadasd",
-							id: "sdaasd",
-							month: 8,
-							time: "22:00",
-							title: "Holidays",
-							typeEvent: "holiday",
-							year: 2022,
-						},
-						{
-							day: 13,
-							description: "blabal",
-							id: "fsdfdsf",
-							month: 8,
-							time: "22:00",
-							title: "test 3",
-							typeEvent: "holiday",
-							year: 2022,
-						},
-						{
-							day: 1,
-							description: "test 2",
-							id: "sfsdfsdfs",
-							month: 8,
-							time: "22:00",
-							title: "Yup 00",
-							typeEvent: "holiday",
-							year: 2022,
-						},
-					],
-				},
-			],
-		},
-	],
+	events: [],
 	isLoading: false,
 	selectedDay: null,
 	selectedEvent: null,
@@ -212,6 +161,11 @@ export default function eventsReducer(
 			return {
 				...state,
 				selectedEvent: action.payload,
+			};
+		case EventActionEnum.SET_LOADING:
+			return {
+				...state,
+				isLoading: action.payload,
 			};
 		default:
 			return state;

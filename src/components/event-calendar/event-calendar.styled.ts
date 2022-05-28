@@ -99,17 +99,20 @@ export const WeekDay = styled.div<{ current: boolean }>`
 export const Body = styled.div`
 	${flexCenter};
 	width: 100%;
-	justify-content: stretch;
 	flex-wrap: wrap;
 `;
 
 export const Wrapper = styled(Body)`
-	padding: 0px 38px;
+	/* padding: 0px 38px; */
+	justify-content: center;
 `;
 
 export const Hour = styled.div`
 	width: 100px;
 	height: 100px;
+	top: 0;
+	left: 11%;
+	position: absolute;
 	outline: 1px solid ${(props) => props.theme.colors.base};
 	${flexCenter};
 `;
@@ -136,13 +139,14 @@ export const DayCell = styled(animated.div)`
 		color: ${(props) => props.theme.colors.font};
 	}
 	height: 100px;
-	width: 1259px;
+	width: 1260px;
 	outline: 1px solid ${(props) => props.theme.colors.base};
 	${flexCenter};
 `;
 
 export const Line = styled.div`
+	position: relative;
 	flex: 100%;
 	${flexCenter};
-	justify-content: flex-start;
+	justify-content: center;
 `;

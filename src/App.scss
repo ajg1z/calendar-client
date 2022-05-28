@@ -1,6 +1,9 @@
 //theme
 body {
 	transition: background-color 0.3 linear;
+	&.no-scroll {
+		overflow: hidden;
+	}
 }
 .day {
 	color: black;

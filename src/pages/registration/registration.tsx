@@ -5,19 +5,19 @@ import {
 	ErrorLabel,
 	Form,
 	Input,
-	Link,
-} from "./login.styled";
+} from "./registration.styled";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { IField } from "./login.types";
+import { IField } from "./registration.types";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { AuthActionCreators } from "../../store/reducers/auth/action-creators";
 import { NavLink } from "react-router-dom";
 import { RouteNames } from "../../router";
+import { Link } from "../login/login.styled";
 import { useTypesSelector } from "../../hooks/useTypedSelector";
 import { LoaderLine } from "../../components/loader/loader-line/loader-line";
 
-export const Login = () => {
+export const Registration = () => {
 	const dispatch = useDispatch();
 	const { isLoading } = useTypesSelector((state) => state.auth);
 	const {
@@ -26,10 +26,12 @@ export const Login = () => {
 		handleSubmit,
 	} = useForm<IField>({
 		mode: "onChange",
-		defaultValues: { email: "", password: "" },
+		defaultValues: { email: "", password: "", name: "" },
 	});
 	const handleOnSubmit: SubmitHandler<IField> = (data) => {
-		dispatch(AuthActionCreators.login(data.email, data.password));
+		dispatch(
+			AuthActionCreators.registration(data.email, data.password, data.name)
+		);
 	};
 	return (
 		<Container>
@@ -52,14 +54,22 @@ export const Login = () => {
 					placeholder="password"
 				/>
 				{errors.password && <ErrorLabel>{errors.password.message}</ErrorLabel>}
+				<Input
+					error={!!errors.name!}
+					type="text"
+					{...register("name", {
+						required: { message: "This field is required", value: true },
+					})}
+					placeholder="name"
+				/>
+				{errors.name && <ErrorLabel>{errors.name.message}</ErrorLabel>}
 				{isLoading ? (
 					<LoaderLine />
 				) : (
 					<>
-						<Button>Join</Button>
-
+						<Button>Create</Button>
 						<Link>
-							<NavLink to={`/${RouteNames.REGISTR}`}>register</NavLink>
+							<NavLink to={`/${RouteNames.LOGIN}`}>login</NavLink>
 						</Link>
 					</>
 				)}
