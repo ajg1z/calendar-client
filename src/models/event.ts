@@ -1,3 +1,5 @@
+import { EventResponse } from "./response/event-response";
+
 export interface IEvent {
 	title: string;
 	description: string;
@@ -7,6 +9,7 @@ export interface IEvent {
 	day: number;
 	id: string;
 	time: string;
+	email: null | string;
 }
 
 export interface IEventUpdate {
@@ -28,4 +31,14 @@ export interface IYear {
 export interface IMonth {
 	month: number;
 	events: IEvent[];
+}
+
+export interface ISentSharedEvents {
+	receiver: string;
+	events: EventResponse[];
+}
+
+export interface IReceiveSharedEvents {
+	sender: string;
+	events: EventResponse[];
 }

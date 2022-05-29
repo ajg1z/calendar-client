@@ -30,8 +30,8 @@ export default function modalReducer(
 			return {
 				...state,
 				modalConfirm: action.payload,
-        isModal: action.payload,
-			};
+                isModal: action.payload,
+		 	};
 		case ModalActionEnum.SET_MODAL_EDIT:
 			return {
 				...state,
@@ -42,7 +42,7 @@ export default function modalReducer(
 			return {
 				...state,
 				modalShare: action.payload,
-        isModal: action.payload,
+                isModal: action.payload,
 			};
 		case ModalActionEnum.SET_MODAL_INFO:
 			return {

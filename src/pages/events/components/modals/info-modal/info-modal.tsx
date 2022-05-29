@@ -26,12 +26,14 @@ import { FieldDate } from "./field-date/field-date";
 import { ConvertTime, сoncatTimeToNumber } from "../../../../../utils/time";
 import { EventLabel } from "../../../../../components/event-calendar/event-label/event-label";
 import { IEvent } from "../../../../../models/event";
+import { Typography } from "@mui/material";
 
 export const InfoModal: React.FC<InfoModalProps> = ({
 	dispatch,
 	modalConfirm,
 	handleDelete,
 	handleEdit,
+	columnType,
 }) => {
 	const { selectedEvent, errors } = useTypesSelector((state) => state.event);
 	const [title, setTitle] = React.useState(selectedEvent?.title || "");
@@ -92,6 +94,7 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 			time,
 			title,
 			typeEvent: selectedEvent!.typeEvent,
+			email: null,
 		});
 		dispatch(
 			EventsActionCreator.SetSelectEvent({
@@ -103,6 +106,8 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 				time,
 				title,
 				typeEvent: selectedEvent!.typeEvent,
+				target: null,
+				email: null,
 			})
 		);
 		closeModal();
@@ -173,7 +178,7 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 			isModal={modalInfo}
 			action={() => console.log}
 			close={handleCloseModal}
-			height={550}
+			height={580}
 			width={500}
 			leftBttn="Delete"
 			rightBttn="Close"
@@ -181,9 +186,11 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 			customFooter={() => {
 				return (
 					<Buttons>
-						<Button onClick={handleEditEvent} disabled={isChanges()}>
-							Save
-						</Button>
+						{columnType === "all" && (
+							<Button onClick={handleEditEvent} disabled={isChanges()}>
+								Save
+							</Button>
+						)}
 						<Button onClick={handleRemoveEvent}>Delete</Button>
 						<Button onClick={handleCloseModal}>Close</Button>
 					</Buttons>
@@ -209,8 +216,9 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 					setEditModeInputs={setEditModeInputs}
 					setValue={setTitle}
 					value={title}
+					isNotEdit={columnType !== "all"}
 				/>
-				<FieldStyled>
+				<FieldStyled isNotEdit={columnType !== "all"}>
 					<Label>Time</Label>
 					<Text>
 						{editModeInputs.time ? (
@@ -252,8 +260,9 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 					label={"Date"}
 					setValue={setDate}
 					value={date}
+					isNotEdit={columnType !== "all"}
 				/>
-				<FieldStyled>
+				<FieldStyled isNotEdit={columnType !== "all"}>
 					<Label>Description</Label>
 					<Text>
 						{editModeInputs.description ? (
@@ -297,6 +306,14 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 						</Edit>
 					</Text>
 				</FieldStyled>
+				{selectedEvent.target && (
+					<Typography component="p">
+						<Typography sx={{ marginRight: "0.5rem" }} component="span">
+							{columnType === "sent" ? "Отправлено" : "Отправил"}
+						</Typography>
+						{selectedEvent.target}
+					</Typography>
+				)}
 			</Container>
 		</EventModal>
 	);

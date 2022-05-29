@@ -28,7 +28,6 @@ export const defineEvents = (
 	i: number,
 	events: IYear[]
 ): [IEvents[], IEvent[]] => {
-
 	const displayEvents: IEvents[] = [];
 	const allEventsDay: IEvent[] = [];
 	let appropriateYear = events.find((event) => event.year === year);
@@ -48,9 +47,10 @@ export const defineEvents = (
 			typeEvent: "weekend",
 			year,
 			time: "00:00",
+			email: null,
 		});
 	}
-	
+
 	if (appropriateYear) {
 		let appropriateMonth = appropriateYear.month.find(
 			(d) =>
@@ -63,7 +63,7 @@ export const defineEvents = (
 		);
 		if (appropriateMonth) {
 			appropriateMonth.events.forEach((event) => {
-				if (event.day === day.day) {
+				if (event.day === day.day && !event.email) {
 					if (event.typeEvent === "holiday" || event.typeEvent === "myEvent") {
 						EventSome(displayEvents, event.typeEvent, event);
 					} else {
@@ -105,5 +105,5 @@ export const defineYear = (
 	if (index < 3 && month === 0 && selectedDay > 20) {
 		return year - 1;
 	}
-	return year
+	return year;
 };

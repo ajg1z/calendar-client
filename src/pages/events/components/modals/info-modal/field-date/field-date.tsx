@@ -4,26 +4,25 @@ import {
 	Button,
 	Buttons,
 	CheckButton,
-	Edit,
 	EditButton,
-	Field as FieldStyled,
 	InputEdit,
 	Label,
 	Text,
 	TextInput,
 } from "../field-string/field-string.styled";
 import { InputMaskDate } from "../../../../../../components/input-mask-date/input-date";
-
+import { Field as FieldStyled, Edit } from "../info-modal.styled";
 export const FieldDate: React.FC<FieldProps> = ({
 	editModeInputs,
 	setEditModeInputs,
 	setValue,
 	value,
 	label,
+	isNotEdit,
 }) => {
 	const ref = React.useRef<HTMLInputElement>(null);
 	return (
-		<FieldStyled>
+		<FieldStyled isNotEdit={isNotEdit}>
 			<Label>{label}</Label>
 			<Text>
 				{editModeInputs.date ? (
@@ -34,7 +33,7 @@ export const FieldDate: React.FC<FieldProps> = ({
 						className=""
 						onBlur={() => {
 							setEditModeInputs({ ...editModeInputs, date: false });
-							if (!value) setValue("1970-01-01");	
+							if (!value) setValue("1970-01-01");
 						}}
 					/>
 				) : (

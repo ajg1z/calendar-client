@@ -1,7 +1,7 @@
 import { AppDispatch } from "./../../index";
 import { EventService } from "../../../http/event.service";
 import { IEvent, IEventUpdate } from "./../../../models/event";
-import { IRemoveEvent } from "./types";
+import { IRemoveEvent, ISelectedEvent } from "./types";
 import { EventActionEnum, ISelectedDay } from "./types";
 
 export const EventsActionCreator = {
@@ -28,6 +28,7 @@ export const EventsActionCreator = {
 						title: updatedEvent.title,
 						typeEvent: updatedEvent.typeEvent,
 						year: updatedEvent.year,
+						email: null,
 					})
 				);
 			} catch (e: any) {
@@ -50,6 +51,7 @@ export const EventsActionCreator = {
 					typeEvent: newEvent.typeEvent,
 					title: newEvent.title,
 					year: newEvent.year,
+					email: null,
 				})
 			);
 		} catch (e: any) {
@@ -82,7 +84,7 @@ export const EventsActionCreator = {
 		type: EventActionEnum.REMOVE_EVENT,
 		payload: value,
 	}),
-	SetSelectEvent: (value: IEvent) => ({
+	SetSelectEvent: (value: ISelectedEvent) => ({
 		type: EventActionEnum.SET_SELECT_EVENT,
 		payload: value,
 	}),
@@ -90,6 +92,46 @@ export const EventsActionCreator = {
 		type: EventActionEnum.EDIT_EVENT,
 		payload: value,
 	}),
+	FetchReceiveEvent: () => async (dispatch: AppDispatch) => {
+		try {
+			dispatch(EventsActionCreator.SetLoading(true));
+			const events = await EventService.getReceiveEvents();
+			events.forEach((e) => {
+				e.events.forEach((event) => {
+					dispatch(
+						EventsActionCreator.AddEvent({
+							day: event.day,
+							description: event.description,
+							month: event.month,
+							time: event.time,
+							id: event._id,
+							title: event.title,
+							typeEvent: event.typeEvent,
+							year: event.year,
+							email: e.sender,
+						})
+					);
+				});
+			});
+
+		} catch (e: any) {
+			dispatch(EventsActionCreator.SetError(e));
+		} finally {
+			dispatch(EventsActionCreator.SetLoading(false));
+		}
+	},
+	ShareEvent:
+		(email: string, events: string[]) => async (dispatch: AppDispatch) => {
+			try {
+				dispatch(EventsActionCreator.SetLoading(true));
+				const sharedEvent = await EventService.shareEvent(email, events);
+				console.log(sharedEvent);
+			} catch (e) {
+				dispatch(EventsActionCreator.SetError(e));
+			} finally {
+				dispatch(EventsActionCreator.SetLoading(false));
+			}
+		},
 	SetError: (value: any) => ({
 		type: EventActionEnum.SET_ERROR,
 		payload: value,
@@ -113,6 +155,7 @@ export const EventsActionCreator = {
 						title: e.title,
 						typeEvent: e.typeEvent,
 						year: e.year,
+						email: e.email,
 					})
 				)
 			);

@@ -5,6 +5,7 @@ import { Label as L } from "../../../../event-calendar.styled";
 export const Container = styled.div`
 	width: 100%;
 	height: 100%;
+	position: relative;
 `;
 
 export const LineInput = styled.div`

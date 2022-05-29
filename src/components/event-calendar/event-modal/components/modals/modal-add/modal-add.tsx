@@ -61,6 +61,7 @@ export const ModalAdd: FC<IModalAddProps> = ({
 			typeEvent,
 			description,
 			title,
+			email: null,
 		};
 		if (handleAdd) handleAdd(newEvent);
 		dispatch(EventsActionCreator.FetchEvent(newEvent));

@@ -78,7 +78,6 @@ export default function eventsReducer(
 				events: removed,
 			};
 		}
-
 		case EventActionEnum.EDIT_EVENT:
 			let edited: IYear[];
 			debugger;
@@ -145,7 +144,6 @@ export default function eventsReducer(
 				...state,
 				events: edited as IYear[],
 			};
-
 		case EventActionEnum.SET_ERROR:
 			return {
 				...state,
@@ -156,7 +154,6 @@ export default function eventsReducer(
 				...state,
 				selectedDay: action.payload,
 			};
-
 		case EventActionEnum.SET_SELECT_EVENT:
 			return {
 				...state,

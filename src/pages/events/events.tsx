@@ -15,7 +15,7 @@ import {
 import { EventsActionCreator } from "../../store/reducers/events/action-creators";
 import { useDispatch } from "react-redux";
 import { modalActionCreator } from "../../store/reducers/modal/action-creators";
-import { IEvent } from "../../models/event";
+import { IEvent, ISentSharedEvents } from "../../models/event";
 import {
 	DragDropContext,
 	Droppable,
@@ -24,11 +24,19 @@ import {
 	ResponderProvided,
 } from "react-beautiful-dnd";
 import { LoaderRotate } from "../../components/loader/loader-rotate/loader-rotate";
+import { useFetch } from "../../hooks/useFetch";
+import $api from "../../http/axios";
+import { EventService } from "../../http/event.service";
+import { columnType } from "./events.types";
 
 export const Events = () => {
 	const { events, selectedEvent } = useTypesSelector((state) => state.event);
+	console.log(events);
 	const [listEvents, setListEvents] = React.useState<IEvent[]>([]);
+	const [receivedEvents, setReceivedEvents] = React.useState<IEvent[]>([]);
+	const [sentEvents, setSentEvent] = React.useState<ISentSharedEvents[]>([]);
 	const { isLoading } = useTypesSelector((state) => state.event);
+	const [column, setColumn] = React.useState<columnType>("all");
 	const reorder = (list: IEvent[], startIndex: number, endIndex: number) => {
 		const result = Array.from(list);
 		const [removed] = result.splice(startIndex, 1);
@@ -73,18 +81,30 @@ export const Events = () => {
 		setListEvents(listEvents.filter((ev) => ev.id !== id));
 	};
 
+	const [fetch, loding, error] = useFetch(async () => {
+		const sentEvents = await EventService.getSentEvents();
+		setSentEvent(sentEvents);
+	});
+
+	React.useEffect(() => {
+		fetch();
+	}, []);
+
 	const { modalInfo, modalConfirm } = useTypesSelector((state) => state.modal);
-	console.log(selectedEvent, events);
 	React.useEffect(() => {
 		if (isLoading || !events.length) return;
 		const eventsLabels: IEvent[] = [];
+		const receivedEvents: IEvent[] = [];
 		events.forEach((el) => {
 			el.month.forEach((m) => {
 				m.events.forEach((event) => {
-					eventsLabels.push({ ...event });
+					if (event.email) {
+						receivedEvents.push(event);
+					} else eventsLabels.push({ ...event });
 				});
 			});
 		});
+		setReceivedEvents(receivedEvents);
 		setListEvents(eventsLabels);
 	}, [isLoading]);
 
@@ -97,6 +117,7 @@ export const Events = () => {
 				</Loaded>
 			)}
 			<InfoModal
+				columnType={column}
 				handleDelete={handleDelete}
 				handleEdit={handleEdit}
 				modalConfirm={modalConfirm}
@@ -133,11 +154,15 @@ export const Events = () => {
 																key={event.id}
 																onClick={() => {
 																	dispatch(
-																		EventsActionCreator.SetSelectEvent(event)
+																		EventsActionCreator.SetSelectEvent({
+																			...event,
+																			target: null,
+																		})
 																	);
 																	dispatch(
 																		modalActionCreator.SetModalInfo(true)
 																	);
+																	setColumn("all");
 																}}
 															>
 																<Label>{event.title}</Label>
@@ -160,9 +185,60 @@ export const Events = () => {
 				</Column>
 				<Column>
 					<Title>Dispatched events</Title>
+					<ListEvents>
+						{sentEvents.map((el, i) => {
+							return el.events.map((event) => {
+								return (
+									<Item
+										key={i}
+										onClick={() => {
+											dispatch(
+												EventsActionCreator.SetSelectEvent({
+													...event,
+													target: el.receiver,
+												})
+											);
+											dispatch(modalActionCreator.SetModalInfo(true));
+											setColumn("sent");
+										}}
+									>
+										<Label>{event.title}</Label>
+										<Label>
+											{event.year}-{ConvertTime(event.month + 1)}-
+											{ConvertTime(event.day)}
+										</Label>
+									</Item>
+								);
+							});
+						})}
+					</ListEvents>
 				</Column>
 				<Column>
 					<Title>Received events</Title>
+					<ListEvents>
+						{receivedEvents.map((el, i) => {
+							return (
+								<Item
+									key={el.id}
+									onClick={() => {
+										dispatch(
+											EventsActionCreator.SetSelectEvent({
+												...el,
+												target: el.email,
+											})
+										);
+										dispatch(modalActionCreator.SetModalInfo(true));
+										setColumn("all");
+									}}
+								>
+									<Label>{el.title}</Label>
+									<Label>
+										{el.year}-{ConvertTime(el.month + 1)}-{ConvertTime(el.day)}
+									</Label>
+								</Item>
+							);
+						})}
+					</ListEvents>
 				</Column>
 			</Body>
 		</Container>

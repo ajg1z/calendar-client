@@ -49,7 +49,6 @@ export const Days: React.FC<IDaysProps> = ({
 	return (
 		<Container>
 			{transition2((style, item, config, index) => {
-				console.log(index);
 				return (
 					<Line>
 						{item.map((d, ind) => {

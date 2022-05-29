@@ -5,8 +5,12 @@ export interface EventsState {
 	isLoading: boolean;
 	events: IYear[];
 	selectedDay: ISelectedDay | null;
-	selectedEvent: IEvent | null;
+	selectedEvent: ISelectedEvent | null;
 	errors: IError;
+}
+
+export interface ISelectedEvent extends IEvent {
+	target: null | string;
 }
 
 export interface ISelectedDay {
@@ -34,7 +38,7 @@ export interface SelectedDay {
 
 export interface SelectedEvent {
 	type: EventActionEnum.SET_SELECT_EVENT;
-	payload: IEvent;
+	payload: ISelectedEvent;
 }
 
 export interface IRemoveEvent {

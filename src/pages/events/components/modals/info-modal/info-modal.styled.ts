@@ -78,7 +78,7 @@ export const InputEdit = styled.input`
 	color: ${(props) => props.theme.colors.font}; ;
 `;
 
-export const Field = styled.div`
+export const Field = styled.div<{ isNotEdit: boolean }>`
 	margin: 0px 0px 10px 0px;
 	position: relative;
 	:hover {
@@ -86,6 +86,11 @@ export const Field = styled.div`
 			transition: all 0.3s ease 0s;
 			opacity: 1;
 			visibility: visible;
+			${(props) =>
+				props.isNotEdit &&
+				`
+			visibility: hidden;
+			opacity:0`}
 		}
 	}
 `;

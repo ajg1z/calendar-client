@@ -159,7 +159,12 @@ export const Settings = () => {
 										<ItemHolydays key={event.id} selected>
 											<NameEvent
 												onClick={() => {
-													dispatch(EventsActionCreator.SetSelectEvent(event));
+													dispatch(
+														EventsActionCreator.SetSelectEvent({
+															...event,
+															target: null,
+														})
+													);
 													dispatch(modalActionCreator.SetModalInfo(true));
 												}}
 											>
@@ -168,7 +173,12 @@ export const Settings = () => {
 											<Actions>
 												<DeleteIcon
 													onClick={() => {
-														dispatch(EventsActionCreator.SetSelectEvent(event));
+														dispatch(
+															EventsActionCreator.SetSelectEvent({
+																...event,
+																target: null,
+															})
+														);
 														dispatch(modalActionCreator.SetModalConfirm(true));
 													}}
 													sx={{ cursor: "pointer" }}

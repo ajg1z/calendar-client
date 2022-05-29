@@ -1,3 +1,5 @@
+import { columnType } from "../../../../events.types";
+
 export interface FieldProps {
 	value: string;
 	setValue: React.Dispatch<React.SetStateAction<string>>;
@@ -6,14 +8,15 @@ export interface FieldProps {
 		title: boolean;
 		description: boolean;
 		time: boolean;
-		date:boolean
+		date: boolean;
 	};
 	setEditModeInputs: React.Dispatch<
 		React.SetStateAction<{
 			title: boolean;
 			description: boolean;
 			time: boolean;
-			date:boolean
+			date: boolean;
 		}>
 	>;
+	isNotEdit: boolean;
 }

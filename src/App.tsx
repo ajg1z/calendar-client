@@ -34,7 +34,10 @@ function App() {
 	}, []);
 
 	React.useEffect(() => {
-		if (auth) dispatch(EventsActionCreator.GetEvents());
+		if (auth) {
+			dispatch(EventsActionCreator.GetEvents());
+			dispatch(EventsActionCreator.FetchReceiveEvent());
+		}
 	}, [auth]);
 
 	return isLoadingGlobal || (sessionStorage.getItem("token") && !auth) ? (
