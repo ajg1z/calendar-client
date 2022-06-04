@@ -17,6 +17,7 @@ const Header = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { auth } = useTypesSelector((state) => state.auth);
+	const {user}=useTypesSelector(state=>state.auth)
 	const linkChain = React.useMemo(() => {
 		if (!location.pathname.split("/").some((el) => el !== "")) return [];
 		return location.pathname.split("/").map((p) => {
@@ -50,7 +51,7 @@ const Header = () => {
 						>
 							Logout
 						</ActionItem>
-						<Avatar>Ajgiz</Avatar>
+						<Avatar>{user.email}</Avatar>
 					</>
 				)}
 			</Action>

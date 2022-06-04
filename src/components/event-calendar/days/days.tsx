@@ -5,7 +5,7 @@ import { EventLabel } from "../event-label/event-label";
 import { IEvent } from "../../../models/event";
 import { IEvents } from "../event-calendar.types";
 import { useTypesSelector } from "../../../hooks/useTypedSelector";
-import { defineEvents, EventSome } from "../../../utils/event";
+import { defineEvents } from "../../../utils/event";
 import { weekendDays } from "../../../const/calendar";
 import { nanoid } from "nanoid";
 import { useTransition, useSprings } from "react-spring";
@@ -46,6 +46,9 @@ export const Days: React.FC<IDaysProps> = ({
 	}, [days]);
 	const transition2 = useTransition(daysOfMonth, props);
 	const { events } = useTypesSelector((state) => state.event);
+	const { includeAlignEvent, includeAlignHolydaysEvent } = useTypesSelector(
+		(state) => state.setting
+	);
 	return (
 		<Container>
 			{transition2((style, item, config, index) => {
@@ -57,7 +60,9 @@ export const Days: React.FC<IDaysProps> = ({
 								month,
 								year,
 								ind + 7 * index,
-								events
+								events,
+								includeAlignEvent,
+								includeAlignHolydaysEvent
 							);
 
 							return (

@@ -6,7 +6,7 @@ import { weekendDays } from "../const/calendar";
 import { IEvent, IYear } from "../models/event";
 import { EventsState } from "../store/reducers/events/types";
 
-export const EventSome = (
+export const EventCountCalc = (
 	arr: IEvents[],
 	type: "myEvent" | "holiday" | "weekend",
 	elem: IEvents
@@ -26,7 +26,9 @@ export const defineEvents = (
 	month: number,
 	year: number,
 	i: number,
-	events: IYear[]
+	events: IYear[],
+	includeAlignEvent?: boolean,
+	includeAlignHolydaysEvent?: boolean
 ): [IEvents[], IEvent[]] => {
 	const displayEvents: IEvents[] = [];
 	const allEventsDay: IEvent[] = [];
@@ -63,9 +65,12 @@ export const defineEvents = (
 		);
 		if (appropriateMonth) {
 			appropriateMonth.events.forEach((event) => {
-				if (event.day === day.day && !event.email) {
+				if (event.day === day.day) {
+					if (event.email && !includeAlignEvent) return;
 					if (event.typeEvent === "holiday" || event.typeEvent === "myEvent") {
-						EventSome(displayEvents, event.typeEvent, event);
+						if (event.typeEvent === "holiday" && !includeAlignHolydaysEvent)
+							return;
+						EventCountCalc(displayEvents, event.typeEvent, event);
 					} else {
 						displayEvents.push(event);
 					}

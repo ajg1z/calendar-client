@@ -41,4 +41,9 @@ export interface SetLoading {
 	payload: boolean;
 }
 
-export type AuthActions = SetAuth | SetUser | SetLoading | SetError | SetLoadingGlobal;
+export type AuthActions =
+	| SetAuth
+	| SetUser
+	| SetLoading
+	| SetError
+	| SetLoadingGlobal;

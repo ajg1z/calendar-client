@@ -8,7 +8,6 @@ import {
 } from "./registration.styled";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { IField } from "./registration.types";
-import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { AuthActionCreators } from "../../store/reducers/auth/action-creators";
 import { NavLink } from "react-router-dom";
@@ -28,6 +27,7 @@ export const Registration = () => {
 		mode: "onChange",
 		defaultValues: { email: "", password: "", name: "" },
 	});
+
 	const handleOnSubmit: SubmitHandler<IField> = (data) => {
 		dispatch(
 			AuthActionCreators.registration(data.email, data.password, data.name)

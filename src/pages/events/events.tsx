@@ -31,7 +31,6 @@ import { columnType } from "./events.types";
 
 export const Events = () => {
 	const { events, selectedEvent } = useTypesSelector((state) => state.event);
-	console.log(events);
 	const [listEvents, setListEvents] = React.useState<IEvent[]>([]);
 	const [receivedEvents, setReceivedEvents] = React.useState<IEvent[]>([]);
 	const [sentEvents, setSentEvent] = React.useState<ISentSharedEvents[]>([]);
@@ -78,7 +77,17 @@ export const Events = () => {
 	};
 
 	const handleDelete = (id: string) => {
-		setListEvents(listEvents.filter((ev) => ev.id !== id));
+		if (column === "receiver") {
+			setReceivedEvents(receivedEvents.filter((el) => el.id !== id));
+		} else if (column === "sent") {
+			setSentEvent(
+				sentEvents.filter((el) => {
+					el.events = el.events.filter((e) => e._id !== id);
+					if (el.events.length) return true;
+					return false;
+				})
+			);
+		} else setListEvents(listEvents.filter((ev) => ev.id !== id));
 	};
 
 	const [fetch, loding, error] = useFetch(async () => {
@@ -91,8 +100,9 @@ export const Events = () => {
 	}, []);
 
 	const { modalInfo, modalConfirm } = useTypesSelector((state) => state.modal);
+	
 	React.useEffect(() => {
-		if (isLoading || !events.length) return;
+		if (isLoading) return;
 		const eventsLabels: IEvent[] = [];
 		const receivedEvents: IEvent[] = [];
 		events.forEach((el) => {
@@ -100,13 +110,14 @@ export const Events = () => {
 				m.events.forEach((event) => {
 					if (event.email) {
 						receivedEvents.push(event);
-					} else eventsLabels.push({ ...event });
+					}
+					eventsLabels.push({ ...event });
 				});
 			});
 		});
 		setReceivedEvents(receivedEvents);
 		setListEvents(eventsLabels);
-	}, [isLoading]);
+	}, [isLoading, events.length]);
 
 	const dispatch = useDispatch();
 	return (
@@ -154,10 +165,7 @@ export const Events = () => {
 																key={event.id}
 																onClick={() => {
 																	dispatch(
-																		EventsActionCreator.SetSelectEvent({
-																			...event,
-																			target: null,
-																		})
+																		EventsActionCreator.SetSelectEvent(event)
 																	);
 																	dispatch(
 																		modalActionCreator.SetModalInfo(true)
@@ -195,7 +203,8 @@ export const Events = () => {
 											dispatch(
 												EventsActionCreator.SetSelectEvent({
 													...event,
-													target: el.receiver,
+													email: el.receiver,
+													id: event._id,
 												})
 											);
 											dispatch(modalActionCreator.SetModalInfo(true));
@@ -221,14 +230,9 @@ export const Events = () => {
 								<Item
 									key={el.id}
 									onClick={() => {
-										dispatch(
-											EventsActionCreator.SetSelectEvent({
-												...el,
-												target: el.email,
-											})
-										);
+										dispatch(EventsActionCreator.SetSelectEvent(el));
 										dispatch(modalActionCreator.SetModalInfo(true));
-										setColumn("all");
+										setColumn("receiver");
 									}}
 								>
 									<Label>{el.title}</Label>

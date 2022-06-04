@@ -24,9 +24,10 @@ export const LinkChain = styled.div`
 `;
 
 export const Action = styled.div`
+	width: 20rem;
 	position: relative;
-	${flexCenter}
-	justify-content: space-between;
+	${flexCenter};
+	justify-content: center;
 `;
 
 export const ActionItem = styled.div`

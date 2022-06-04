@@ -23,10 +23,18 @@ export default function eventsReducer(
 					(m) => m.month === action.payload.month
 				);
 				if (isMonth) {
-					newEvent
-						.find((y) => y.year === action.payload.year)!
-						.month.find((m) => m.month === action.payload.month)!
-						.events.push(action.payload);
+					if (
+						newEvent
+							.find((y) => y.year === action.payload.year)!
+							.month.find((m) => m.month === action.payload.month)!
+							.events.includes(action.payload)
+					) {
+					} else {
+						newEvent
+							.find((y) => y.year === action.payload.year)!
+							.month.find((m) => m.month === action.payload.month)!
+							.events.push(action.payload);
+					}
 				} else {
 					newEvent
 						.find((y) => y.year === action.payload.year)
@@ -46,7 +54,6 @@ export default function eventsReducer(
 					year: action.payload.year,
 				});
 			}
-
 			return {
 				...state,
 				events: newEvent,
@@ -148,6 +155,11 @@ export default function eventsReducer(
 			return {
 				...state,
 				errors: action.payload,
+			};
+		case EventActionEnum.CLEAN_EVENTS:
+			return {
+				...state,
+				events: [],
 			};
 		case EventActionEnum.SET_SELECT_DAY:
 			return {

@@ -1,3 +1,9 @@
 export interface SettingsProps {}
 
-export type ISections = "customization" | "time" | "holidays" | "language";
+export type ISections =
+	| "customization"
+	| "time"
+	| "holidays"
+	| "language"
+	| "events"
+	| "another";

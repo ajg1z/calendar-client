@@ -9,9 +9,7 @@ export interface EventsState {
 	errors: IError;
 }
 
-export interface ISelectedEvent extends IEvent {
-	target: null | string;
-}
+export interface ISelectedEvent extends IEvent {}
 
 export interface ISelectedDay {
 	day: number;
@@ -19,6 +17,14 @@ export interface ISelectedDay {
 	year: number;
 	time: null | string;
 	events: IEvent[];
+}
+
+export interface IRemoveReceiverEvent {
+	month: number;
+	year: number;
+	sender: string;
+	recipient: string;
+	event: string;
 }
 
 export enum EventActionEnum {
@@ -29,6 +35,12 @@ export enum EventActionEnum {
 	SET_ERROR = "SET_ERROR",
 	SET_SELECT_DAY = "SET_SELECT_DAY",
 	SET_SELECT_EVENT = "SET_SELECT_EVENT",
+	CLEAN_EVENTS = "CLEAN_EVENTS",
+}
+
+export interface CleanEvents {
+	type: EventActionEnum.CLEAN_EVENTS;
+	payload: [];
 }
 
 export interface SelectedDay {
@@ -79,4 +91,5 @@ export type EventAction =
 	| SetError
 	| SetLoading
 	| SelectedDay
-	| SelectedEvent;
+	| SelectedEvent
+	| CleanEvents;

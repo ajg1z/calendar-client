@@ -94,6 +94,7 @@ export const ModalDelete: React.FC<IModalDeleteProps> = ({
 							multiple
 						>
 							{selected.events.map((event) => {
+								if (event.email) return;
 								return <MenuItem value={event.id}>{event.title}</MenuItem>;
 							})}
 						</Select>

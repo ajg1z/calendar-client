@@ -1,7 +1,7 @@
 import { AppDispatch } from "./../../index";
 import { EventService } from "../../../http/event.service";
 import { IEvent, IEventUpdate } from "./../../../models/event";
-import { IRemoveEvent, ISelectedEvent } from "./types";
+import { IRemoveEvent, IRemoveReceiverEvent, ISelectedEvent } from "./types";
 import { EventActionEnum, ISelectedDay } from "./types";
 
 export const EventsActionCreator = {
@@ -12,6 +12,10 @@ export const EventsActionCreator = {
 	AddEvent: (event: IEvent) => ({
 		type: EventActionEnum.ADD_EVENT,
 		payload: event,
+	}),
+	CleanEvents: () => ({
+		type: EventActionEnum.CLEAN_EVENTS,
+		payload: [],
 	}),
 	UpdateEvent:
 		(id: string, event: IEventUpdate) => async (dispatch: AppDispatch) => {
@@ -113,13 +117,34 @@ export const EventsActionCreator = {
 					);
 				});
 			});
-
 		} catch (e: any) {
 			dispatch(EventsActionCreator.SetError(e));
 		} finally {
 			dispatch(EventsActionCreator.SetLoading(false));
 		}
 	},
+	RemoveReceiverEvent:
+		(dto: IRemoveReceiverEvent) => async (dispatch: AppDispatch) => {
+			try {
+				dispatch(EventsActionCreator.SetLoading(true));
+				const updatedData = await EventService.updateSharedEvents(
+					dto.sender,
+					dto.recipient,
+					dto.event
+				);
+				dispatch(
+					EventsActionCreator.RemoveEvent({
+						year: dto.year,
+						month: dto.month,
+						id: dto.event,
+					})
+				);
+			} catch (e: any) {
+				dispatch(EventsActionCreator.SetError(e));
+			} finally {
+				dispatch(EventsActionCreator.SetLoading(false));
+			}
+		},
 	ShareEvent:
 		(email: string, events: string[]) => async (dispatch: AppDispatch) => {
 			try {

@@ -41,7 +41,6 @@ import { ModalInfo } from "./event-modal/components/modals/modal-info/modal-info
 import { ModalDelete } from "./event-modal/components/modals/modal-delete/modal-delete";
 import "./mui.scss";
 import { Days } from "./days/days";
-import { IDays } from "./days/days.types";
 import { Time } from "./time/time";
 import { Week } from "./week/week";
 import { Day } from "./days/days.styled";

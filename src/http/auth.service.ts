@@ -15,12 +15,16 @@ export default class AuthService {
 	static async registration(
 		email: string,
 		password: string,
-		name: string
+		name: string,
+		timezone: number
 	): Promise<AxiosResponse<AuthResponse>> {
+		console.log(timezone);
+		
 		return $api.post<AuthResponse>(`http://localhost:3001/user/registration`, {
 			email,
 			password,
 			name,
+			timezone,
 		});
 	}
 	static async logout() {

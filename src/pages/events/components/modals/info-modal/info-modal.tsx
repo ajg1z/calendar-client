@@ -27,6 +27,7 @@ import { ConvertTime, сoncatTimeToNumber } from "../../../../../utils/time";
 import { EventLabel } from "../../../../../components/event-calendar/event-label/event-label";
 import { IEvent } from "../../../../../models/event";
 import { Typography } from "@mui/material";
+import { EventService } from "../../../../../http/event.service";
 
 export const InfoModal: React.FC<InfoModalProps> = ({
 	dispatch,
@@ -41,6 +42,7 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 	const [description, setDescription] = React.useState(
 		selectedEvent?.description || ""
 	);
+	const { user } = useTypesSelector((state) => state.auth);
 
 	const { modalInfo } = useTypesSelector((state) => state.modal);
 	const [date, setDate] = React.useState(
@@ -66,15 +68,34 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 	};
 	const timeRef = React.useRef<HTMLInputElement>(null);
 	const descRef = React.useRef<HTMLTextAreaElement>(null);
+
 	const handleRemoveEvent = () => {
 		setModalConfirm({
 			title: "Removig event",
 			text: "You definitely want to delete this event?",
 			textAction: "Delete",
-			action: () => {
-				handleDelete(selectedEvent!.id);
-				dispatch(EventsActionCreator.FetchRemoveEvent(selectedEvent!.id));
+			action: async () => {
+				if (columnType === "receiver") {
+					dispatch(
+						EventsActionCreator.RemoveReceiverEvent({
+							month: selectedEvent!.month,
+							year: selectedEvent!.year,
+							event: selectedEvent!.id,
+							recipient: user.email,
+							sender: selectedEvent!.email || user.email,
+						})
+					);
+				} else if (columnType === "sent") {
+					const updatedData = await EventService.updateSharedEvents(
+						user.email,
+						selectedEvent!.email || "",
+						selectedEvent!.id
+					);
+				} else {
+					dispatch(EventsActionCreator.FetchRemoveEvent(selectedEvent!.id));
+				}
 				closeModal();
+				handleDelete(selectedEvent!.id);
 			},
 		});
 		dispatch(modalActionCreator.SetModalConfirm(true));
@@ -106,7 +127,6 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 				time,
 				title,
 				typeEvent: selectedEvent!.typeEvent,
-				target: null,
 				email: null,
 			})
 		);
@@ -306,12 +326,12 @@ export const InfoModal: React.FC<InfoModalProps> = ({
 						</Edit>
 					</Text>
 				</FieldStyled>
-				{selectedEvent.target && (
+				{selectedEvent.email && (
 					<Typography component="p">
 						<Typography sx={{ marginRight: "0.5rem" }} component="span">
-							{columnType === "sent" ? "Отправлено" : "Отправил"}
+							{columnType === "sent" ? "Отправлено" : "Отправил "}
 						</Typography>
-						{selectedEvent.target}
+						{selectedEvent.email}
 					</Typography>
 				)}
 			</Container>

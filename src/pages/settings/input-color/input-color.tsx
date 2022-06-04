@@ -3,19 +3,19 @@ import { useDispatch } from "react-redux";
 import { useDebounce } from "../../../hooks/useDebounce-color";
 import { typeEvent } from "../../../models/event";
 import { SettingActionCreater } from "../../../store/reducers/setting/action-creators";
-import { IColorIcon } from "../../../store/reducers/setting/types";
+import { IIconsEventColor } from "../../../store/reducers/setting/types";
 import { Container, Icon, Color } from "./input-color.styled";
 
 export const InputColor: React.FC<{
 	icon: string;
 	type: typeEvent;
-	value: string;
+	value: IIconsEventColor;
 }> = ({ icon, type, value }) => {
 	const dispatch = useDispatch();
 	const [color, setColor] = React.useState(value);
 
-	const debouncedSetColor = useDebounce((arg: IColorIcon) => {
-		dispatch(SettingActionCreater.SetColorIcon(arg));
+	const debouncedSetColor = useDebounce((arg: IIconsEventColor) => {
+		dispatch(SettingActionCreater.ChangeColorIcon(arg));
 	}, 500);
 
 	const ref = React.useRef<HTMLInputElement | null>(null);
@@ -23,10 +23,10 @@ export const InputColor: React.FC<{
 		<Container onClick={() => ref.current!.click()}>
 			<Color
 				onChange={(e) => {
-					debouncedSetColor({ value: e.target.value, type });
-					setColor(e.target.value);
+					debouncedSetColor({ [type]: e.target.value, ...color });
+					setColor({ ...color, [type]: e.target.value });
 				}}
-				value={color}
+				value={color[type]}
 				ref={ref}
 				type="color"
 			/>

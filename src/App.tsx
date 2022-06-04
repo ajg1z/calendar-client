@@ -10,12 +10,14 @@ import { Theme } from "./components/theme";
 import { AuthActionCreators } from "./store/reducers/auth/action-creators";
 import { Loader } from "./components/loader/loader";
 import { EventsActionCreator } from "./store/reducers/events/action-creators";
+import { SettingActionCreater } from "./store/reducers/setting/action-creators";
 
 function App() {
 	const dispatch = useDispatch();
 	const { auth, isLoadingGlobal } = useTypesSelector((state) => state.auth);
 	const { theme } = useTypesSelector((state) => state.setting);
 	const { isModal } = useTypesSelector((state) => state.modal);
+	const { events } = useTypesSelector((state) => state.event);
 	React.useEffect(() => {
 		if (isModal) {
 			document.body.classList.add("no-scroll");
@@ -37,8 +39,11 @@ function App() {
 		if (auth) {
 			dispatch(EventsActionCreator.GetEvents());
 			dispatch(EventsActionCreator.FetchReceiveEvent());
+			dispatch(SettingActionCreater.GetSetting());
 		}
 	}, [auth]);
+
+	console.log(events);
 
 	return isLoadingGlobal || (sessionStorage.getItem("token") && !auth) ? (
 		<Loader />

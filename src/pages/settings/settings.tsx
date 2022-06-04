@@ -32,18 +32,34 @@ import { ConfirmModal } from "../../components/event-calendar/event-modal/compon
 import { ModalAdd } from "../../components/event-calendar/event-modal/components/modals/modal-add/modal-add";
 import { animated, useSpring } from "react-spring";
 import { useLocation } from "react-router-dom";
-
-const sections = ["customization", "time", "holidays", "language"];
+const sections = [
+	"customization",
+	"time",
+	"holidays",
+	"language",
+	"events",
+	"another",
+];
 export const Settings = () => {
 	const location = useLocation().pathname;
 	const dispatch = useDispatch();
-	const { colorIconsEvent, font, language, theme, timezone } = useTypesSelector(
-		(state) => state.setting
-	);
+	const {
+		colorIconsEvent,
+		font,
+		language,
+		theme,
+		timezone,
+		includeAlignEvent,
+		includeAlignHolydaysEvent,
+		isNotify,
+		notEventReceive,
+	} = useTypesSelector((state) => state.setting);
 	const { modalInfo, modalConfirm, modalAdd } = useTypesSelector(
 		(state) => state.modal
 	);
-	const { events, selectedEvent } = useTypesSelector((state) => state.event);
+	const { events, selectedEvent, isLoading } = useTypesSelector(
+		(state) => state.event
+	);
 	const [selectedSection, setSelectedSection] =
 		React.useState<ISections | null>(null);
 	const [prevState, setPrevState] = React.useState(true);
@@ -52,7 +68,6 @@ export const Settings = () => {
 		from: { transform: "translateX(-100px)", opacity: 0 },
 		to: { transform: "translateX(0px)", opacity: 1 },
 		reset: true,
-
 		immediate: () => {
 			if (!location.includes("setting")) return true;
 			if (!prevState) return true;
@@ -63,16 +78,20 @@ export const Settings = () => {
 	const [listHolydays, setListHolidays] = React.useState<IEvent[]>([]);
 
 	React.useEffect(() => {
+		if (isLoading || !events.length) return;
 		const holydays: IEvent[] = [];
 		events.forEach((el) => {
 			el.month.forEach((m) => {
 				m.events.forEach((event) => {
-					if (event.typeEvent === "holiday") holydays.push(event);
+					if (event.typeEvent === "holiday") {
+						if (!includeAlignHolydaysEvent && event.email) return;
+						holydays.push(event);
+					}
 				});
 			});
 		});
 		setListHolidays(holydays);
-	}, []);
+	}, [isLoading]);
 
 	const handleEdit = (event: IEvent) => {
 		setListHolidays(
@@ -88,7 +107,6 @@ export const Settings = () => {
 	const handleAdd = (event: IEvent) => {
 		setListHolidays([...listHolydays, event]);
 	};
-
 	const handleDelete = (id: string) => {
 		setListHolidays(listHolydays.filter((ev) => ev.id !== id));
 	};
@@ -103,27 +121,15 @@ export const Settings = () => {
 							<Label>Event icon customization</Label>
 							<Line>
 								<Text>My event</Text>
-								<InputColor
-									value={colorIconsEvent.myEvent}
-									type="myEvent"
-									icon="E"
-								/>
+								<InputColor value={colorIconsEvent} type="myEvent" icon="E" />
 							</Line>
 							<Line>
 								<Text>Holidays</Text>
-								<InputColor
-									value={colorIconsEvent.holiday}
-									type="holiday"
-									icon="H"
-								/>
+								<InputColor value={colorIconsEvent} type="holiday" icon="H" />
 							</Line>
 							<Line>
 								<Text>Weekend</Text>
-								<InputColor
-									value={colorIconsEvent.weekend}
-									type="weekend"
-									icon="W"
-								/>
+								<InputColor value={colorIconsEvent} type="weekend" icon="W" />
 							</Line>
 						</SectionOptions>
 						<SectionOptions>
@@ -135,8 +141,8 @@ export const Settings = () => {
 									inputProps={{ "aria-label": "controlled" }}
 									onChange={(e) => {
 										dispatch(
-											SettingActionCreater.SetTheme(
-												e.target.checked ? "night" : "day"
+											SettingActionCreater.ChangeTheme(
+												theme === "day" ? "night" : "day"
 											)
 										);
 									}}
@@ -159,12 +165,7 @@ export const Settings = () => {
 										<ItemHolydays key={event.id} selected>
 											<NameEvent
 												onClick={() => {
-													dispatch(
-														EventsActionCreator.SetSelectEvent({
-															...event,
-															target: null,
-														})
-													);
+													dispatch(EventsActionCreator.SetSelectEvent(event));
 													dispatch(modalActionCreator.SetModalInfo(true));
 												}}
 											>
@@ -173,12 +174,7 @@ export const Settings = () => {
 											<Actions>
 												<DeleteIcon
 													onClick={() => {
-														dispatch(
-															EventsActionCreator.SetSelectEvent({
-																...event,
-																target: null,
-															})
-														);
+														dispatch(EventsActionCreator.SetSelectEvent(event));
 														dispatch(modalActionCreator.SetModalConfirm(true));
 													}}
 													sx={{ cursor: "pointer" }}
@@ -200,10 +196,97 @@ export const Settings = () => {
 					</animated.div>
 				);
 			}
+			case "events":
+				return (
+					<animated.div style={stylesToRight}>
+						<SectionOptions>
+							<Label>Events</Label>
+							<Line width={260}>
+								<Text isOpacity={!notEventReceive}>Not event receive</Text>
+								<Checkbox
+									checked={notEventReceive}
+									inputProps={{ "aria-label": "controlled" }}
+									onChange={(e) => {
+										console.log("checked", e.target.checked);
+										dispatch(
+											SettingActionCreater.ChangeNotEventReceive(
+												e.target.checked
+											)
+										);
+									}}
+								/>
+							</Line>
+							<Line width={260}>
+								<Text isOpacity={!includeAlignEvent}>Include align event</Text>
+								<Checkbox
+									checked={includeAlignEvent}
+									onChange={(e) =>
+										dispatch(
+											SettingActionCreater.ChangeIncludeAlignEvent(
+												e.target.checked
+											)
+										)
+									}
+								/>
+							</Line>
+							<Line width={260}>
+								<Text
+									isOpacity={
+										includeAlignEvent ? !includeAlignHolydaysEvent : true
+									}
+								>
+									Include align holydays event
+								</Text>
+								<Checkbox
+									checked={
+										includeAlignEvent ? includeAlignHolydaysEvent : false
+									}
+									onChange={(e) =>
+										dispatch(
+											SettingActionCreater.ChangeIncludeAlignHolydaysEvent(
+												e.target.checked
+											)
+										)
+									}
+								/>
+							</Line>
+						</SectionOptions>
+					</animated.div>
+				);
+			case "another":
+				return (
+					<animated.div style={stylesToRight}>
+						<SectionOptions>
+							<Label>Events</Label>
+							<Line width={350}>
+								<Text isOpacity={!isNotify}>
+									Send Notify in email one day before event.{" "}
+								</Text>
+								<Checkbox
+									checked={isNotify}
+									inputProps={{ "aria-label": "controlled" }}
+									onChange={(e) => {
+										dispatch(
+											SettingActionCreater.ChangeIsNotify(e.target.checked)
+										);
+									}}
+								/>
+							</Line>
+						</SectionOptions>
+					</animated.div>
+				);
 			default:
 				return <></>;
 		}
-	}, [selectedSection, listHolydays, theme]);
+	}, [
+		selectedSection,
+		listHolydays,
+		theme,
+		notEventReceive,
+		isNotify,
+		includeAlignEvent,
+		includeAlignHolydaysEvent,
+	]);
 
 	return (
 		<Container>

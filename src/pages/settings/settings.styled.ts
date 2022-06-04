@@ -32,9 +32,9 @@ export const Section = styled.div`
 	}
 `;
 
-export const Line = styled.div`
+export const Line = styled.div<{ width?: number }>`
 	${flexCenter};
-	width: 120px;
+	width: ${({ width }) => width || 120}px;
 	margin: 0px 0px 10px;
 	justify-content: space-between;
 `;
@@ -48,7 +48,9 @@ export const EventIcon = styled.p`
 	outline: 1px solid white;
 `;
 
-export const Text = styled.p``;
+export const Text = styled.p<{ isOpacity?: boolean }>`
+	opacity: ${({ isOpacity }) => isOpacity && 0.5};
+`;
 
 export const Right = styled.div`
 	padding: 10px;

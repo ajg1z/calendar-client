@@ -1,3 +1,5 @@
+import { EventsActionCreator } from "./../events/action-creators";
+import { ConvertTime } from "./../../../utils/time";
 import { AppDispatch } from "./../../index";
 import {
 	AuthActionEnum,
@@ -66,7 +68,12 @@ export const AuthActionCreators = {
 		async (dispatch: AppDispatch) => {
 			try {
 				dispatch(AuthActionCreators.setLoading(true));
-				const userData = await AuthService.registration(email, password, name);
+				const userData = await AuthService.registration(
+					email,
+					password,
+					name,
+					new Date().getHours()
+				);
 				sessionStorage.setItem("token", userData.data.accessToken);
 				dispatch(AuthActionCreators.setAuth(true));
 				dispatch(AuthActionCreators.setUser(userData.data.user));
@@ -83,6 +90,9 @@ export const AuthActionCreators = {
 			dispatch(AuthActionCreators.setAuth(false));
 			dispatch(AuthActionCreators.setUser({} as IUser));
 			sessionStorage.removeItem("token");
+			dispatch(AuthActionCreators.setError({} as IError));
+			dispatch(EventsActionCreator.CleanEvents());
+			dispatch(EventsActionCreator.SetError({} as IError));
 		} catch (e: any) {
 			dispatch(AuthActionCreators.setError(e));
 		} finally {

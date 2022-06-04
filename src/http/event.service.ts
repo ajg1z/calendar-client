@@ -27,6 +27,16 @@ export class EventService {
 		return newEvent.data;
 	}
 
+	static async updateSharedEvents(
+		sender: string,
+		recipient: string,
+		event: string
+	) {
+		return await (
+			await $api.put("shared-event", { sender, event, recipient })
+		).data;
+	}
+
 	static async removeEvent(id: string | string[]): Promise<EventResponse[]> {
 		const removedEvent = await $api.delete<EventResponse[]>("event", {
 			data: {

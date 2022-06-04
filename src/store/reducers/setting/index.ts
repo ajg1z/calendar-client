@@ -10,6 +10,12 @@ const initialState: SettingStateProps = {
 	language: "en",
 	theme: "night",
 	timezone: "UTC-2",
+	loading: false,
+	error: "",
+	includeAlignEvent: true,
+	includeAlignHolydaysEvent: false,
+	isNotify: true,
+	notEventReceive: false,
 };
 
 export default function settingReducer(
@@ -23,13 +29,53 @@ export default function settingReducer(
 			return { ...state, theme: action.payload };
 		case SettingActionEnum.SET_LANGUAGE:
 			return { ...state, language: action.payload };
+		case SettingActionEnum.SET_ERROR:
+			return {
+				...state,
+				error: action.payload,
+			};
+		case SettingActionEnum.SET_LOADING:
+			return {
+				...state,
+				loading: action.payload,
+			};
 		case SettingActionEnum.SET_COLOR_ICON:
 			return {
 				...state,
-				colorIconsEvent: {
-					...state.colorIconsEvent,
-					[action.payload.type]: action.payload.value,
-				},
+				colorIconsEvent: action.payload,
+			};
+		case SettingActionEnum.SET_NOT_EVENT_RECEIVE:
+			return {
+				...state,
+				notEventReceive: action.payload,
+			};	
+		case SettingActionEnum.SET_INCLUDE_ALIGN_EVENT:
+			return {
+				...state,
+				includeAlignEvent: action.payload,
+			};
+
+		case SettingActionEnum.SET_INCLUDE_ALIGN_HOLYDAYS_EVENT:
+			return {
+				...state,
+				includeAlignHolydaysEvent: action.payload,
+			};
+
+		case SettingActionEnum.SET_IS_NOTIFY:
+			return {
+				...state,
+				isNotify: action.payload,
+			};
+		case SettingActionEnum.SET_STATE:
+			return {
+				...state,
+				colorIconsEvent: action.payload.colorIconsEvent,
+				theme: action.payload.theme,
+				timezone: action.payload.timezone,
+				includeAlignEvent: action.payload.includeAlignEvent,
+				isNotify: action.payload.isNotify,
+				includeAlignHolydaysEvent: action.payload.includeAlignHolydaysEvent,
+				notEventReceive: action.payload.notEventReceive,
 			};
 		default:
 			return state;
